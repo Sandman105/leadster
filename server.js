@@ -1,6 +1,8 @@
 const express = require("express");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const routes = require("./routes");
+const knex = require("knex");
+const conn = require("./connection.json");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,9 +18,11 @@ if (process.env.NODE_ENV === "production") {
 // Add routes, both API and view
 app.use(routes);
 
-// Connect to the Mongo DB
-mongoose.Promise = Promise;
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:2701/google-books-db", { useNewUrlParser : true });
+// Connect to the MySQL DB
+knex({
+  client: "mysql",
+  connection: conn
+});
 
 // Start the API server
 app.listen(PORT, function() {

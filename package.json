@@ -19,7 +19,9 @@
   "dependencies": {
     "express": "^4.17.1",
     "if-env": "^1.0.4",
+    "knex": "^0.20.2",
     "mongoose": "^5.7.12",
+    "mysql2": "^2.0.1",
     "path": "^0.12.7"
   },
   "devDependencies": {
