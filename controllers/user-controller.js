@@ -28,7 +28,7 @@ const getPostingsSavedByUser = (req, res) => {
         });
 };
 
-const getUsersFromPosting = (req, res) => {
+const getUsersFromSavedPosting = (req, res) => {
     knex.select("*").from("subscription").where(`postingID = ${req.params.id}`) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
     .then(data => {
         res.json(data); //can make another api call in here to get the user info 
@@ -42,5 +42,5 @@ const getUsersFromPosting = (req, res) => {
 module.exports = {
     getAllPostings,
     getPostingsSavedByUser,
-    getUsersFromPosting
+    getUsersFromSavedPosting
 };
