@@ -28,19 +28,80 @@ const getPostingsSavedByUser = (req, res) => {
         });
 };
 
-const getUsersFromSavedPosting = (req, res) => {
+const getUsersFromSavedPosting = (req, res) => { //this will be for employers to view who saved their jobs
     knex.select("*").from("subscription").where(`postingID = ${req.params.id}`) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
+        .then(data => {
+            res.json(data); //can make another api call in here to get the user info 
+        })
+        .catch(err => {
+            console.log(err);
+            res.json(err);
+        });
+}
+
+const createSubscription = (req, res) => {
+    knex("subscription").insert(
+        [
+            {
+                userid: req.body.userID,
+                postingID: req.body.postingID
+            }
+        ]
+    ).returning("*")
+        .then(
+            data => {
+                res.json(data);
+            }
+        ).catch(err => {
+            res.json(err);
+        });
+};
+
+const createUser = (req, res) => {
+    knex("users").insert(
+        [
+            {
+                nameFirst: req.body.nameFirst,
+                nameLast: req.body.nameLast,
+                isEmployer: req.body.isEmployer,
+                phoneNum: req.body.phoneNum,
+                email: req.body.email,
+                password: req.body.password,
+                companyName: req.body.companyName
+            }
+        ]
+    ).returning("*")
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+};
+
+const createPosting = (req, res) => {
+    knex("posting").insert(
+        [
+            {
+                title: req.body.title,
+                description: req.body.description,
+                employerID: req.body.employerID
+            }
+        ]
+    ).returning("*")
     .then(data => {
-        res.json(data); //can make another api call in here to get the user info 
+        res.json(data);
     })
     .catch(err => {
-        console.log(err);
         res.json(err);
     });
-}
+};
 
 module.exports = {
     getAllPostings,
     getPostingsSavedByUser,
-    getUsersFromSavedPosting
+    getUsersFromSavedPosting,
+    createSubscription,
+    createUser,
+    createPosting
 };
