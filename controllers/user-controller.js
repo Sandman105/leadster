@@ -43,7 +43,7 @@ const createSubscription = (req, res) => {
     knex("subscription").insert(
         [
             {
-                userid: req.body.userID,
+                userID: req.body.userID,
                 postingID: req.body.postingID
             }
         ]
@@ -98,7 +98,7 @@ const createPosting = (req, res) => {
 };
 
 const deleteSubscription = (req, res) => {
-    knex("subscription").where("id", req.body.id).del()
+    knex("subscription").where("id", req.body.id).del() //this may not work bc it will say reference key error
         .then(data => {
             return res.json(data);
         })
