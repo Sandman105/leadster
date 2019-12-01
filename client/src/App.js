@@ -1,24 +1,34 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route, } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Community from './pages/Community';
+import Leads from './pages/Leads';
+import CommunityDetail from './pages/CommunityDetail';
+import EmployerProfile from './pages/EmployerProfile';
+import NoMatch from './pages/NoMatch';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <React.Fragment>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/home" component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/community" component={Community} />
+          <Route exact path="/leads" component={Leads} />
+          <Route exact path="community-detail" component={CommunityDetail} />
+          <Route exact path="/employer-profile" component={EmployerProfile} />
+          <Route component={NoMatch} />
+        </Switch>
+      </React.Fragment>
+    </Router>
   );
-}
+};
+
+
 
 export default App;
