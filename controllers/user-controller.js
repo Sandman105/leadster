@@ -44,26 +44,26 @@ const getUsersFromSavedPosting = (req, res) => { //this will be for employers to
 
 const getPostingByEmployer = (req, res) => {
     knex.select("*").from("posting").where(`employerID = ${req.params.id}`)
-    .then(data => {
-        knex.destroy();
-        return res.json(data);
-    })
-    .catch(err => {
-        console.log(err);
+        .then(data => {
+            knex.destroy();
+            return res.json(data);
+        })
+        .catch(err => {
+            console.log(err);
             return res.json(err);
-    });
+        });
 };
 
 const getPostingById = (req, res) => {
     knex.select("*").from("posting").where(`id = ${req.params.id}`)
-    .then(data => {
-        knex.destroy();
-        return res.json(data);
-    })
-    .catch(err => {
-        console.log(err);
+        .then(data => {
+            knex.destroy();
+            return res.json(data);
+        })
+        .catch(err => {
+            console.log(err);
             return res.json(err);
-    });
+        });
 };
 
 const createSubscription = (req, res) => {
