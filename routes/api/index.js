@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const userRoutes = require('./user-routes');
+// define routes and they will be prefixed with whatever you put in the argument for router.use
 
 const { 
     getAllPostings,
@@ -31,8 +33,5 @@ router.route("/postdetails").get(setPostingById);
 // Seeker
 // 4. Job List
 // "/jobs"
-
-
-
 
 module.exports = router;

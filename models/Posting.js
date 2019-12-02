@@ -5,7 +5,7 @@ const postingSchema = knex.schema.hasTable("posting").then(table => {
         return knex.schema.createTable("posting", table => {
             table.increments("id").primary(); //sets the primary key and auto increments it
             table.string("title", 50);
-            table.string("description", 500);
+            table.string("description", 1000);
             table.integer("employerID").unsigned().references("users.id"); //unsigned means only positive numbers
         }).then(() => {
             console.log("posting table created");
