@@ -125,6 +125,17 @@ const createPosting = (req, res) => {
         });
 };
 
+const deletePosting = (req, res) => {
+    knex("posting").where(`id = ${req.params.id}`).del() //need cascading delete here
+        .then(data => {
+            knex.destroy();
+            return res.json(data);
+        })
+        .catch(err => {
+            return res.json(err);
+        });
+};
+
 const deleteSubscription = (req, res) => {
     knex("subscription").where("id", req.body.id).del() //this may not work bc it will say reference key error
         .then(data => {
@@ -145,5 +156,6 @@ module.exports = {
     createSubscription,
     createUser,
     createPosting,
-    deleteSubscription
+    deleteSubscription,
+    deletePosting
 };
