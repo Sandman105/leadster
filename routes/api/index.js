@@ -2,12 +2,36 @@ const router = require('express').Router();
 const userRoutes = require('./user-routes');
 // define routes and they will be prefixed with whatever you put in the argument for router.use
 
-//Commented line 6 and 8 out since I created the user-routes.js file, but this might need to change. Will speak with Varun.
+const { 
+    getAllPostings,
+    getPostingsSavedByUser,
+    getUsersFromSavedPosting,
+    createSubscription,
+    createUser,
+    createPosting,
+    deleteSubscription,
+    getPostingByEmployer,
+    setPostingById
+ } = require("../../controllers/user-controller");
 
-//const { getAllPostings } = require("../../controllers/user-controller");
 
-//router.route("/").get(getAllPostings);
+// 1. Login
+// "/login"
 
-router.use('/user', userRoutes)
+// 2. Signup
+// "/signup"
+
+// Boss
+// 3. Employer posts showing all the jobs a boss posts
+// "/employerposts"
+router.route("/employerposts").get(getPostingByEmployer);
+
+// 4. Post detail showing job title, job description, who saved the posts
+// "/postdetails"
+router.route("/postdetails").get(setPostingById);
+
+// Seeker
+// 4. Job List
+// "/jobs"
 
 module.exports = router;
