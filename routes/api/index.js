@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const userRoutes = require('./user-routes');
+const withAuth = require("../../middleware/authentication.js");
 // define routes and they will be prefixed with whatever you put in the argument for router.use
 
 const { 
@@ -12,11 +13,16 @@ const {
     deleteSubscription,
     getPostingByEmployer,
     getPostingById,
-    deletePosting
+    deletePosting,
+    getUserProfile,
+    login
  } = require("../../controllers/user-controller");
+
+router.route('/').get(withAuth, getUserProfile)
 
 // 1. Login?
 // "/login"
+router.route("/login").post(login)
 
 
 // 2. Signup to sumbit form
