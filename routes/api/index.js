@@ -15,7 +15,7 @@ const {
     deletePosting
  } = require("../../controllers/user-controller");
 
-// 1. Login
+// 1. Login?
 // "/login"
 
 
@@ -50,8 +50,8 @@ router.route("/jobs").get(getAllPostings);
 router.route("/jobs/saved/:id").get(getPostingsSavedByUser);
 
 // 8. Seekers click save button
-// "/jobs/saved"
-router.route("/jobs/saved").post(createSubscription);
+// "/jobs/saved/:id"
+router.route("/jobs/saved/:id").post(createSubscription);
 
 // 9. Unsave one job
 //  "/jobs/unsave/:id"

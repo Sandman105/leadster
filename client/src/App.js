@@ -4,9 +4,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Community from './pages/Community';
-import Leads from './pages/Leads';
+import JobDetail from './pages/JobDetail';
 import CommunityDetail from './pages/CommunityDetail';
-import EmployerProfile from './pages/EmployerProfile';
+import EmployerPosts from './pages/EmployerPosts';
 import NoMatch from './pages/NoMatch';
 
 const App = () => {
@@ -19,9 +19,9 @@ const App = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/community" component={Community} />
-          <Route exact path="/leads" component={Leads} />
-          <Route exact path="community-detail" component={CommunityDetail} />
-          <Route exact path="/employer-profile" component={EmployerProfile} />
+          <Route exact path="/job-detail" component={JobDetail} />
+          <Route exact path="/community-detail" component={CommunityDetail} />
+          <Route exact path="/employer-posts" component={EmployerPosts} />
           <Route component={NoMatch} />
         </Switch>
       </React.Fragment>
