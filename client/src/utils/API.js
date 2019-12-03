@@ -5,32 +5,53 @@ import axios from 'axios';
 //Need a user-routes.js file in our routes/api
 
 
-export const getAllPostings = () => {
-    return axios.get('api/user')
-}
-
-export const getPostingsSavedByUser = () => {
-    return axios.get('api/user')
-}
-
-export const getUsersFromSavedPosting = () => {
-    return axios.get('api/user')
-}
-
-export const createSubscription = () => {
-    return axios.post('api/user')
-}
-
+// 2. Signup to sumbit form
 export const createUser = () => {
-    return axios.post('api/user')
+    return axios.post("/api/signup")
 }
 
-export const createPosting = () => {
-    return axios.post('api/user')
+// Boss
+// 3. Employer posts showing all the jobs a boss posts or create a new post
+export const getPostingByEmployer = bossId => {
+    return axios.get(`api/employer/${bossId}`)
 }
 
-export const deleteSubscription = () => {
-    return axios.delete('api/user')
+export const createPosting = bossId => {
+    return axios.post(`api/employer/${bossId}`)
+}
+
+// 4. Post detail showing job title, job description, who saved the posts, also delete post
+export const getPostingById = postId => {
+    return axios.get(`/api/employer/posts/${postId}`);
+}
+
+export const deletePosting = postId => {
+    return axios.delete(`/api/employer/posts/${postId}`);
+}
+
+export const getUsersFromSavedPosting = postId => {
+    return axios.get(`/api/employer/postsavers/${postId}`);
+}
+
+// Seeker
+// 6. Show all jobs from all employers
+export const getAllPostings = () => {
+    return axios.get("/api/jobs")
+}
+
+// 7. Show all saved jobs
+export const getPostingsSavedByUser = postId => {
+    return axios.get(`/api/saved/${postId}`)
+}
+
+// 8. Seekers click save button
+export const createSubscription = postId => {
+    return axios.post(`/api/jobs/saved/${postId}`)
+}
+
+// 9. Unsave one job
+export const deleteSubscription = postId => {
+    return axios.delete(`/api/jobs/unsaved/${postId}`);
 }
 
 export default {
@@ -40,5 +61,8 @@ export default {
     createSubscription,
     createUser,
     createPosting,
-    deleteSubscription
+    deleteSubscription,
+    getPostingByEmployer,
+    getPostingById,
+    deletePosting
 }
