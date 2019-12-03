@@ -10,4 +10,4 @@ import React, { Component } from 'react';
 
 
 
-export default Leads;
+export default JobDetail;

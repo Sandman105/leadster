@@ -2,11 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 
-const Jumbotron = props => {
+const Header = props => {
 
     return (
         <div className={`
-        jumbotron`}
+        `}
         
         
         
@@ -37,4 +37,4 @@ const Jumbotron = props => {
 
 };
 
-export default Jumbotron;
+export default Header;
