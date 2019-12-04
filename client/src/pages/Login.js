@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { login } from '../utils/API';
+import { readdir } from 'fs';
 //import { Link } from "react-router-dom";
 
 class Login extends Component {
@@ -29,8 +30,14 @@ class Login extends Component {
         }
         login(email, password)
         .then(
-            token => {
-                sessionStorage.setItem("jwt", token);
+            data => {
+                sessionStorage.setItem("jwt", data.token);
+                if (data.isEmployer === 0) {
+                    window.location.href("/community");
+                }
+                else {
+                    window.location.href("/employer-posts");
+                }
             }
         )
     };
