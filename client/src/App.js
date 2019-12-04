@@ -31,8 +31,8 @@ const App = () => {
           <Route exact path="/community" component={Community} />
           <Route exact path="/community-detail" component={CommunityDetail} />
 
-          <Route exact path="/job-detail" component={JobDetail} />
           <Route exact path="/employer-posts" component={EmployerPosts} />
+          <Route exact path="/job-detail" component={JobDetail} />
 
           <Route component={NoMatch} />
         </Switch>

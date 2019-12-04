@@ -12,11 +12,13 @@ const {
     deleteSubscription,
     getPostingByEmployer,
     getPostingById,
-    deletePosting
+    deletePosting,
+    login
  } = require("../../controllers/user-controller");
 
 // 1. Login?
 // "/login"
+router.route("/login").post(login);
 
 
 // 2. Signup to sumbit form

@@ -5,13 +5,13 @@ import axios from 'axios';
 //Need a user-routes.js file in our routes/api
 
 // 1. Signin
-export const login = () => {
-    return axios.post("/leadster/login");
+export const login = (loginData) => {
+    return axios.post("/leadster/login", loginData);
 }
 
 // 2. Signup to sumbit form
-export const createUser = () => {
-    return axios.post("/leadster/signup");
+export const createUser = (signipData) => {
+    return axios.post("/leadster/signup", signipData);
 }
 
 // Boss
@@ -20,8 +20,8 @@ export const getPostingByEmployer = bossId => {
     return axios.get(`/leadster/employer/${bossId}`);
 }
 
-export const createPosting = bossId => {
-    return axios.post(`/leadster/employer/${bossId}`);
+export const createPosting = (bossId, postData) => {
+    return axios.post(`/leadster/employer/${bossId}`, postData);
 }
 
 // 4. Post detail showing job title, job description, who saved the posts, also delete post
@@ -49,8 +49,8 @@ export const getPostingsSavedByUser = postId => {
 }
 
 // 8. Seekers click save button
-export const createSubscription = postId => {
-    return axios.post(`/leadsterjobs/saved/${postId}`);
+export const createSubscription = (postId, subscriptionData) => {
+    return axios.post(`/leadsterjobs/saved/${postId}` , subscriptionData);
 }
 
 // 9. Unsave one job
