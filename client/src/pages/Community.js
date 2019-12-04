@@ -2,9 +2,17 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import { Link } from "react-router-dom";
+import { getAllPostings } from "../utils/API.js";
 
 class Community extends Component {
     state = {}
+
+    componentDidMount() {
+        getAllPostings
+        .then(res => {
+            
+        });
+      }
 
     render() {
         return (
@@ -13,17 +21,8 @@ class Community extends Component {
 
                 </Header>
                 <div>
-                    <Card>
-
-                    </Card>
-
-                    <Card>
-
-                    </Card>
-
-                    <Card>
-                        
-                    </Card>
+                    <Card />
+                    <Card />
                 </div>
             </>
         )
