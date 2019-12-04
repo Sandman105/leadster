@@ -13,10 +13,7 @@ import NoMatch from './pages/NoMatch';
 
 const App = () => {
 
-  state = {
-    token: "",
-    isEmployer: 0
-  }
+  
 
   return (
     <Router>

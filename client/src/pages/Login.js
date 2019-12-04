@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-
 //import Jumbotron from '../components/Jumbotron'
-import { Link } from "react-router-dom";
-
-
-
-=======
+//import { Link } from "react-router-dom";
 import { login } from '../utils/API';
-import { readdir } from 'fs';
+
 //import { Link } from "react-router-dom";
 
 class Login extends Component {
