@@ -1,5 +1,9 @@
 const { Users, Posting, Subscription } = require("../models");
 const knex = require("../knex");
+const bcrypt = require("bcrypt");
+const handle = require("../utils/promise-handler.js");
+const jwt = require("jsonwebtoken");
+const secret = "DRqjrk2hnhbg9ngt@1!"
 
 const getAllPostings = (req, res) => {
     knex.select("*").from("posting")
@@ -92,7 +96,7 @@ const createUser = (req, res) => {
                 isEmployer: req.body.isEmployer,
                 phoneNum: req.body.phoneNum,
                 email: req.body.email,
-                password: req.body.password,
+                password: hashPassword(req.body.password),
                 companyName: req.body.companyName
             }
         ]
@@ -147,12 +151,91 @@ const deleteSubscription = (req, res) => {
         });
 };
 
+// function for logging in a user
+// this will run when user POSTs to '/api/user/login'
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    const [findUserErr, userInfo] = await handle(knex("users").select("*").where(`email = ${email}`).returning("*"));
+
+    if (findUserErr) {
+        console.log(findUserErr);
+        res.status(500).json({
+            error: 'Internal error, try again'
+        });
+    } else if (!userInfo) {
+        res.status(401).json({
+            error: 'Incorrect email',
+            message: 'incorrect email'
+        });
+    } else {
+        const [pwErr, same] = await handle(validatePassword(password, email))
+
+        if (pwErr) {
+            res.status(500).json({
+                error: "Internal Err, try again"
+            });
+        } else if (!same) {
+            res.status(401).json({
+                error: 'incorrect password'
+            });
+        } else {
+            const payload = {
+                id: userInfo.id,
+                email: userInfo.email
+            };
+            const token = jwt.sign(payload, secret, {
+                expiresIn: '2h'
+            });
+
+            res.status(200).json({token: token, isEmployer: userInfo.isEmployer}); //ensure the front-end sets the token in the session storage with the name 'accessToken'
+        }
+    }
+};
+
+// get user profile
+// GET '/leadster/' (this will be run through auth middleware)
+const getUserProfile = async (req, res) => {
+    const [userErr, userProfile] = await handle(knex("users").select("*").where(`id = ${req.id}`));
+
+    if (userErr) {
+        res.status(500).json(userErr);
+    } else {
+        res.status(200).json(userProfile);
+    }
+};
+
+function queryDBForPwd(email) {
+    return knex("users").select("password").where(`email = ${email}`).returning("password");
+}
+
+//pwd is what the user passes in
+function validatePassword(pwd, email) {
+    //const document = this;
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(pwd, queryDBForPwd(email), (err, same) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            } else {
+                resolve(same);
+            }
+        });
+    });
+}
+
+function hashPassword(pwd) {
+    return bcrypt.hashSync(pwd, bcrypt.genSaltSync(10));
+}
+
 module.exports = {
+    login,
     getAllPostings,
     getPostingsSavedByUser,
     getUsersFromSavedPosting,
     getPostingByEmployer,
     getPostingById,
+    getUserProfile,
     createSubscription,
     createUser,
     createPosting,

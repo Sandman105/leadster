@@ -10,7 +10,7 @@ const userSchema = knex.schema.hasTable("users").then(table => {
             table.string("phoneNum");
             table.string("email");
             table.string("password");
-            table.string("companyName", 30);
+            table.string("companyName", 30).nullable();
         }).then(() => {
             console.log("users table created");
         }).catch(err => {
