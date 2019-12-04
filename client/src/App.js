@@ -12,6 +12,12 @@ import Form from './components/Form'
 import NoMatch from './pages/NoMatch';
 
 const App = () => {
+
+  state = {
+    token: "",
+    isEmployer: 0
+  }
+
   return (
     <Router>
       <React.Fragment>
@@ -21,10 +27,13 @@ const App = () => {
           <Route exact path="/home" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
+
           <Route exact path="/community" component={Community} />
-          <Route exact path="/job-detail" component={JobDetail} />
           <Route exact path="/community-detail" component={CommunityDetail} />
+
+          <Route exact path="/job-detail" component={JobDetail} />
           <Route exact path="/employer-posts" component={EmployerPosts} />
+
           <Route component={NoMatch} />
         </Switch>
       </React.Fragment>
