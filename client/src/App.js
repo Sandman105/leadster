@@ -7,6 +7,8 @@ import Community from './pages/Community';
 import JobDetail from './pages/JobDetail';
 import CommunityDetail from './pages/CommunityDetail';
 import EmployerPosts from './pages/EmployerPosts';
+import Header from './components/Header'
+import Form from './components/Form'
 import NoMatch from './pages/NoMatch';
 
 const App = () => {
@@ -19,6 +21,7 @@ const App = () => {
   return (
     <Router>
       <React.Fragment>
+      {/*<Header/>*/}
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/home" component={Home} />
