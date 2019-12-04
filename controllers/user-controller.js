@@ -187,7 +187,7 @@ const login = async (req, res) => {
                 expiresIn: '2h'
             });
 
-            res.status(200).json(token); //ensure the front-end sets this in the session storage with the name 'accessToken'
+            res.status(200).json({token: token, isEmployer: userInfo.isEmployer}); //ensure the front-end sets the token in the session storage with the name 'accessToken'
         }
     }
 };
