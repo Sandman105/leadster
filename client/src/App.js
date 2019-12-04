@@ -20,11 +20,11 @@ const App = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
 
-          <Route exact path="/community" component={Community} />
-          <Route exact path="/community-detail" component={CommunityDetail} />
+          <Route path="/community" component={Community} />
+          <Route path="/community-detail" component={CommunityDetail} />
 
-          <Route exact path="/employer-posts" component={EmployerPosts} />
-          <Route exact path="/job-detail" component={JobDetail} />
+          <Route path="/employer-posts" component={EmployerPosts} />
+          <Route path="/job-detail" component={JobDetail} />
 
           <Route component={NoMatch} />
         </Switch>
