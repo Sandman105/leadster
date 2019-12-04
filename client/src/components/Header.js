@@ -1,38 +1,44 @@
-import React from 'react';
-//import { NavLink } from 'react-router-dom';
-
+import React, { useState } from 'react';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink
+} from 'reactstrap';
 
 const Header = props => {
 
-    return (
-        <div className={`
-        mr-auto
-        bg-${props.bg || 'light'}
-        text-${props.color || 'dark'}
-        
-        
-        
-        `}>
+    const [isOpen, setIsOpen] = useState(false);
 
+  const toggle = () => setIsOpen(!isOpen);
 
+  return (
+    <div>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/">Leadster</NavbarBrand>
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>
+            <NavItem>
+              <input type="text" placeholder="Search.."></input>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/home">Home</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/community">Community</NavLink>
+            </NavItem>
+            
+          </Nav>
+          
+        </Collapse>
+      </Navbar>
+    </div>
+  );
+}
 
-
-
-        </div>
-
-
-
-
-
-
-
-
-
-    
-)
-
-
-
-};
 
 export default Header;

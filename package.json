@@ -17,13 +17,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^4.4.1",
     "express": "^4.17.1",
     "if-env": "^1.0.4",
     "knex": "^0.20.3",
     "mongoose": "^5.7.12",
     "mysql": "^2.17.1",
     "mysql2": "^2.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "reactstrap": "^8.1.1"
   },
   "devDependencies": {
     "concurrently": "^5.0.0",
