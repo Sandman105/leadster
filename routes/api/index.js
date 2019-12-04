@@ -22,7 +22,7 @@ router.route('/').get(withAuth, getUserProfile)
 
 // 1. Login?
 // "/login"
-router.route("/login").post(login)
+router.route("/login").post(login);
 
 
 // 2. Signup to sumbit form

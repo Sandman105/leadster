@@ -1,17 +1,23 @@
 import React from 'react';
+import { Jumbotron, Container } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
 
-const Jumbotron = props => {
+const LeadJumbotron = props => {
+
+    return (
+        <div>
+            <Jumbotron fluid>
+                <Container fluid>
+                    <h1 className="display-1">Leadster</h1>
+
+                </Container>
+            </Jumbotron>
+        </div>
 
 
-
-
-
-
-
-
+    );
 
 };
 
-export default Jumbotron;
+export default LeadJumbotron;
