@@ -22,7 +22,7 @@ class Signup extends Component {
 
     handleSignupForm = event => {
 
-        const { firstName, lastName, email, password } = this.state;
+        const { firstName, lastName, email, password, isEmployer } = this.state;
 
         event.preventDefault();
         if (firstName === "") {
@@ -149,7 +149,7 @@ class Signup extends Component {
                             <option value="1">Employer</option>
                         </Input>
                         {this.state.error &&
-                            isNan(this.state.isEmployer) && (
+                            isNaN(this.state.isEmployer) && (
                                 <div className="alert alert-danger my-2">
                                     {this.state.error}
                                 </div>
