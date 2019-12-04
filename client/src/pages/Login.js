@@ -9,7 +9,8 @@ class Login extends Component {
 
     state = {
         email: "",
-        password: ""
+        password: "",
+        error: null
     }
 
     handleInputChange = event => {
@@ -30,7 +31,7 @@ class Login extends Component {
         if (password === "") {
             return this.setState({ error: "Please put in a user password." })
         }
-        login(email, password)
+        login(this.state)
         .then(
             data => {
                 sessionStorage.setItem("jwt", data.token);
@@ -84,6 +85,5 @@ class Login extends Component {
         )
     }
 }
-
 
 export default Login;

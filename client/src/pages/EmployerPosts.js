@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-import { Link } from "react-router-dom";
+
+// import { Link } from "react-router-dom";
 
 
 class EmployerPosts extends Component {
-    state = {}
+    state = {
+        jobList: []
+    }
 
     render() {
         return (
