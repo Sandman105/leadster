@@ -18,7 +18,7 @@ const getAllPostings = (req, res) => {
 };
 
 const getPostingsSavedByUser = (req, res) => {
-    knex.select("*").from("subscription").where(`userID = ${req.params.id}`) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
+    knex.select("*").from("subscription").where('userID', req.params.id) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
         //this id should be saved in the localstorage or session storage after login of user:
         // sessionStorage.setItem({
         //     userid: "82"
@@ -35,7 +35,7 @@ const getPostingsSavedByUser = (req, res) => {
 };
 
 const getUsersFromSavedPosting = (req, res) => { //this will be for employers to view who saved their jobs
-    knex.select("*").from("subscription").where(`postingID = ${req.params.id}`) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
+    knex.select("*").from("subscription").where('postingID', req.params.id) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
         .then(data => {
             knex.destroy();
             return res.json(data); //can make another api call in here to get the user info 
@@ -47,9 +47,11 @@ const getUsersFromSavedPosting = (req, res) => { //this will be for employers to
 };
 
 const getPostingByEmployer = (req, res) => {
-    knex.select("*").from("posting").where(`employerID = ${req.params.id}`)
+    console.log(`look here peiyu = ${req.params.id}`);
+    knex("posting").select("*").where('employerID', req.params.id)
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
+            console.log(`look here 2 peiyu = ${data}`)
             return res.json(data);
         })
         .catch(err => {
@@ -59,7 +61,7 @@ const getPostingByEmployer = (req, res) => {
 };
 
 const getPostingById = (req, res) => {
-    knex.select("*").from("posting").where(`id = ${req.params.id}`)
+    knex.select("*").from("posting").where('id', req.params.id)
         .then(data => {
             knex.destroy();
             return res.json(data);
@@ -130,7 +132,7 @@ const createPosting = (req, res) => {
 };
 
 const deletePosting = (req, res) => {
-    knex("posting").where(`id = ${req.params.id}`).del() //need cascading delete here
+    knex("posting").where('id', req.params.id).del() //need cascading delete here
         .then(data => {
             knex.destroy();
             return res.json(data);
@@ -156,7 +158,7 @@ const deleteSubscription = (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body;
 
-    const [findUserErr, userInfo] = await handle(knex("users").select("*").where(`email = ${email}`).returning("*"));
+    const [findUserErr, userInfo] = await handle(knex("users").select("*").where('email', email).returning("*"));
 
     if (findUserErr) {
         console.log(findUserErr);
@@ -196,7 +198,7 @@ const login = async (req, res) => {
 // get user profile
 // GET '/leadster/' (this will be run through auth middleware)
 const getUserProfile = async (req, res) => {
-    const [userErr, userProfile] = await handle(knex("users").select("*").where(`id = ${req.id}`));
+    const [userErr, userProfile] = await handle(knex("users").select("*").where('id', req.id));
 
     if (userErr) {
         res.status(500).json(userErr);
@@ -206,7 +208,7 @@ const getUserProfile = async (req, res) => {
 };
 
 function queryDBForPwd(email) {
-    return knex("users").select("password").where(`email = ${email}`).returning("password");
+    return knex("users").select("password").where('email', email).returning("password");
 }
 
 //pwd is what the user passes in
