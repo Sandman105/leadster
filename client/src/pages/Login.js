@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
+import { login } from '../utils/API';
 
 //import Jumbotron from '../components/Jumbotron'
-import { Link } from "react-router-dom";
-
-
-
-=======
-import { login } from '../utils/API';
-import { readdir } from 'fs';
-//import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+// import { readdir } from 'fs';
 
 class Login extends Component {
 
     state = {
         email: "",
-        password: ""
+        password: "",
+        error: null
     }
 
     handleInputChange = event => {
@@ -35,7 +31,7 @@ class Login extends Component {
         if (password === "") {
             return this.setState({ error: "Please put in a user password." })
         }
-        login(email, password)
+        login(this.state)
         .then(
             data => {
                 sessionStorage.setItem("jwt", data.token);
@@ -89,6 +85,5 @@ class Login extends Component {
         )
     }
 }
-
 
 export default Login;
