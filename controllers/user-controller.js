@@ -156,7 +156,7 @@ const deleteSubscription = (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body;
 
-    const [findUserErr, userInfo] = await handle(knex("users").select("*").where(`email = ${email}`));
+    const [findUserErr, userInfo] = await handle(knex("users").select("*").where(`email = ${email}`).returning("*"));
 
     if (findUserErr) {
         console.log(findUserErr);
