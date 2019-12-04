@@ -3,6 +3,7 @@ const knex = require("../knex");
 const bcrypt = require("bcrypt");
 const handle = require("../utils/promise-handler.js");
 const jwt = require("jsonwebtoken");
+const secret = "DRqjrk2hnhbg9ngt@1!"
 
 const getAllPostings = (req, res) => {
     knex.select("*").from("posting")
