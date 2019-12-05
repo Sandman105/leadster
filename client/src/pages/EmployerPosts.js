@@ -11,7 +11,7 @@ class EmployerPosts extends Component {
         jobList: []
     }
 
-    componentDidMount = () => {
+    componentWillMount = () => {
         //getPostingByEmployer
     }
 
