@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-import { getPostingById } from '../utils/API';
+import { getPostingById, getUsersFromSavedPosting } from '../utils/API';
+
 
 // import { Link } from "react-router-dom";
 
