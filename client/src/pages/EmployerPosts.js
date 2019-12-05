@@ -4,8 +4,7 @@ import { getPostingByEmployer, createPosting, deletePosting } from '../utils/API
 
 // import { Link } from "react-router-dom";
 
-const url = window.location.search;
-const bossId = url.split("=")[1];
+const userId = sessionStorage.getItem('userId');
 
 class EmployerPosts extends Component {
 
@@ -44,14 +43,14 @@ class EmployerPosts extends Component {
     }
 
     handleGetAllPosts = () => {
-        getPostingByEmployer(bossId)
+        getPostingByEmployer(userId)
             .then(res => {
                 console.log(res);
                 const postListFromData = res.data.map(post => {
                     return {
                         id: post.id,
                         title: post.title,
-                        url: `/job-detail?postid=${post.id}`
+                        url: `/employer-job-detail?userid=${userId}?postid=${post.id}`
                     }
                 });
                 return this.setState({

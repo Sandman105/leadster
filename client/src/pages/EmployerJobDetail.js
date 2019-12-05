@@ -6,9 +6,9 @@ import { getPostingById, getUsersFromSavedPosting } from '../utils/API';
 // import { Link } from "react-router-dom";
 
 const url = window.location.search;
-const postId = url.split("=")[1];
+const postId = url.split("=")[2];
 
-class JobDetail extends Component {
+class EmployerJobDetail extends Component {
     state = {
         postDetail: {},
         seekerList: []

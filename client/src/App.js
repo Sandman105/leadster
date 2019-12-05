@@ -4,8 +4,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Community from './pages/Community';
-import JobDetail from './pages/JobDetail';
-import CommunityDetail from './pages/CommunityDetail';
+import EmployerJobDetail from './pages/EmployerJobDetail';
+import CommunityJobDetail from './pages/CommunityJobDetail';
+import CommunitySavedDetail from './pages/CommunitySavedDetail';
 import EmployerPosts from './pages/EmployerPosts';
 import NoMatch from './pages/NoMatch';
 
