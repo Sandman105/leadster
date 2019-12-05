@@ -9,13 +9,15 @@ class Community extends Component {
         posts: []
     };
 
-    componentWillMount() {
+    componentDidMount() {
         getAllPostings().then(res => {
             console.log(res);
             this.setState({ posts: res.data });
             // res.data.map(data => <Header><div><Card title={data.title} description={data.description} id={data.id} /></div></Header>);
         });
-    }
+    };
+
+
 
     render() {
         return (
@@ -23,7 +25,7 @@ class Community extends Component {
                 <Header />
                 <div>
                     {this.state.posts.map(post => (
-                        <Card title={post.title} description={post.description} id={post.id} />
+                        <Card title={post.title} description={post.description} id={post.id} key={post.id} />
                     ))}
                 </div>
             </>
@@ -32,4 +34,3 @@ class Community extends Component {
 }
 
 export default Community;
-

@@ -73,11 +73,15 @@ const getPostingById = (req, res) => {
 };
 
 const createSubscription = (req, res) => {
+    // console.log(req.body);
+    // console.log(req.params),
+    // console.log(req);
+    
     knex("subscription").insert(
         [
             {
-                userID: req.body.userID,
-                postingID: req.body.postingID
+                userID: req.body.userId,
+                postingID: req.params.id
             }
         ]
     ).returning("*")
