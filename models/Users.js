@@ -7,7 +7,7 @@ const userSchema = knex.schema.hasTable("users").then(table => {
             table.string("nameFirst", 30);
             table.string("nameLast", 30);
             table.integer("isEmployer");
-            table.string("phoneNum");
+            table.string("phoneNum", 15);
             table.string("email");
             table.string("password");
             table.string("companyName", 30).nullable();

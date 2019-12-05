@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-import { getPostingByEmployer } from '../utils/API';
+import { getPostingByEmployer, createPosting, deletePosting } from '../utils/API';
 
 // import { Link } from "react-router-dom";
 
@@ -12,7 +12,8 @@ class EmployerPosts extends Component {
     state = {
         postList: [],
         title: "",
-        description: ""
+        description: "",
+        error: ""
     }
 
     handleInputChange = event => {
@@ -33,24 +34,24 @@ class EmployerPosts extends Component {
         if (description === "") {
             return this.setState({ error: "Please put in a job decription." })
         }
-        this.login(this.state)
-        .then(
-            this.handleGetAllposts()
-        )
+        createPosting(this.state)
+            .then(this.handleGetAllPosts)
+            .catch(err => console.log(err));
     };
 
     componentDidMount() {
-        this.handleGetAllposts();
+        this.handleGetAllPosts();
     }
 
-    handleGetAllposts = () => {
+    handleGetAllPosts = () => {
         getPostingByEmployer(bossId)
             .then(res => {
                 console.log(res);
                 const postListFromData = res.data.map(post => {
                     return {
                         id: post.id,
-                        title: post.title
+                        title: post.title,
+                        url: `/job-detail?postid=${post.id}`
                     }
                 });
                 return this.setState({
@@ -60,8 +61,10 @@ class EmployerPosts extends Component {
             .catch(err => console.log(err));
     }
 
-    handleRemovePost = () => {
-
+    handleRemovePost = postId => {
+        deletePosting(postId)
+            .then(this.handleGetAllPosts)
+            .catch(err => console.log(err));
     }
 
     render() {
@@ -101,7 +104,7 @@ class EmployerPosts extends Component {
                         )}
                     <button
                         type="submit"
-                        className={'btn btn-success btn-sm'}
+                        className={"btn btn-success btn-sm"}
                     >
                     </button>
                 </form>
@@ -109,17 +112,19 @@ class EmployerPosts extends Component {
                     {!this.state.postList.length ? (
                         <h2 className="text-center">
                             Post your first job.
-                    </h2>
+                        </h2>
                     ) : (
                             this.state.postList.map(post => {
                                 return (
                                     <column>
-                                        <div key={post.id}>{post.title}</div>
-                                        <button key={post.id}>X</button>
+                                        <div><a href={post.url}>{post.title}</a></div>
+                                        <button
+                                            onClick={() => this.handleRemovePost(post.id)}
+                                        >X</button>
                                     </column>
                                 )
                             })
-                        )};
+                        )}
                 </row>
             </>
         )
