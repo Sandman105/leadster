@@ -24,23 +24,23 @@ class Login extends Component {
     handleLogInForm = event => {
 
         const { email, password } = this.state;
-
         event.preventDefault();
+        
         if (email === "") {
             return this.setState({ error: "Please put in a user email." })
         }
         if (password === "") {
             return this.setState({ error: "Please put in a user password." })
         }
-        login(this.state)
+        this.login(this.state)
         .then(
             data => {
                 sessionStorage.setItem("jwt", data.token);
                 if (data.isEmployer === 0) {
-                    window.location.href("/community");
+                    window.location.href(`/community?userid=${data.id}`);
                 }
                 else {
-                    window.location.href("/employer-posts");
+                    window.location.href(`/employer-posts?userid=${data.id}`);
                 }
             }
         )
@@ -79,7 +79,7 @@ class Login extends Component {
                     )}
                 <button
                     type="submit"
-                    className={'btn btn-success btn-sm'}
+                    className={"btn btn-success btn-sm"}
                 >
                 </button>
             </Form>

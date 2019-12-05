@@ -50,7 +50,7 @@ export const getPostingsSavedByUser = postId => {
 
 // 8. Seekers click save button
 export const createSubscription = (postId, subscriptionData) => {
-    return axios.post(`/leadsterjobs/saved/${postId}` , subscriptionData);
+    return axios.post(`/leadster/jobs/saved/${postId}` , subscriptionData);
 }
 
 // 9. Unsave one job
