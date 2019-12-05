@@ -50,8 +50,6 @@ export const getPostingsSavedByUser = postId => {
 
 // 8. Seekers click save button
 export const createSubscription = (postId, subscriptionData) => {
-    console.log(postId);
-    console.log(subscriptionData);
     let data = {
         userId: subscriptionData,
         postId: postId

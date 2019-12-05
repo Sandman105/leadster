@@ -25,6 +25,7 @@ class Signup extends Component {
         const { firstName, lastName, email, password, isEmployer } = this.state;
 
         event.preventDefault();
+
         if (firstName === "") {
             return this.setState({ error: "Please put in a user first name." })
         }
@@ -40,15 +41,16 @@ class Signup extends Component {
         if (isEmployer !== 0 && isEmployer !== 1 ) {
             return this.setState({ error: "Please select your role." })
         }
-        createUser(this.state)
+
+        this.createUser(this.state)
             .then(
                 data => {
                     sessionStorage.setItem("jwt", data.token);
                     if (this.state.isEmployer === 0) {
-                        window.location.href("/community");
+                        window.location.href(`/community?userid=${data.id}`);
                     }
                     else {
-                        window.location.href("/employer-posts");
+                        window.location.href(`/employer-posts?userid=${data.id}`);
                     }
                 }
             )
@@ -67,7 +69,7 @@ class Signup extends Component {
                                 placeholder="First Name"
                                 onChange={this.handleInputChange}
                                 value={this.state.firstName}
-                                name="first-name"
+                                name="firstName"
                             />
                             {this.state.error &&
                                 !this.state.firstName.length && (
@@ -86,7 +88,7 @@ class Signup extends Component {
                                 placeholder="Last Name"
                                 onChange={this.handleInputChange}
                                 value={this.state.lastName}
-                                name="last-name"
+                                name="lastName"
                             />
                             {this.state.error &&
                                 !this.state.lastName.length && (

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import Jumbotron from '../components/Jumbotron'
 //import { Link } from "react-router-dom";
 import { login } from '../utils/API';
+import Form from '../components/Form';
 
 //import { Link } from "react-router-dom";
 
@@ -23,23 +24,23 @@ class Login extends Component {
     handleLogInForm = event => {
 
         const { email, password } = this.state;
-
         event.preventDefault();
+        
         if (email === "") {
             return this.setState({ error: "Please put in a user email." })
         }
         if (password === "") {
             return this.setState({ error: "Please put in a user password." })
         }
-        login(this.state)
+        this.login(this.state)
         .then(
             data => {
                 sessionStorage.setItem("jwt", data.token);
                 if (data.isEmployer === 0) {
-                    window.location.href("/community");
+                    window.location.href(`/community?userid=${data.id}`);
                 }
                 else {
-                    window.location.href("/employer-posts");
+                    window.location.href(`/employer-posts?userid=${data.id}`);
                 }
             }
         )
@@ -47,7 +48,7 @@ class Login extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleLogInForm}>
+            <Form onSubmit={this.handleLogInForm}>
                 <input
                     type="text"
                     className="form-control"
@@ -78,10 +79,10 @@ class Login extends Component {
                     )}
                 <button
                     type="submit"
-                    className={'btn btn-success btn-sm'}
+                    className={"btn btn-success btn-sm"}
                 >
                 </button>
-            </form>
+            </Form>
         )
     }
 }
