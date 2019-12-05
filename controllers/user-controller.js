@@ -8,7 +8,7 @@ const secret = "DRqjrk2hnhbg9ngt@1!"
 const getAllPostings = (req, res) => {
     knex.select("*").from("posting")
         .then(data => {
-            knex.destroy();
+            //knex.destroy();
             return res.json(data);
         })
         .catch(err => {
@@ -25,7 +25,7 @@ const getPostingsSavedByUser = (req, res) => {
         // }); 
         // sessionStorage.getItem("userid");
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
             return res.json(data); //can make another api call in here to get the name of the posting instead of just the id 
         })
         .catch(err => {
@@ -37,7 +37,7 @@ const getPostingsSavedByUser = (req, res) => {
 const getUsersFromSavedPosting = (req, res) => { //this will be for employers to view who saved their jobs
     knex.select("*").from("subscription").where('postingID', req.params.id) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
             return res.json(data); //can make another api call in here to get the user info 
         })
         .catch(err => {
@@ -63,7 +63,7 @@ const getPostingByEmployer = (req, res) => {
 const getPostingById = (req, res) => {
     knex.select("*").from("posting").where('id', req.params.id)
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
             return res.json(data);
         })
         .catch(err => {
@@ -82,7 +82,7 @@ const createSubscription = (req, res) => {
         ]
     ).returning("*")
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
             return res.json(data);
         }).catch(err => {
             return res.json(err);
@@ -104,7 +104,7 @@ const createUser = (req, res) => {
         ]
     ).returning("*")
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
             return res.json(data);
         })
         .catch(err => {
@@ -123,7 +123,7 @@ const createPosting = (req, res) => {
         ]
     ).returning("*")
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
             return res.json(data);
         })
         .catch(err => {
@@ -134,7 +134,7 @@ const createPosting = (req, res) => {
 const deletePosting = (req, res) => {
     knex("posting").where('id', req.params.id).del() //need cascading delete here
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
             return res.json(data);
         })
         .catch(err => {
@@ -145,7 +145,7 @@ const deletePosting = (req, res) => {
 const deleteSubscription = (req, res) => {
     knex("subscription").where("id", req.body.id).del() //this may not work bc it will say reference key error
         .then(data => {
-            knex.destroy();
+            // knex.destroy();
             return res.json(data);
         })
         .catch(err => {

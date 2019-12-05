@@ -1,28 +1,30 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import Card from '../components/Card';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import { getAllPostings } from "../utils/API.js";
 
 class Community extends Component {
-    state = {}
+    state = {
+        posts: []
+    };
 
-    componentDidMount() {
-        getAllPostings
-        .then(res => {
-            
+    componentWillMount() {
+        getAllPostings().then(res => {
+            console.log(res);
+            this.setState({ posts: res.data });
+            // res.data.map(data => <Header><div><Card title={data.title} description={data.description} id={data.id} /></div></Header>);
         });
-      }
+    }
 
     render() {
         return (
             <>
-                <Header>
-
-                </Header>
+                <Header />
                 <div>
-                    <Card />
-                    <Card />
+                    {this.state.posts.map(post => (
+                        <Card title={post.title} description={post.description} id={post.id} />
+                    ))}
                 </div>
             </>
         )

@@ -69,7 +69,7 @@ class Signup extends Component {
                                 placeholder="First Name"
                                 onChange={this.handleInputChange}
                                 value={this.state.firstName}
-                                name="first-name"
+                                name="firstName"
                             />
                             {this.state.error &&
                                 !this.state.firstName.length && (
@@ -88,7 +88,7 @@ class Signup extends Component {
                                 placeholder="Last Name"
                                 onChange={this.handleInputChange}
                                 value={this.state.lastName}
-                                name="last-name"
+                                name="lastName"
                             />
                             {this.state.error &&
                                 !this.state.lastName.length && (

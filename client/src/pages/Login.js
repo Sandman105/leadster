@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import Jumbotron from '../components/Jumbotron'
 //import { Link } from "react-router-dom";
 import { login } from '../utils/API';
+import Form from '../components/Form';
 
 //import { Link } from "react-router-dom";
 
@@ -47,7 +48,7 @@ class Login extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleLogInForm}>
+            <Form onSubmit={this.handleLogInForm}>
                 <input
                     type="text"
                     className="form-control"
@@ -81,7 +82,7 @@ class Login extends Component {
                     className={"btn btn-success btn-sm"}
                 >
                 </button>
-            </form>
+            </Form>
         )
     }
 }

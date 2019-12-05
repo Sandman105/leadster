@@ -1,6 +1,6 @@
 import React from 'react';
 import { Jumbotron, Container } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+//import { NavLink } from 'react-router-dom';
 
 
 const LeadJumbotron = props => {
@@ -9,7 +9,7 @@ const LeadJumbotron = props => {
         <div>
             <Jumbotron fluid>
                 <Container fluid>
-                    <h1 className="display-1">Leadster</h1>
+                    <h1 className="display-1 text-center">Leadster</h1>
 
                 </Container>
             </Jumbotron>

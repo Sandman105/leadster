@@ -12,7 +12,7 @@ class Home extends Component {
 
                 </Jumbotron>
 
-                <div>
+                <div className={"text-center"}>
                     <a href="/login"><button>Sign In</button></a>
                     <a href="/signup"><button>Sign Up</button></a>
                 </div>
