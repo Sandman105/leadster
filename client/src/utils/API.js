@@ -10,8 +10,9 @@ export const login = (loginData) => {
 }
 
 // 2. Signup to sumbit form
-export const createUser = (signipData) => {
-    return axios.post("/leadster/signup", signipData);
+export const createUser = (signupData) => {
+    console.log(signupData);
+    return axios.post("/leadster/signup", signupData);
 }
 
 // Boss

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { createUser } from '../utils/API';
+import { Redirect } from 'react-router-dom';
 
 class Signup extends Component {
 
@@ -10,7 +11,8 @@ class Signup extends Component {
         email: "",
         password: "",
         isEmployer: 0,
-        error: null
+        error: null,
+        signedUp: false
     }
 
     handleInputChange = event => {
@@ -19,6 +21,12 @@ class Signup extends Component {
             [name]: value
         });
     };
+
+    // componentDidUpdate(prevProps, prevState) {
+    //     if (this.state.signedUp !== prevState.signedUp) {
+    //         return <Redirect to='/login'/>
+    //     }
+    // }
 
     handleSignupForm = event => {
 
@@ -38,25 +46,28 @@ class Signup extends Component {
         if (password === "") {
             return this.setState({ error: "Please put in a user password." })
         }
-        if (isEmployer !== 0 && isEmployer !== 1 ) {
+        if (isEmployer !== 0 && isEmployer !== 1) {
             return this.setState({ error: "Please select your role." })
         }
 
-        this.createUser(this.state)
+        createUser(this.state)
             .then(
-                data => {
-                    sessionStorage.setItem("jwt", data.token);
-                    if (this.state.isEmployer === 0) {
-                        window.location.href(`/community?userid=${data.id}`);
-                    }
-                    else {
-                        window.location.href(`/employer-posts?userid=${data.id}`);
+                (response) => {
+                    if (response) {
+                        return this.setState({signedUp: true})
+                    } else {
+                        return false
                     }
                 }
-            )
+            );
     };
 
     render() {
+        console.log(this.state)
+        if (this.state.signedUp) {
+            return <Redirect to='/login'/>
+        }
+        
         return (
             <Form onSubmit={this.handleSignupForm}>
                 <Row form>
@@ -122,7 +133,7 @@ class Signup extends Component {
                     <Label for="password" sm={1}>Password</Label>
                     <Col sm={7}>
                         <Input
-                            type="text"
+                            type="password"
                             className="form-control"
                             placeholder="Password"
                             onChange={this.handleInputChange}

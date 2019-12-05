@@ -97,8 +97,8 @@ const createUser = (req, res) => {
     knex("users").insert(
         [
             {
-                nameFirst: req.body.nameFirst,
-                nameLast: req.body.nameLast,
+                nameFirst: req.body.firstName,
+                nameLast: req.body.lastName,
                 isEmployer: req.body.isEmployer,
                 phoneNum: req.body.phoneNum,
                 email: req.body.email,
@@ -109,6 +109,7 @@ const createUser = (req, res) => {
     ).returning("*")
         .then(data => {
             // knex.destroy();
+            console.log(data);
             return res.json(data);
         })
         .catch(err => {
