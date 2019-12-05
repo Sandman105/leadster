@@ -1,22 +1,27 @@
-const docReady = (fn) => {
-    // see if DOM is already available
-    if (document.readyState === "complete" || document.readyState === "interactive") {
-        // call on next available tick
-        setTimeout(fn, 1);
-    } else {
-        document.addEventListener("DOMContentLoaded", fn);
-    }
-}
+$(document).ready(function() {
+    const panelOne = $("#form-panel-two").height(),
+        panelTwo = $("#form-panel-two")[0].scrollHeight;
 
-// pass a function reference
-docReady(fn);
+    $("#form-panel-two").not("#form-panel-two.active").on("click", (e) => {
+        e.preventDefault();
 
-// use an anonymous function
-docReady(function() {
+        $("#form-toggle").addClass("visible");
+        $("#form-panel-one").addClass("hidden");
+        $("#form-panel-two").addClass("active");
+        /*$("#form").animate({
+            "height": panelTwo
+        },
+            200);*/
+    });
 
-    const signUpTab = document.getElementByClassName(".sign-in")
-    if (onCLick) {
-        singUpTab.style.height = "620px";
-    }
-    // code here
+    $("#form-toggle").on("click", function(e) {
+        e.preventDefault();
+        $(this).removeClass("visible");
+        $("#form-panel-one").removeClass("hidden");
+        $("#form-panel-two").removeClass("active");
+        /*$("#form").animate({
+            "height": panelOne
+        },
+            200);*/
+    });
 });
