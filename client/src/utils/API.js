@@ -46,8 +46,8 @@ export const getAllPostings = () => {
 }
 
 // 7. Show all saved jobs
-export const getPostingsSavedByUser = postId => {
-    return axios.get(`/leadster/saved/${postId}`);
+export const getPostingsSavedByUser = userId => {
+    return axios.get(`/leadster/saved/${userId}`);
 }
 
 // 8. Seekers click save button

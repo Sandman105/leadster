@@ -7,9 +7,9 @@ import GlobalContext from '../components/Global/context';
 // import { Link } from "react-router-dom";
 
 const url = window.location.search;
-const postId = url.split("=")[1];
+const postId = url.split("=")[2];
 
-class JobDetail extends Component {
+class EmployerJobDetail extends Component {
     state = {
         postDetail: {},
         seekerList: []
@@ -82,4 +82,4 @@ class JobDetail extends Component {
     }
 }
 
-export default JobDetail;
+export default EmployerJobDetail;
