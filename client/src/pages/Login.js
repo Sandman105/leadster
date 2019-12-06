@@ -42,10 +42,13 @@ class Login extends Component {
                     sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
                     sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
                     sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
-                    this.setState({ loggedIn: true });
                     console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
-                    if (sessionStorage.getItem('isEmployer') === "1") 
-                        return this.setState({ isEmployer: true });
+                    if (sessionStorage.getItem('isEmployer') === "1") {
+                        this.setState({ isEmployer: true });
+                        this.setState({ loggedIn: true });
+                    } else {
+                        this.setState({ loggedIn: true });
+                    }
                 }
             }
             ).catch(err => {
@@ -58,9 +61,9 @@ class Login extends Component {
         console.log(this.state)
         if (this.state.isEmployer === true && this.state.loggedIn === true) {
             return <Redirect to='EmployerPosts' />
-        } //else if (this.state.isEmployer !== true && this.state.loggedIn === true) {
-            //return <Redirect to='Community' />
-        //}
+        } else if (this.state.isEmployer !== true && this.state.loggedIn === true) {
+            return <Redirect to='Community' />
+        }
         return (
             <>
                 <input
