@@ -4,7 +4,7 @@ module.exports = {
         connection: {
             "host": "localhost",
             "user": "root",
-            "password": "vsmaster",
+            "password": "kershaw19",
             "database": "leadster"
         }
     }
