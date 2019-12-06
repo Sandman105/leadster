@@ -61,7 +61,7 @@ router.route("/jobs/saved/:id").post(createSubscription);
 
 // 9. Unsave one job
 //  "/jobs/unsave/:id"
-router.route("/jobs/unsave/:id").delete(deleteSubscription);
+router.route("/jobs/unsaved/:id").delete(deleteSubscription);
 
 
 module.exports = router;

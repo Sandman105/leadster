@@ -47,21 +47,22 @@ export const getAllPostings = () => {
 
 // 7. Show all saved jobs
 export const getPostingsSavedByUser = userId => {
-    return axios.get(`/leadster/saved/${userId}`);
+    console.log("call api: ", userId);
+    return axios.get(`/leadster/jobs/saved/${userId}`);
 }
 
 // 8. Seekers click save button
 export const createSubscription = (postId, subscriptionData) => {
     let data = {
-        userId: subscriptionData,
-        postId: postId
+        userID: subscriptionData,
+        postID: postId
     }
-    return axios.post(`/leadster/jobs/saved/${data.postId}` , data);
+    return axios.post(`/leadster/jobs/saved/${data.postID}` , data);
 }
 
 // 9. Unsave one job
-export const deleteSubscription = postId => {
-    return axios.delete(`/leadster/jobs/unsaved/${postId}`);
+export const deleteSubscription = (subscriptionId) => {
+    return axios.delete(`/leadster/jobs/unsaved/${subscriptionId}`);
 }
 
 export default {
