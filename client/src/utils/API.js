@@ -6,6 +6,7 @@ import axios from 'axios';
 
 // 1. Signin
 export const login = (loginData) => {
+    console.log(loginData);
     return axios.post("/leadster/login", loginData);
 }
 

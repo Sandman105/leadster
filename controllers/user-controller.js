@@ -76,7 +76,7 @@ const createSubscription = (req, res) => {
     // console.log(req.body);
     // console.log(req.params),
     // console.log(req);
-    
+
     knex("subscription").insert(
         [
             {
@@ -147,6 +147,7 @@ const deletePosting = (req, res) => {
         });
 };
 
+//TODO: update this so that you delete from subscription when give a userid and postid
 const deleteSubscription = (req, res) => {
     knex("subscription").where("id", req.body.id).del() //this may not work bc it will say reference key error
         .then(data => {
@@ -162,8 +163,7 @@ const deleteSubscription = (req, res) => {
 // this will run when user POSTs to '/api/user/login'
 const login = async (req, res) => {
     const { email, password } = req.body;
-
-    const [findUserErr, userInfo] = await handle(knex("users").select("*").where('email', email).returning("*"));
+    const [findUserErr, userInfo] = await handle(knex("users").select("*").where('email', email));
 
     if (findUserErr) {
         console.log(findUserErr);
@@ -194,8 +194,13 @@ const login = async (req, res) => {
             const token = jwt.sign(payload, secret, {
                 expiresIn: '2h'
             });
-
-            res.status(200).json({token: token, isEmployer: userInfo.isEmployer}); //ensure the front-end sets the token in the session storage with the name 'accessToken'
+            // console.log(userInfo);
+            res.status(200).json({
+                token,
+                userInfo: {
+                    isEmployer: userInfo[0].isEmployer, userId: userInfo[0].id
+                }
+            }); //ensure the front-end sets the token in the session storage with the name 'accessToken'
         }
     }
 };
@@ -212,23 +217,26 @@ const getUserProfile = async (req, res) => {
     }
 };
 
-function queryDBForPwd(email) {
-    return knex("users").select("password").where('email', email).returning("password");
-}
-
 //pwd is what the user passes in
-function validatePassword(pwd, email) {
-    //const document = this;
-    return new Promise((resolve, reject) => {
-        bcrypt.compare(pwd, queryDBForPwd(email), (err, same) => {
-            if (err) {
-                console.log(err);
-                reject(err);
-            } else {
-                resolve(same);
-            }
+async function validatePassword(pwd, email) {
+    try {
+        const result = await (knex("users").select("*").where('email', email));
+        console.log("test: ", result[0].password);
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(pwd, result[0].password, (err, same) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                } else {
+                    resolve(same);
+                }
+            });
         });
-    });
+    }
+    catch (err) {
+        console.log("err: ", err);
+    }
+
 }
 
 function hashPassword(pwd) {

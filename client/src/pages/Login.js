@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 //import { Link } from "react-router-dom";
 import { login } from '../utils/API';
 import Form from '../components/Form';
+import { Redirect } from 'react-router-dom';
+import { isNull } from 'util';
 
 //import { Link } from "react-router-dom";
 
@@ -11,7 +13,9 @@ class Login extends Component {
     state = {
         email: "",
         password: "",
-        error: null
+        error: null,
+        isEmployer: false,
+        loggedIn: false
     }
 
     handleInputChange = event => {
@@ -20,35 +24,46 @@ class Login extends Component {
             [name]: value
         });
     };
-    
-    handleLogInForm = event => {
 
+    handleLogInForm = event => {
         const { email, password } = this.state;
         event.preventDefault();
-        
+
         if (email === "") {
             return this.setState({ error: "Please put in a user email." })
         }
         if (password === "") {
             return this.setState({ error: "Please put in a user password." })
         }
-        this.login(this.state)
-        .then(
-            data => {
-                sessionStorage.setItem("jwt", data.token);
-                if (data.isEmployer === 0) {
-                    window.location.href(`/community?userid=${data.id}`);
+
+        login(this.state)
+            .then(
+                data => {
+                    if (!(isNull(data.data.token))){
+                        // console.log("works this far");
+                        // console.log("Data: ", data);
+                        // console.log("token: ", data.data.token);
+                        sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
+                        sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
+                        sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
+                        this.setState({ loggedIn: true });
+                        if (data.data.userInfo.isEmployer !== 0) {
+                            return this.setState({ isEmployer: true });
+                        }
+                    }
                 }
-                else {
-                    window.location.href(`/employer-posts?userid=${data.id}`);
-                }
-            }
-        )
+            );
     };
 
     render() {
+        console.log(this.state)
+        if (this.state.isEmployer) {
+            return <Redirect to='EmployerPost' />
+        } else if (this.state.loggedIn) {
+            return <Redirect to='Community' />
+        }
         return (
-            <Form onSubmit={this.handleLogInForm}>
+            <>
                 <input
                     type="text"
                     className="form-control"
@@ -78,11 +93,12 @@ class Login extends Component {
                         </div>
                     )}
                 <button
-                    type="submit"
+                    type="button"
                     className={"btn btn-success btn-sm"}
+                    onClick={this.handleLogInForm}
                 >
                 </button>
-            </Form>
+            </>
         )
     }
 }
