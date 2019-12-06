@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import Jumbotron from '../components/Jumbotron'
 //import { Link } from "react-router-dom";
 import { login } from '../utils/API';
-import Form from '../components/Form';
+// import Form from '../components/Form';
 import { Redirect } from 'react-router-dom';
 
 //import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ class Login extends Component {
         password: "",
         error: null,
         isEmployer: null,
-        loggedIn: false
+        loggedIn: null
     }
 
     handleInputChange = event => {
@@ -36,20 +36,18 @@ class Login extends Component {
         }
 
         login(this.state)
-            .then(
-                data => {
-                    if (data.status === 200) {
-                        console.log("Data: ", data);
-                        sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
-                        sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
-                        sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
-                        this.setState({ loggedIn: true });
-                        console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
-                        if (sessionStorage.getItem('isEmployer') === "1") {
-                            this.setState({ isEmployer: true });
-                        }
-                    }
+            .then(data => {
+                if (data.status === 200) {
+                    console.log("Data: ", data);
+                    sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
+                    sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
+                    sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
+                    this.setState({ loggedIn: true });
+                    console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
+                    if (sessionStorage.getItem('isEmployer') === "1") 
+                        return this.setState({ isEmployer: true });
                 }
+            }
             ).catch(err => {
                 console.log(err);
                 this.setState({ error: "Failed to login!" });
@@ -58,11 +56,11 @@ class Login extends Component {
 
     render() {
         console.log(this.state)
-        if (this.state.isEmployer === true) {
+        if (this.state.isEmployer === true && this.state.loggedIn === true) {
             return <Redirect to='EmployerPosts' />
-        } //else if (this.state.loggedIn === true) {
-            // return <Redirect to='Community' />
-        // }
+        } //else if (this.state.isEmployer !== true && this.state.loggedIn === true) {
+            //return <Redirect to='Community' />
+        //}
         return (
             <>
                 <input
