@@ -10,18 +10,31 @@ const userId = sessionStorage.getItem('userId');
 class CommunityJobDetail extends Component {
 
     state = {
-        postDetail: {}
+        postDetail: {},
+        savedPostList: []
     }
 
 
     componentDidMount() {
         this.handleGetpostDetail();
+        this.handleCheckSave();
     };
 
-    /* handleCheckSave = () => {
+    handleCheckSave = () => {
         getPostingsSavedByUser(userId)
-            .then(res => { res.data.id === postId })
-    }; */
+            .then(res => {
+                console.log(res);
+                const savedPostListFromData = res.data.map(post => {
+                    return {
+                        id: post.id
+                    }
+                });
+                return this.setState({
+                    savedPostList: savedPostListFromData
+                });
+            })
+            .catch(err => console.log(err));
+    };
 
     handleGetpostDetail = () => {
         getPostingById(postId)
@@ -60,14 +73,14 @@ class CommunityJobDetail extends Component {
                     <div>{this.state.postDetail.description}</div>
                 </column>
                 <button
-                    disabled={this.handleCheckSave() ? true : undefined}
+                    disabled={!this.state.savedPostList.includes(postId) ? true : undefined}
                     className={"btn btn-success btn-sm"}
                     onClick={() => this.handleSavePost(userId, postId)}
                 >
                     SAVE
                 </button>
                 <button
-                    disabled={this.handleCheckSave() ? undefined : true}
+                    disabled={this.state.savedPostList.includes(postId) ? true : undefined}
                     className={"btn btn-alert btn-sm"}
                     onClick={() => this.handleUnSavePost(userId, postId)}
                 >
@@ -78,7 +91,5 @@ class CommunityJobDetail extends Component {
         );
     };
 };
-
-
 
 export default CommunityJobDetail;
