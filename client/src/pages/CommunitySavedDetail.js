@@ -2,7 +2,6 @@ import { Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import GlobalContext from '../components/Global/context';
-import React, { Component } from 'react';
 import Card from '../components/Card';
 import { getPostingsSavedByUser } from "../utils/API.js";
 
