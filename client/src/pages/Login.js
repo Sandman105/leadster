@@ -2,16 +2,22 @@ import React, { Component } from 'react';
 //import Jumbotron from '../components/Jumbotron'
 //import { Link } from "react-router-dom";
 import { login } from '../utils/API';
-import Form from '../components/Form';
+// import Form from '../components/Form';
+import { Redirect } from 'react-router-dom';
+import GlobalContext from '../components/Global/context'
 
 //import { Link } from "react-router-dom";
 
 class Login extends Component {
 
+    static contextType = GlobalContext
+
     state = {
         email: "",
         password: "",
-        error: null
+        error: null,
+        isEmployer: null,
+        loggedIn: null
     }
 
     handleInputChange = event => {
@@ -20,35 +26,55 @@ class Login extends Component {
             [name]: value
         });
     };
-    
-    handleLogInForm = event => {
 
+    handleLogInForm = event => {
         const { email, password } = this.state;
         event.preventDefault();
-        
+
         if (email === "") {
             return this.setState({ error: "Please put in a user email." })
         }
         if (password === "") {
             return this.setState({ error: "Please put in a user password." })
         }
-        this.login(this.state)
-        .then(
-            data => {
-                sessionStorage.setItem("jwt", data.token);
-                if (data.isEmployer === 0) {
-                    window.location.href(`/community?userid=${data.id}`);
-                }
-                else {
-                    window.location.href(`/employer-posts?userid=${data.id}`);
+
+        login(this.state)
+            .then(data => {
+                if (data.status === 200) {
+                    console.log("Data: ", data);
+                    sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
+                    sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
+                    sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
+                    console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
+
+                    const userData = {
+                        userId: data.data.userInfo.userId
+                    }
+                    this.context.setUser(userData)
+                    if (sessionStorage.getItem('isEmployer') === "1") {
+                        this.setState({ isEmployer: true, loggedIn: true  });
+    
+                    } else {
+                        this.setState({ loggedIn: true });
+                    }
                 }
             }
-        )
+            ).catch(err => {
+                console.log(err);
+                this.setState({ error: "Failed to login!" });
+            });
     };
 
     render() {
+        console.log(this.state)
+        console.log(this.context)
+        if (this.state.isEmployer === true && this.state.loggedIn === true) {
+            return <Redirect to='EmployerPosts' />
+        } else if (this.state.isEmployer !== true && this.state.loggedIn === true) {
+            return <Redirect to='Community' />
+        }
         return (
-            <Form onSubmit={this.handleLogInForm}>
+            <>
                 <input
                     type="text"
                     className="form-control"
@@ -78,11 +104,12 @@ class Login extends Component {
                         </div>
                     )}
                 <button
-                    type="submit"
+                    type="button"
                     className={"btn btn-success btn-sm"}
+                    onClick={this.handleLogInForm}
                 >
                 </button>
-            </Form>
+            </>
         )
     }
 }

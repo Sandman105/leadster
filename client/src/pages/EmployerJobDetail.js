@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import { getPostingById, getUsersFromSavedPosting } from '../utils/API';
-
+import { Redirect } from 'react-router-dom';
+import GlobalContext from '../components/Global/context';
 
 // import { Link } from "react-router-dom";
 
@@ -13,6 +14,8 @@ class EmployerJobDetail extends Component {
         postDetail: {},
         seekerList: []
     }
+
+    static contextType = GlobalContext
 
     componentDidMount() {
         this.handleGetPostDetail();
@@ -47,6 +50,11 @@ class EmployerJobDetail extends Component {
     }
 
     render() {
+        console.log(this.context)
+        if (this.context.isLoggedIn) {
+            return <Redirect to='/login' />
+            
+        }
         return (
             <>
                 <Header>

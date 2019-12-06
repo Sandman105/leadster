@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import Card from '../components/Card';
+import { Redirect } from 'react-router-dom';
+import GlobalContext from '../components/Global/context';
 // import Card from '../components/Card';
 import { createSubscription, getPostingById, getPostingsSavedByUser, deleteSubscription } from '../utils/API.js';
 
@@ -61,7 +64,14 @@ class CommunityJobDetail extends Component {
             .catch(err => { console.log("err: ", err) });
     };
 
+    static contextType = GlobalContext
+
     render() {
+        console.log(this.context)
+        if (this.context.isLoggedIn) {
+            return <Redirect to='/login' />
+            
+        }
         return (
             <>
                 <Header>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { createUser } from '../utils/API';
+import { Redirect } from 'react-router-dom';
+import { isNull } from 'util';
 
 class Signup extends Component {
 
@@ -9,8 +11,9 @@ class Signup extends Component {
         lastName: "",
         email: "",
         password: "",
-        isEmployer: 0,
-        error: null
+        isemployer: null,
+        error: null,
+        signedUp: false
     }
 
     handleInputChange = event => {
@@ -22,7 +25,7 @@ class Signup extends Component {
 
     handleSignupForm = event => {
 
-        const { firstName, lastName, email, password, isEmployer } = this.state;
+        const { firstName, lastName, email, password, isemployer } = this.state;
 
         event.preventDefault();
 
@@ -38,25 +41,28 @@ class Signup extends Component {
         if (password === "") {
             return this.setState({ error: "Please put in a user password." })
         }
-        if (isEmployer !== 0 && isEmployer !== 1 ) {
+        if (isNull(isemployer)) {
             return this.setState({ error: "Please select your role." })
         }
 
-        this.createUser(this.state)
+        createUser(this.state)
             .then(
-                data => {
-                    sessionStorage.setItem("jwt", data.token);
-                    if (this.state.isEmployer === 0) {
-                        window.location.href(`/community?userid=${data.id}`);
-                    }
-                    else {
-                        window.location.href(`/employer-posts?userid=${data.id}`);
+                (response) => {
+                    if (response) {
+                        return this.setState({signedUp: true})
+                    } else {
+                        return false
                     }
                 }
-            )
+            );
     };
 
     render() {
+        console.log(this.state)
+        if (this.state.signedUp) {
+            return <Redirect to='/login'/>
+        }
+        
         return (
             <Form onSubmit={this.handleSignupForm}>
                 <Row form>
@@ -122,7 +128,7 @@ class Signup extends Component {
                     <Label for="password" sm={1}>Password</Label>
                     <Col sm={7}>
                         <Input
-                            type="text"
+                            type="password"
                             className="form-control"
                             placeholder="Password"
                             onChange={this.handleInputChange}
@@ -140,18 +146,19 @@ class Signup extends Component {
                 <FormGroup row>
                     <Label for="select" sm={1}>Select</Label>
                     <Col sm={7}>
-                        <Input
-                            type="select"
+                        <select
+                            // type="select"
+                            name="isemployer"
                             className="form-control"
                             onChange={this.handleInputChange}
-                            value={this.state.isEmployer}
-                            id="select"
+                            value={this.state.isemployer}
+                            // id="select"
                         >
-                            <option value="0">Job Seeker</option>
-                            <option value="1">Employer</option>
-                        </Input>
+                            <option value="0" name="isemployer" isemployer="0">Job Seeker</option>
+                            <option value="1" name="isemployer" isemployer="1">Employer</option>
+                        </select>
                         {this.state.error &&
-                            isNaN(this.state.isEmployer) && (
+                            isNaN(this.state.isemployer) && (
                                 <div className="alert alert-danger my-2">
                                     {this.state.error}
                                 </div>

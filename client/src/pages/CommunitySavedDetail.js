@@ -1,3 +1,7 @@
+import { Redirect } from 'react-router-dom';
+import React, { Component } from 'react';
+import Header from '../components/Header';
+import GlobalContext from '../components/Global/context';
 import React, { Component } from 'react';
 import Card from '../components/Card';
 import { getPostingsSavedByUser } from "../utils/API.js";
@@ -5,6 +9,8 @@ import { getPostingsSavedByUser } from "../utils/API.js";
 const userId = sessionStorage.getItem('userId');
 
 class CommunitySavedDetail extends Component {
+  
+    static contextType = GlobalContext
 
     state = {
         savedPostList: []
@@ -31,7 +37,12 @@ class CommunitySavedDetail extends Component {
             })
     }
 
-    render() {
+      render() {
+        console.log(this.context)
+        if (this.context.isLoggedIn) {
+            return <Redirect to='/login' />
+            
+        }
         return (
             <>
                 <div>
