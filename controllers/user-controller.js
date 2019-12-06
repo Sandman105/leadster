@@ -99,7 +99,7 @@ const createUser = (req, res) => {
             {
                 nameFirst: req.body.firstName,
                 nameLast: req.body.lastName,
-                isEmployer: req.body.isEmployer,
+                isEmployer: req.body.isemployer,
                 phoneNum: req.body.phoneNum,
                 email: req.body.email,
                 password: hashPassword(req.body.password),
@@ -183,7 +183,7 @@ const login = async (req, res) => {
                 error: "Internal Err, try again"
             });
         } else if (!same) {
-            res.status(401).json({
+            return res.status(401).send({
                 error: 'incorrect password'
             });
         } else {
@@ -221,7 +221,7 @@ const getUserProfile = async (req, res) => {
 async function validatePassword(pwd, email) {
     try {
         const result = await (knex("users").select("*").where('email', email));
-        console.log("test: ", result[0].password);
+        // console.log("test: ", result[0].password);
         return new Promise((resolve, reject) => {
             bcrypt.compare(pwd, result[0].password, (err, same) => {
                 if (err) {

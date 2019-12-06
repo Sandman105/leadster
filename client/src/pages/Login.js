@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { login } from '../utils/API';
 import Form from '../components/Form';
 import { Redirect } from 'react-router-dom';
-import { isNull } from 'util';
 
 //import { Link } from "react-router-dom";
 
@@ -14,7 +13,7 @@ class Login extends Component {
         email: "",
         password: "",
         error: null,
-        isEmployer: false,
+        isEmployer: null,
         loggedIn: false
     }
 
@@ -39,29 +38,31 @@ class Login extends Component {
         login(this.state)
             .then(
                 data => {
-                    if (!(isNull(data.data.token))){
-                        // console.log("works this far");
-                        // console.log("Data: ", data);
-                        // console.log("token: ", data.data.token);
+                    if (data.status === 200) {
+                        console.log("Data: ", data);
                         sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
                         sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
                         sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
                         this.setState({ loggedIn: true });
-                        if (data.data.userInfo.isEmployer !== 0) {
-                            return this.setState({ isEmployer: true });
+                        console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
+                        if (sessionStorage.getItem('isEmployer') === "1") {
+                            this.setState({ isEmployer: true });
                         }
                     }
                 }
-            );
+            ).catch(err => {
+                console.log(err);
+                this.setState({ error: "Failed to login!" });
+            });
     };
 
     render() {
         console.log(this.state)
-        if (this.state.isEmployer) {
-            return <Redirect to='EmployerPost' />
-        } else if (this.state.loggedIn) {
-            return <Redirect to='Community' />
-        }
+        if (this.state.isEmployer === true) {
+            return <Redirect to='EmployerPosts' />
+        } //else if (this.state.loggedIn === true) {
+            // return <Redirect to='Community' />
+        // }
         return (
             <>
                 <input
