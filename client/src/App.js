@@ -9,29 +9,32 @@ import CommunityJobDetail from './pages/CommunityJobDetail';
 import CommunitySavedDetail from './pages/CommunitySavedDetail';
 import EmployerPosts from './pages/EmployerPosts';
 import NoMatch from './pages/NoMatch';
+import Global from "./components/Global"
 
-const App = () => {  
+const App = () => {
 
   return (
-    <Router>
-      <React.Fragment>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
+    <Global>
+      <Router>
+        <React.Fragment>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
 
-          <Route path="/community" component={Community} />
-          <Route path="/community-job-detail" component={CommunityJobDetail} />
-          {/* <Route path="/community-saved-detail" component={CommunitySavedDetail} /> */}
+            <Route path="/community" component={Community} />
+            <Route path="/community-job-detail" component={CommunityJobDetail} />
+            {/* <Route path="/community-saved-detail" component={CommunitySavedDetail} /> */}
 
-          <Route path="/employer-posts" component={EmployerPosts} />
-          <Route path="/employer-job-detail" component={EmployerJobDetail} />
+            <Route path="/employer-posts" component={EmployerPosts} />
+            <Route path="/employer-job-detail" component={EmployerJobDetail} />
 
-          <Route component={NoMatch} />
-        </Switch>
-      </React.Fragment>
-    </Router>
+            <Route component={NoMatch} />
+          </Switch>
+        </React.Fragment>
+      </Router>
+    </Global>
   );
 };
 

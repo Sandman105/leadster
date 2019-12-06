@@ -4,10 +4,13 @@ import React, { Component } from 'react';
 import { login } from '../utils/API';
 // import Form from '../components/Form';
 import { Redirect } from 'react-router-dom';
+import GlobalContext from '../components/Global/context'
 
 //import { Link } from "react-router-dom";
 
 class Login extends Component {
+
+    static contextType = GlobalContext
 
     state = {
         email: "",
@@ -43,9 +46,14 @@ class Login extends Component {
                     sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
                     sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
                     console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
+
+                    const userData = {
+                        userId: data.data.userInfo.userId
+                    }
+                    this.context.setUser(userData)
                     if (sessionStorage.getItem('isEmployer') === "1") {
-                        this.setState({ isEmployer: true });
-                        this.setState({ loggedIn: true });
+                        this.setState({ isEmployer: true, loggedIn: true  });
+    
                     } else {
                         this.setState({ loggedIn: true });
                     }
@@ -59,6 +67,7 @@ class Login extends Component {
 
     render() {
         console.log(this.state)
+        console.log(this.context)
         if (this.state.isEmployer === true && this.state.loggedIn === true) {
             return <Redirect to='EmployerPosts' />
         } else if (this.state.isEmployer !== true && this.state.loggedIn === true) {
