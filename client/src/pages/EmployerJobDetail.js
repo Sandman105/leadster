@@ -74,4 +74,4 @@ class EmployerJobDetail extends Component {
     }
 }
 
-export default JobDetail;
+export default EmployerJobDetail;

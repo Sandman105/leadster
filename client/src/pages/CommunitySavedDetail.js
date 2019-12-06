@@ -43,3 +43,5 @@ class CommunitySavedDetail extends Component {
         )
     }
 }
+
+export default CommunitySavedDetail;

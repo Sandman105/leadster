@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 // import Card from '../components/Card';
-import { createSubscription, getPostingById, getPostingsSavedByUser, deleteSubscription } from "../utils/API.js";
+import { createSubscription, getPostingById, getPostingsSavedByUser, deleteSubscription } from '../utils/API.js';
 
 const url = window.location.search;
 const postId = url.split("=")[2];
@@ -92,6 +92,4 @@ class CommunityJobDetail extends Component {
     };
 };
 
-
-
-export default CommunityDetail;
+export default CommunityJobDetail;

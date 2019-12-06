@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Button, CardTitle, CardText } from 'reactstrap';
 
 
-const Card = ({ title, href}) => {
+const CardForm = ({ title, href}) => {
 
     return (
         <div>
@@ -13,4 +13,4 @@ const Card = ({ title, href}) => {
     );
 };
 
-export default Card;
+export default CardForm;

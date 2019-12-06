@@ -10,9 +10,7 @@ import CommunitySavedDetail from './pages/CommunitySavedDetail';
 import EmployerPosts from './pages/EmployerPosts';
 import NoMatch from './pages/NoMatch';
 
-const App = () => {
-
-  
+const App = () => {  
 
   return (
     <Router>
@@ -36,7 +34,5 @@ const App = () => {
     </Router>
   );
 };
-
-
 
 export default App;
