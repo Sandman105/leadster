@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import { getPostingByEmployer, createPosting, deletePosting } from '../utils/API';
+import { Redirect } from 'react-router-dom';
+import GlobalContext from '../components/Global/context'
 
 // import { Link } from "react-router-dom";
 
@@ -8,6 +10,8 @@ const url = window.location.search;
 const bossId = url.split("=")[1];
 
 class EmployerPosts extends Component {
+
+    static contextType = GlobalContext
 
     state = {
         postList: [],
@@ -68,6 +72,11 @@ class EmployerPosts extends Component {
     }
 
     render() {
+        console.log(this.context)
+        if (this.context.isLoggedIn) {
+            return <Redirect to='/login' />
+            
+        }
         return (
             <>
                 <Header>
