@@ -68,8 +68,8 @@ const getPostingById = (req, res) => {
 };
 
 async function createSubscription(req, res) {
-    console.log(req.body);
-    console.log(req.params);
+    // console.log(req.body);
+    // console.log(req.params);
     // console.log(req);
     try {
         let query = await (knex("subscription").insert(
@@ -80,7 +80,7 @@ async function createSubscription(req, res) {
                 }
             ]
         ));
-        console.log("query: ", query);
+        // console.log("query: ", query);
         return res.json(query);
     } catch (err) {
         console.log("err: ", err);
@@ -88,14 +88,13 @@ async function createSubscription(req, res) {
 };
 
 async function deleteSubscription(req, res) {
-    console.log(req.params.id);
+    console.log("User: ", req.params);
+    console.log("Post: ", req.params.id);
     // console.log(req);
     try {
-        let query = await (knex("subscription").delete().where({
-            // userID: req.body.userID,
-            id: req.params.id
-        }));
-        console.log("query: ", query);
+        let query = await (knex("subscription").delete().where('postID', req.params.id).andWhere('userID', req.params.user));
+        // console.log("query: ", knex("subscription").delete().where('postID', req.params.id).andWhere('userID', req.params.user));
+        console.log("result: ", query);
         return res.json(query);
     } catch (err) {
         console.log("err: ", err);

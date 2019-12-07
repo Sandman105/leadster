@@ -33,7 +33,7 @@ class Community extends Component {
                 return {
                     id: post.id,
                     title: post.title,
-                    url: `/community-job-detail?userid=${userId}?postid=${post.id}`
+                    url: `/community-job-detail?userid=${userId}&postid=${post.id}`
                 }
             });
             return this.setState({
