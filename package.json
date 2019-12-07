@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@csstools/normalize.css": "github:csstools/normalize.css",
     "bcrypt": "^3.0.7",
     "bootstrap": "^4.4.1",
     "express": "^4.17.1",
