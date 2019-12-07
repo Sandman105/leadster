@@ -10,19 +10,14 @@ const userId = sessionStorage.getItem('userId');
 const savePageUrl = `/community-saved-detail?userid=${userId}`
 
 class Community extends Component {
-
     _isMounted = false
-
     static contextType = GlobalContext
-
     state = {
         postList: []
     };
 
     componentDidMount() {
-        this._isMounted = true
-
-
+        this._isMounted = true;
         getAllPostings().then(res => {
             console.log(res);
             if (this._isMounted) {
@@ -41,20 +36,21 @@ class Community extends Component {
             });
         });
     }
+
     componentWillUnmount() {
         this._isMounted = false
     }
+    
     render() {
         console.log(this.context)
-        if (this.context.isLoggedIn) {
+        if ((!this.context.isLoggedIn)) {
             return <Redirect to='/login' />
-            
+        } else if (parseInt(this.context.user.isEmployer) === 1 && this.context.isLoggedIn) {
+            return <Redirect to='/employer-posts' />
         }
-
         return (
             <>
-                <Header>
-                </Header>
+                <Header></Header>
 
                 <a href={savePageUrl}><button>Go to save page</button></a>
 

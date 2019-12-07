@@ -10,12 +10,11 @@ const url = window.location.search;
 const postId = url.split("=")[2];
 
 class EmployerJobDetail extends Component {
+    static contextType = GlobalContext;
     state = {
         postDetail: {},
         seekerList: []
     }
-
-    static contextType = GlobalContext
 
     componentDidMount() {
         this.handleGetPostDetail();
@@ -51,9 +50,10 @@ class EmployerJobDetail extends Component {
 
     render() {
         console.log(this.context)
-        if (this.context.isLoggedIn) {
+        if ((!this.context.isLoggedIn)) {
             return <Redirect to='/login' />
-            
+        } else if (parseInt(this.context.isEmployer) !== 1 && this.context.isLoggedIn) {
+            return <Redirect to='/community' />
         }
         return (
             <>

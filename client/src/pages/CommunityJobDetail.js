@@ -6,12 +6,12 @@ import GlobalContext from '../components/Global/context';
 // import Card from '../components/Card';
 import { createSubscription, getPostingById, getPostingsSavedByUser, deleteSubscription } from '../utils/API.js';
 
-
 const url = window.location.search;
 const postId = url.split("=")[2];
 const userId = sessionStorage.getItem('userId');
 
 class CommunityJobDetail extends Component {
+    static contextType = GlobalContext;
 
     state = {
         postDetail: {},
@@ -68,25 +68,25 @@ class CommunityJobDetail extends Component {
     };
 
     handleUnSavePost = (postId, userId) => {
-        console.log("Post: ", postId);
-        console.log("User: ", userId);
+        // console.log("Post: ", postId);
+        // console.log("User: ", userId);
         deleteSubscription(postId, userId)
             .then(console.log("Job unsaved!"))
             .then(this.handleCheckSave())
             .catch(err => { console.log("err: ", err) });
     };
 
-    static contextType = GlobalContext
-
     render() {
-        // console.log(this.context);
-        if (this.context.isLoggedIn) {
-            return <Redirect to='/login' />
-        }
+        console.log("context: ", this.context);
+        console.log("props: ", this.props);
+        // if ((!this.context.isLoggedIn)) {
+        //     return <Redirect to='/login' />
+        // } else if (parseInt(this.context.user.isEmployer) === 1 && this.context.isLoggedIn) {
+        //     return <Redirect to='/employer-posts' />
+        // }
         return (
             <>
                 <Header></Header>
-
                 <column>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>

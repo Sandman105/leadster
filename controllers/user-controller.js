@@ -42,11 +42,11 @@ const getUsersFromSavedPosting = (req, res) => { //this will be for employers to
 };
 
 const getPostingByEmployer = (req, res) => {
-    console.log(`look here peiyu = ${req.params.id}`);
+    // console.log(`look here peiyu = ${req.params.id}`);
     knex("posting").select("*").where('employerID', req.params.id)
         .then(data => {
             // knex.destroy();
-            console.log(`look here 2 peiyu = ${data}`)
+            // console.log(`look here 2 peiyu = ${data}`);
             return res.json(data);
         })
         .catch(err => {

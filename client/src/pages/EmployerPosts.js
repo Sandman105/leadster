@@ -9,9 +9,7 @@ import GlobalContext from '../components/Global/context'
 const userId = sessionStorage.getItem('userId');
 
 class EmployerPosts extends Component {
-
-    static contextType = GlobalContext
-
+    static contextType = GlobalContext;
     state = {
         postList: [],
         title: "",
@@ -35,7 +33,7 @@ class EmployerPosts extends Component {
             return this.setState({ error: "Please put in a job title." })
         }
         if (description === "") {
-            return this.setState({ error: "Please put in a job decription." })
+            return this.setState({ error: "Please put in a job description." })
         }
         createPosting(this.state)
             .then(this.handleGetAllPosts)
@@ -72,15 +70,14 @@ class EmployerPosts extends Component {
 
     render() {
         console.log(this.context)
-        if (this.context.isLoggedIn) {
+        if ((!this.context.isLoggedIn)) {
             return <Redirect to='/login' />
-            
+        } else if (parseInt(this.context.isEmployer) !== 1 && this.context.isLoggedIn) {
+            return <Redirect to='/community' />
         }
         return (
             <>
-                <Header>
-
-                </Header>
+                <Header></Header>
                 <form onSubmit={this.handleLogInForm}>
                     <input
                         type="text"
@@ -102,7 +99,7 @@ class EmployerPosts extends Component {
                         placeholder="Job Description"
                         onChange={this.handleInputChange}
                         value={this.state.description}
-                        name="desciption"
+                        name="description"
                     />
                     {this.state.error &&
                         !this.state.description.length && (

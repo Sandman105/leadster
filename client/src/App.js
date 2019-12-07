@@ -25,7 +25,7 @@ const App = () => {
 
             <Route path="/community" component={Community} />
             <Route path="/community-job-detail" component={CommunityJobDetail} />
-            {/* <Route path="/community-saved-detail" component={CommunitySavedDetail} /> */}
+            <Route path="/community-saved-detail" component={CommunitySavedDetail} />
 
             <Route path="/employer-posts" component={EmployerPosts} />
             <Route path="/employer-job-detail" component={EmployerJobDetail} />

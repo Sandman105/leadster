@@ -8,9 +8,7 @@ import { getPostingsSavedByUser } from "../utils/API.js";
 const userId = sessionStorage.getItem('userId');
 
 class CommunitySavedDetail extends Component {
-  
     static contextType = GlobalContext
-
     state = {
         savedPostList: []
     }
@@ -38,9 +36,10 @@ class CommunitySavedDetail extends Component {
 
       render() {
         console.log(this.context)
-        if (this.context.isLoggedIn) {
+        if ((!this.context.isLoggedIn)) {
             return <Redirect to='/login' />
-            
+        } else if (parseInt(this.context.user.isEmployer) === 1 && this.context.isLoggedIn) {
+            return <Redirect to='/employer-posts' />
         }
         return (
             <>

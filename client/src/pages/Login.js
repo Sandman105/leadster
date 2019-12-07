@@ -20,6 +20,11 @@ class Login extends Component {
         loggedIn: null
     }
 
+    componentDidMount() {
+        //by default we will clear the sessionStorage so when they are redirected here from signing out, we clear all items
+        sessionStorage.clear();
+    }
+
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
@@ -46,14 +51,13 @@ class Login extends Component {
                     sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
                     sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
                     console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
-
                     const userData = {
-                        userId: data.data.userInfo.userId
+                        userId: data.data.userInfo.userId,
+                        isEmployer: data.data.userInfo.isEmployer
                     }
                     this.context.setUser(userData)
                     if (sessionStorage.getItem('isEmployer') === "1") {
                         this.setState({ isEmployer: true, loggedIn: true  });
-    
                     } else {
                         this.setState({ loggedIn: true });
                     }
@@ -66,10 +70,11 @@ class Login extends Component {
     };
 
     render() {
-        console.log(this.state)
-        console.log(this.context)
-        if (this.state.isEmployer === true && this.state.loggedIn === true) {
-            return <Redirect to='EmployerPosts' />
+        // console.log(this.state);
+        console.log("context: ", this.context);
+        // console.log("context emp: ", this.context.user.isEmployer);
+        if (this.state.isEmployer && this.state.loggedIn) {
+            return <Redirect to='employer-posts' />
         } else if (this.state.isEmployer !== true && this.state.loggedIn === true) {
             return <Redirect to='Community' />
         }
