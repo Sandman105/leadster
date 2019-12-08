@@ -6,8 +6,10 @@ import { getAllPostings } from "../utils/API.js";
 import GlobalContext from '../components/Global/context'
 import { Redirect } from 'react-router-dom';
 
-const userId = sessionStorage.getItem('userId');
-const savePageUrl = `/community-saved-detail?userid=${userId}`
+const userId        = sessionStorage.getItem('userId');
+const isLoggedIn    = sessionStorage.getItem('isLoggedIn');
+const isEmployer    = sessionStorage.getItem('isEmployer');
+const savePageUrl   = `/community-saved-detail?userid=${userId}`;
 
 class Community extends Component {
     _isMounted = false;
@@ -30,26 +32,26 @@ class Community extends Component {
             return this.setState({
                 postList: postListFromData
             });
+        }).catch(err => {
+            console.log("err: ", err);
         });
     }
 
     componentWillUnmount() {
-        this._isMounted = false
+        this._isMounted = false;
     }
 
     render() {
-        console.log(this.context)
-        if (!this.context.isLoggedIn) {
+        // console.log(this.context);
+        if (!isLoggedIn) {
             return <Redirect to='/login' />
-        } else if (parseInt(this.context.user.isEmployer) === 1 && this.context.isLoggedIn) {
+        } else if (parseInt(isEmployer) === 1 && isLoggedIn) {
             return <Redirect to='/employer-posts' />
         }
         return (
             <>
-                <Header></Header>
-
+                <Header/>
                 <a href={savePageUrl}><button>Go to save page</button></a>
-
                 <div>
                     {this.state.postList.map(post => (
                         <Card title={post.title} key={post.id} href={post.url} />

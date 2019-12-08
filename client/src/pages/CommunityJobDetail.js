@@ -6,13 +6,14 @@ import GlobalContext from '../components/Global/context';
 // import Card from '../components/Card';
 import { createSubscription, getPostingById, getPostingsSavedByUser, deleteSubscription } from '../utils/API.js';
 
-const url = window.location.search;
-const postId = url.split("=")[2];
-const userId = sessionStorage.getItem('userId');
+const url           = window.location.search;
+const postId        = url.split("=")[2];
+const userId        = sessionStorage.getItem('userId');
+const isLoggedIn    = sessionStorage.getItem('isLoggedIn');
+const isEmployer    = sessionStorage.getItem('isEmployer');
 
 class CommunityJobDetail extends Component {
     static contextType = GlobalContext;
-
     state = {
         postDetail: {},
         savedPostList: [],
@@ -22,7 +23,7 @@ class CommunityJobDetail extends Component {
     componentDidMount() {
         this.handleGetPostDetail();
         this.handleCheckSave();
-        console.log(this.context);
+        console.log("context on load: ", this.context);
     };
 
     handleCheckSave = () => {
@@ -43,7 +44,7 @@ class CommunityJobDetail extends Component {
                     });
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     };
 
     handleGetPostDetail = () => {
@@ -54,7 +55,7 @@ class CommunityJobDetail extends Component {
                     postDetail: res.data[0]
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     };
 
     handleSavePost = (postId, userId) => {
@@ -80,16 +81,16 @@ class CommunityJobDetail extends Component {
     };
 
     render() {
-        console.log("context: ", this.context);
-        console.log("props: ", this.props);
-        // if ((!this.context.isLoggedIn)) {
-        //     return <Redirect to='/login' />
-        // } else if (parseInt(this.context.user.isEmployer) === 1 && this.context.isLoggedIn) {
-        //     return <Redirect to='/employer-posts' />
-        // }
+        // console.log("context: ", this.context);
+        // console.log("props: ", this.props.context);
+        if ((!isLoggedIn)) {
+            return <Redirect to='/login' />
+        } else if (parseInt(isEmployer) === 1 && isLoggedIn) {
+            return <Redirect to='/employer-posts' />
+        }
         return (
             <>
-                <Header></Header>
+                <Header/>
                 <column>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>

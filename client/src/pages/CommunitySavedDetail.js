@@ -5,7 +5,9 @@ import GlobalContext from '../components/Global/context';
 import Card from '../components/Card';
 import { getPostingsSavedByUser } from "../utils/API.js";
 
-const userId = sessionStorage.getItem('userId');
+const userId        = sessionStorage.getItem('userId');
+const isLoggedIn    = sessionStorage.getItem('isLoggedIn');
+const isEmployer    = sessionStorage.getItem('isEmployer');
 
 class CommunitySavedDetail extends Component {
     static contextType = GlobalContext
@@ -31,14 +33,16 @@ class CommunitySavedDetail extends Component {
                 return this.setState({
                     savedPostList: savedPostListFromData
                 });
-            })
-    }
+            }).catch(err => {
+                console.log("err: ", err);
+            });
+    };
 
       render() {
-        console.log(this.context)
-        if ((!this.context.isLoggedIn)) {
+        // console.log(this.context)
+        if ((!isLoggedIn)) {
             return <Redirect to='/login' />
-        } else if (parseInt(this.context.user.isEmployer) === 1 && this.context.isLoggedIn) {
+        } else if (parseInt(isEmployer) === 1 && isLoggedIn) {
             return <Redirect to='/employer-posts' />
         }
         return (

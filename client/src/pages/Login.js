@@ -5,13 +5,10 @@ import { login } from '../utils/API';
 // import Form from '../components/Form';
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context'
-
 //import { Link } from "react-router-dom";
 
 class Login extends Component {
-
     static contextType = GlobalContext
-
     state = {
         email: "",
         password: "",
@@ -22,7 +19,7 @@ class Login extends Component {
 
     componentDidMount() {
         //by default we will clear the sessionStorage so when they are redirected here from signing out, we clear all items
-        sessionStorage.clear();
+        // sessionStorage.clear();
     }
 
     handleInputChange = event => {
@@ -46,39 +43,44 @@ class Login extends Component {
         login(this.state)
             .then(data => {
                 if (data.status === 200) {
-                    // console.log("Data: ", data);
+                    console.log("Data: ", data);
                     sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
                     sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
                     sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
+                    sessionStorage.setItem("isLoggedIn", true);
                     // console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
-                    const userData = {
-                        userId: data.data.userInfo.userId,
-                        isEmployer: data.data.userInfo.isEmployer
-                    }
+                    // const userData = {
+                    //     userId: data.data.userInfo.userId,
+                    //     isEmployer: data.data.userInfo.isEmployer
+                    // }
                     // this.context.setUser(userData);
-                    this.context.user.isEmployer = data.data.userInfo.isEmployer;
-                    this.context.isEmployer = data.data.userInfo.isEmployer;
-                    this.context.isLoggedIn = true;
-                    if (sessionStorage.getItem('isEmployer') === "1") {
-                        this.setState({ isEmployer: true, loggedIn: true  });
-                    } else {
+                    // this.context.user.isEmployer = data.data.userInfo.isEmployer;
+                    // this.context.isEmployer = data.data.userInfo.isEmployer;
+                    // this.context.isLoggedIn = true;
+                    // if (sessionStorage.getItem('isEmployer') === "1") {
+                    //     this.setState({ isEmployer: true, loggedIn: true });
+                    // } else {
                         this.setState({ loggedIn: true });
-                    }
+                    // }
                 }
             }
             ).catch(err => {
-                console.log(err);
+                console.log("err: ", err);
                 this.setState({ error: "Failed to login!" });
             });
     };
 
     render() {
-        // console.log(this.state);
-        console.log("context: ", this.context);
+        let isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        let isEmployer = sessionStorage.getItem('isEmployer');
+        // console.log("state: ", this.state);
+        // console.log("context: ", this.context);
         // console.log("context emp: ", this.context.user.isEmployer);
-        if (this.state.isEmployer && this.state.loggedIn) {
+        console.log("logged in: ", isLoggedIn);
+        console.log("employer: ", isEmployer);
+        if (parseInt(isEmployer) === 1 && isLoggedIn === "true") {
             return <Redirect to='employer-posts' />
-        } else if (this.state.isEmployer !== true && this.state.loggedIn === true) {
+        } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
             return <Redirect to='Community' />
         }
         return (

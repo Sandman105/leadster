@@ -6,8 +6,10 @@ import GlobalContext from '../components/Global/context';
 
 // import { Link } from "react-router-dom";
 
-const url = window.location.search;
-const postId = url.split("=")[2];
+const url           = window.location.search;
+const postId        = url.split("=")[2];
+const isLoggedIn    = sessionStorage.getItem('isLoggedIn');
+const isEmployer    = sessionStorage.getItem('isEmployer');
 
 class EmployerJobDetail extends Component {
     static contextType = GlobalContext;
@@ -29,7 +31,7 @@ class EmployerJobDetail extends Component {
                     postDetail: res.data
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     }
 
     handleWhoSavedTheJob = () => {
@@ -47,20 +49,20 @@ class EmployerJobDetail extends Component {
                     seekerList: [...this.state.seekerList, seekerListFromData]
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     }
 
     render() {
-        console.log(this.context)
-        // if ((!this.context.isLoggedIn)) {
-        //     return <Redirect to='/login' />
-        // } else if (parseInt(this.context.isEmployer) !== 1 && this.context.isLoggedIn) {
-        //     return <Redirect to='/community' />
-        // }
-        console.log("seekerList: ", this.state.seekerList);
+        // console.log(this.context)
+        if ((!isLoggedIn)) {
+            return <Redirect to='/login' />
+        } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
+            return <Redirect to='/community' />
+        }
+        // console.log("seekerList: ", this.state.seekerList);
         return (
             <>
-                <Header></Header>
+                <Header/>
                 <div>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>

@@ -5,7 +5,6 @@ import { Redirect } from 'react-router-dom';
 import { isNull } from 'util';
 
 class Signup extends Component {
-
     state = {
         firstName: "",
         lastName: "",
@@ -29,29 +28,28 @@ class Signup extends Component {
 
         event.preventDefault();
 
-        if (firstName === "") {
-            return this.setState({ error: "Please put in a user first name." })
-        }
-        if (lastName === "") {
-            return this.setState({ error: "Please put in a user last name." })
-        }
-        if (email === "") {
-            return this.setState({ error: "Please put in a user email." })
-        }
-        if (password === "") {
-            return this.setState({ error: "Please put in a user password." })
-        }
-        if (isNull(isemployer)) {
-            return this.setState({ error: "Please select your role." })
-        }
+        if (firstName === "") 
+            return this.setState({ error: "Please put in a user first name." });
+        
+        if (lastName === "") 
+            return this.setState({ error: "Please put in a user last name." });
+        
+        if (email === "") 
+            return this.setState({ error: "Please put in a user email." });
+        
+        if (password === "") 
+            return this.setState({ error: "Please put in a user password." });
+        
+        if (isNull(isemployer)) 
+            return this.setState({ error: "Please select your role." });
 
         createUser(this.state)
             .then(
                 (response) => {
                     if (response) {
-                        return this.setState({signedUp: true})
+                        return this.setState({signedUp: true});
                     } else {
-                        return false
+                        return false;
                     }
                 }
             );
@@ -170,6 +168,5 @@ class Signup extends Component {
         );
     };
 };
-
 
 export default Signup;

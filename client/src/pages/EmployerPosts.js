@@ -3,10 +3,11 @@ import Header from '../components/Header';
 import { getPostingByEmployer, createPosting, deletePosting } from '../utils/API';
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context'
-
 // import { Link } from "react-router-dom";
 
-const userId = sessionStorage.getItem('userId');
+const userId        = sessionStorage.getItem('userId');
+const isLoggedIn    = sessionStorage.getItem('isLoggedIn');
+const isEmployer    = sessionStorage.getItem('isEmployer');
 
 class EmployerPosts extends Component {
     static contextType = GlobalContext;
@@ -25,23 +26,22 @@ class EmployerPosts extends Component {
     };
 
     handleLogInForm = event => {
-
         const { title, description } = this.state;
         event.preventDefault();
 
-        if (title === "") {
-            return this.setState({ error: "Please put in a job title." })
-        }
-        if (description === "") {
-            return this.setState({ error: "Please put in a job description." })
-        }
+        if (title === "") 
+            return this.setState({ error: "Please put in a job title." });
+        
+        if (description === "") 
+            return this.setState({ error: "Please put in a job description." });
+        
         let dataToSend = {
             title: this.state.title,
             description: this.state.description
         };
         createPosting(userId, dataToSend)
             .then(this.handleGetAllPosts)
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     };
 
     componentDidMount() {
@@ -63,26 +63,26 @@ class EmployerPosts extends Component {
                     postList: postListFromData
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     }
 
     handleRemovePost = postId => {
         deletePosting(postId)
             .then(this.handleGetAllPosts)
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     }
 
     render() {
         // console.log(this.context)
-        console.log("data sent: ", this.state);
-        if ((!this.context.isLoggedIn)) {
+        // console.log("data sent: ", this.state);
+        if ((!isLoggedIn)) {
             return <Redirect to='/login' />
-        } else if (parseInt(this.context.isEmployer) !== 1 && this.context.isLoggedIn) {
+        } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
             return <Redirect to='/community' />
         }
         return (
             <>
-                <Header></Header>
+                <Header/>
                 <form onSubmit={this.handleLogInForm}>
                     <input
                         type="text"
