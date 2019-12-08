@@ -35,7 +35,11 @@ class EmployerPosts extends Component {
         if (description === "") {
             return this.setState({ error: "Please put in a job description." })
         }
-        createPosting(this.state)
+        let dataToSend = {
+            title: this.state.title,
+            description: this.state.description
+        };
+        createPosting(userId, dataToSend)
             .then(this.handleGetAllPosts)
             .catch(err => console.log(err));
     };
@@ -69,7 +73,8 @@ class EmployerPosts extends Component {
     }
 
     render() {
-        console.log(this.context)
+        // console.log(this.context)
+        console.log("data sent: ", this.state);
         if ((!this.context.isLoggedIn)) {
             return <Redirect to='/login' />
         } else if (parseInt(this.context.isEmployer) !== 1 && this.context.isLoggedIn) {

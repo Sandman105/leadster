@@ -29,30 +29,38 @@ async function getPostingsSavedByUser(req, res) {
     }
 };
 
-const getUsersFromSavedPosting = (req, res) => { //this will be for employers to view who saved their jobs
-    knex.select("*").from("subscription").where('postingID', req.params.id) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
-        .then(data => {
-            // knex.destroy();
-            return res.json(data); //can make another api call in here to get the user info 
-        })
-        .catch(err => {
-            console.log(err);
-            return res.json(err);
-        });
+//I'm proud of this one :')
+async function getUsersFromSavedPosting(req, res) { //this will be for employers to view who saved their jobs
+    try {
+        await (knex("subscription").select("*").where('postID', req.params.id).then(async data => {
+            // console.log("look here for result:\n", data[0].userID);
+            let subQuery = await (knex('users').select("*").where("id",data[0].userID));
+            // console.log("subquery:\n" , subQuery);
+            let dataToSend = {
+                nameFirst: subQuery[0].nameFirst,
+                nameLast: subQuery[0].nameLast,
+                email: subQuery[0].email,
+                phoneNum: subQuery[0].phoneNum 
+            }
+            console.log(dataToSend);
+            return res.json(dataToSend);
+        }));
+    }
+    catch (err) {
+        console.log(err);
+        return res.json(err);
+    };
 };
 
-const getPostingByEmployer = (req, res) => {
-    // console.log(`look here peiyu = ${req.params.id}`);
-    knex("posting").select("*").where('employerID', req.params.id)
-        .then(data => {
-            // knex.destroy();
-            // console.log(`look here 2 peiyu = ${data}`);
-            return res.json(data);
-        })
-        .catch(err => {
-            console.log(err);
-            return res.json(err);
-        });
+async function getPostingByEmployer(req, res) {
+    console.log("req: ", req);
+    try {
+        let query = await (knex("posting").select("*").where('employerID', req.params.id));
+        return res.json(query);
+    }
+    catch (err) {
+        return res.json(err);
+    };
 };
 
 const getPostingById = (req, res) => {
@@ -114,7 +122,7 @@ const createUser = (req, res) => {
                 companyName: req.body.companyName
             }
         ]
-    ).returning("*")
+    )
         .then(data => {
             // knex.destroy();
             console.log(data);
@@ -125,23 +133,24 @@ const createUser = (req, res) => {
         });
 };
 
-const createPosting = (req, res) => {
-    knex("posting").insert(
-        [
-            {
-                title: req.body.title,
-                description: req.body.description,
-                employerID: req.body.employerID
-            }
-        ]
-    ).returning("*")
-        .then(data => {
-            // knex.destroy();
-            return res.json(data);
-        })
-        .catch(err => {
-            return res.json(err);
-        });
+async function createPosting(req, res) {
+    // console.log("req params: ", req.params.id);
+    // console.log("req: ", req);
+    try {
+        let query = await (knex("posting").insert(
+            [
+                {
+                    title: req.body.title,
+                    description: req.body.description,
+                    employerID: req.params.id
+                }
+            ]
+        ));
+        return res.json(query);
+    }
+    catch (err) {
+        res.json(err);
+    }
 };
 
 const deletePosting = (req, res) => {

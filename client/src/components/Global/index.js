@@ -13,11 +13,14 @@ class Global extends Component {
     render() {
         return( 
             <GlobalContext.Provider 
-            value={{
-                user: this.state.user,
-                setUser: this.setUser,
-                isLoggedIn: this.state.isLoggedIn
-            }}>
+            value={
+            //     {
+            //     user: this.state.user,
+            //     setUser: this.setUser,
+            //     isLoggedIn: this.state.isLoggedIn
+            // }
+            this.state
+            }>
                 {this.props.children}
             </GlobalContext.Provider>
 

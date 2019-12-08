@@ -31,18 +31,18 @@ const withAuth = require("../../middleware/authentication.js");
 // module.exports = router;
 
 const {
-    getAllPostings,
+    getAllPostings, //
     getPostingsSavedByUser,
-    getUsersFromSavedPosting,
-    createSubscription,
-    createUser,
-    createPosting,
-    deleteSubscription,
-    getPostingByEmployer,
-    getPostingById,
-    deletePosting,
-    getUserProfile,
-    login
+    getUsersFromSavedPosting, //
+    createSubscription, //
+    createUser, //
+    createPosting, //
+    deleteSubscription, //
+    getPostingByEmployer, //
+    getPostingById,//
+    deletePosting, //
+    getUserProfile, //
+    login //
 } = require("../../controllers/user-controller");
 
 router.route('/').get(withAuth, getUserProfile)

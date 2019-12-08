@@ -19,10 +19,13 @@ export const createUser = (signupData) => {
 // Boss
 // 3. Employer posts showing all the jobs a boss posts or create a new post
 export const getPostingByEmployer = bossId => {
+    console.log("user: ", bossId);
     return axios.get(`/leadster/employer/${bossId}`);
 }
 
 export const createPosting = (bossId, postData) => {
+    console.log("boss: ", bossId);
+    console.log("data: ", postData);
     return axios.post(`/leadster/employer/${bossId}`, postData);
 }
 
@@ -36,6 +39,7 @@ export const deletePosting = postId => {
 }
 
 export const getUsersFromSavedPosting = postId => {
+    console.log("post: ", postId);
     return axios.get(`/leadster/employer/postsavers/${postId}`);
 }
 

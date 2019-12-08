@@ -35,14 +35,16 @@ class EmployerJobDetail extends Component {
     handleWhoSavedTheJob = () => {
         getUsersFromSavedPosting(postId)
             .then(res => {
-                console.log(res);
-                const seekerListFromData = res.data.map(seeker => {
-                    return {
-                        userID: seeker.userID
-                    }
-                });
+                console.log("result from API: ", res);
+                const seekerListFromData = res.data.email
+                
+                // map(seeker => {
+                //     return {
+                //         userID: seeker.email
+                //     }
+                // });
                 return this.setState({
-                    seekerList: seekerListFromData
+                    seekerList: [...this.state.seekerList, seekerListFromData]
                 });
             })
             .catch(err => console.log(err));
@@ -50,33 +52,38 @@ class EmployerJobDetail extends Component {
 
     render() {
         console.log(this.context)
-        if ((!this.context.isLoggedIn)) {
-            return <Redirect to='/login' />
-        } else if (parseInt(this.context.isEmployer) !== 1 && this.context.isLoggedIn) {
-            return <Redirect to='/community' />
-        }
+        // if ((!this.context.isLoggedIn)) {
+        //     return <Redirect to='/login' />
+        // } else if (parseInt(this.context.isEmployer) !== 1 && this.context.isLoggedIn) {
+        //     return <Redirect to='/community' />
+        // }
+        console.log("seekerList: ", this.state.seekerList);
         return (
             <>
-                <Header>
-
-                </Header>
-                <column>
+                <Header></Header>
+                <div>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>
-                </column>
-                <row>
+                </div>
+                <div>
                     {!this.state.seekerList.length ? (
                         <h2 className="text-center">
                             No seeker save this job yet.
                         </h2>
                     ) : (
-                            this.state.seekerList.map(seeker => {
-                                return (
-                                    <div>{seeker.userID}</div>
-                                )
-                            })
+                        this.state.seekerList.forEach(email => {
+                            console.log("email: ", email);
+                            return (
+                                <h2 className="text-center">{email}</h2>
+                            )
+                        })
+                            // this.state.seekerList.map(seeker => {
+                            //     return (
+                            //         <div>{seeker.email}</div>
+                            //     )
+                            // })
                         )}
-                </row>
+                </div>
             </>
         )
     }

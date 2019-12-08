@@ -22,6 +22,7 @@ class CommunityJobDetail extends Component {
     componentDidMount() {
         this.handleGetPostDetail();
         this.handleCheckSave();
+        console.log(this.context);
     };
 
     handleCheckSave = () => {
@@ -29,19 +30,17 @@ class CommunityJobDetail extends Component {
             .then(res => {
                 // console.log(res);
                 const savedPostListFromData = res.data.map(post => post.postID);
-                this.setState({
-                    savedPostList: savedPostListFromData
-                });
-            })
-            .then(() => {
-                // console.log(typeof(this.state.savedPostList)[0]);
-                // console.log(typeof(postId));
-                // console.log(this.state.savedPostList.includes(parseInt(postId)));
                 if (this.state.savedPostList.includes(parseInt(postId))) {
-                    this.setState({ btnDisable: true });
+                    this.setState({
+                        btnDisable: true,
+                        savedPostList: savedPostListFromData
+                    });
                 }
                 else {
-                    this.setState({ btnDisable: false });
+                    this.setState({
+                        btnDisable: false,
+                        savedPostList: savedPostListFromData
+                    });
                 }
             })
             .catch(err => console.log(err));
@@ -62,8 +61,10 @@ class CommunityJobDetail extends Component {
         // console.log("card.js -- 8 -->", postId);
         // console.log("card.js -- 9 -->", userId);
         createSubscription(postId, userId)
-            .then(console.log("API successful"))
-            .then(this.handleCheckSave())
+            .then(() => {
+                console.log("API successful");
+                this.handleCheckSave();
+            })
             .catch(err => { console.log("err: ", err) });
     };
 
@@ -71,8 +72,10 @@ class CommunityJobDetail extends Component {
         // console.log("Post: ", postId);
         // console.log("User: ", userId);
         deleteSubscription(postId, userId)
-            .then(console.log("Job unsaved!"))
-            .then(this.handleCheckSave())
+            .then(() => {
+                console.log("Job unsaved!");
+                this.handleCheckSave();
+            })
             .catch(err => { console.log("err: ", err) });
     };
 

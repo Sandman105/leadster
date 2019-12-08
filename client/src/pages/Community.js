@@ -10,8 +10,8 @@ const userId = sessionStorage.getItem('userId');
 const savePageUrl = `/community-saved-detail?userid=${userId}`
 
 class Community extends Component {
-    _isMounted = false
-    static contextType = GlobalContext
+    _isMounted = false;
+    static contextType = GlobalContext;
     state = {
         postList: []
     };
@@ -20,10 +20,6 @@ class Community extends Component {
         this._isMounted = true;
         getAllPostings().then(res => {
             console.log(res);
-            if (this._isMounted) {
-                this.setState({ posts: res.data });
-                // res.data.map(data => <Header><div><Card title={data.title} description={data.description} id={data.id} /></div></Header>);
-            }
             const postListFromData = res.data.map(post => {
                 return {
                     id: post.id,
@@ -40,10 +36,10 @@ class Community extends Component {
     componentWillUnmount() {
         this._isMounted = false
     }
-    
+
     render() {
         console.log(this.context)
-        if ((!this.context.isLoggedIn)) {
+        if (!this.context.isLoggedIn) {
             return <Redirect to='/login' />
         } else if (parseInt(this.context.user.isEmployer) === 1 && this.context.isLoggedIn) {
             return <Redirect to='/employer-posts' />

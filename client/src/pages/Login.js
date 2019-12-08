@@ -46,16 +46,19 @@ class Login extends Component {
         login(this.state)
             .then(data => {
                 if (data.status === 200) {
-                    console.log("Data: ", data);
+                    // console.log("Data: ", data);
                     sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
                     sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
                     sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
-                    console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
+                    // console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
                     const userData = {
                         userId: data.data.userInfo.userId,
                         isEmployer: data.data.userInfo.isEmployer
                     }
-                    this.context.setUser(userData)
+                    // this.context.setUser(userData);
+                    this.context.user.isEmployer = data.data.userInfo.isEmployer;
+                    this.context.isEmployer = data.data.userInfo.isEmployer;
+                    this.context.isLoggedIn = true;
                     if (sessionStorage.getItem('isEmployer') === "1") {
                         this.setState({ isEmployer: true, loggedIn: true  });
                     } else {
