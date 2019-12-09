@@ -4,6 +4,28 @@ import { createUser } from '../utils/API';
 import { Redirect } from 'react-router-dom';
 import { isNull } from 'util';
 
+const signUpButton = {
+
+backgroundColor: '#666666',
+border: 'none',
+borderRadius: '10px',
+color: 'white',
+padding: '5px 20px',
+textAlign: 'center',
+textDecoration: 'none',
+display: 'inline-block',
+fontSize: '16px',
+fontWeight: '600',
+fontFamily: "'Righteous', cursive",
+margin: '4px 2px',
+cursor: 'pointer',
+}
+
+const formLabel = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+}
+
 class Signup extends Component {
 
     state = {
@@ -64,7 +86,8 @@ class Signup extends Component {
         }
         
         return (
-            <Form onSubmit={this.handleSignupForm}>
+            
+            <Form onSubmit={this.handleSignupForm} style={formLabel}>
                 <Row form>
                     <Col md={4}>
                         <FormGroup>
@@ -165,8 +188,14 @@ class Signup extends Component {
                             )}
                     </Col>
                 </FormGroup>
-                <Button>Submit</Button>
+                <Button
+                    style={signUpButton}
+                >Submit</Button>
             </Form>
+            
+            
+            
+            
         );
     };
 };

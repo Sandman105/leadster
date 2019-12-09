@@ -8,6 +8,33 @@ import GlobalContext from '../components/Global/context'
 
 const userId = sessionStorage.getItem('userId');
 
+const employerButton = {
+
+backgroundColor: '#666666',
+border: 'none',
+borderRadius: '10px',
+color: 'white',
+padding: '10px 20px',
+textAlign: 'center',
+textDecoration: 'none',
+display: 'inline-block',
+fontSize: '16px',
+fontWeight: '600',
+fontFamily: "'Righteous', cursive",
+margin: '4px 2px',
+cursor: 'pointer',
+}
+
+const formLabel = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+}
+
+const newJobPosts = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+}
+
 class EmployerPosts extends Component {
 
     static contextType = GlobalContext
@@ -83,6 +110,7 @@ class EmployerPosts extends Component {
                 </Header>
                 <form onSubmit={this.handleLogInForm}>
                     <input
+                        style={formLabel}
                         type="text"
                         className="form-control"
                         placeholder="Job Title"
@@ -96,13 +124,14 @@ class EmployerPosts extends Component {
                                 {this.state.error}
                             </div>
                         )}
-                    <input
+                    <input          
+                        style={formLabel}
                         type="text"
                         className="form-control"
                         placeholder="Job Description"
                         onChange={this.handleInputChange}
                         value={this.state.description}
-                        name="desciption"
+                        name="description"
                     />
                     {this.state.error &&
                         !this.state.description.length && (
@@ -111,12 +140,16 @@ class EmployerPosts extends Component {
                             </div>
                         )}
                     <button
+                        style={employerButton}
                         type="submit"
                         className={"btn btn-success btn-sm"}
                     >
+                    Post Job
                     </button>
                 </form>
-                <row>
+                <row
+                style={newJobPosts}
+                >
                     {!this.state.postList.length ? (
                         <h2 className="text-center">
                             Post your first job.
@@ -127,6 +160,7 @@ class EmployerPosts extends Component {
                                     <column>
                                         <div><a href={post.url}>{post.title}</a></div>
                                         <button
+                                            style={employerButton}
                                             onClick={() => this.handleRemovePost(post.id)}
                                         >X</button>
                                     </column>

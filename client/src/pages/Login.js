@@ -5,8 +5,31 @@ import { login } from '../utils/API';
 // import Form from '../components/Form';
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context'
+import { Col } from 'reactstrap';
 
 //import { Link } from "react-router-dom";
+
+const loginButton = {
+
+    backgroundColor: '#666666',
+    border: 'none',
+    borderRadius: '10px',
+    color: 'white',
+    padding: '5px 20px',
+    textAlign: 'center',
+    textDecoration: 'none',
+    display: 'inline-block',
+    fontSize: '16px',
+    fontWeight: '600',
+    fontFamily: "'Righteous', cursive",
+    margin: '4px 2px',
+    cursor: 'pointer',
+}
+
+const formLabel = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+}
 
 class Login extends Component {
 
@@ -52,8 +75,8 @@ class Login extends Component {
                     }
                     this.context.setUser(userData)
                     if (sessionStorage.getItem('isEmployer') === "1") {
-                        this.setState({ isEmployer: true, loggedIn: true  });
-    
+                        this.setState({ isEmployer: true, loggedIn: true });
+
                     } else {
                         this.setState({ loggedIn: true });
                     }
@@ -74,8 +97,10 @@ class Login extends Component {
             return <Redirect to='Community' />
         }
         return (
-            <>
+
+            <Col md={8}>
                 <input
+                    style={formLabel}
                     type="text"
                     className="form-control"
                     placeholder="User Email"
@@ -90,6 +115,7 @@ class Login extends Component {
                         </div>
                     )}
                 <input
+                    style={formLabel}
                     type="text"
                     className="form-control"
                     placeholder="User Password"
@@ -104,12 +130,14 @@ class Login extends Component {
                         </div>
                     )}
                 <button
+                    style={loginButton}
                     type="button"
                     className={"btn btn-success btn-sm"}
                     onClick={this.handleLogInForm}
                 >
+                    Login
                 </button>
-            </>
+            </Col>
         )
     }
 }

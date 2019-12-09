@@ -9,6 +9,23 @@ import { Redirect } from 'react-router-dom';
 const userId = sessionStorage.getItem('userId');
 const savePageUrl = `/community-saved-detail?userid=${userId}`
 
+const communityButton = {
+
+backgroundColor: '#666666',
+border: 'none',
+borderRadius: '10px',
+color: 'white',
+padding: '10px 15px',
+textAlign: 'center',
+textDecoration: 'none',
+display: 'inline-block',
+fontSize: '16px',
+fontWeight: '600',
+fontFamily: "'Righteous', cursive",
+margin: '4px 2px',
+cursor: 'pointer',
+}
+
 class Community extends Component {
 
     _isMounted = false
@@ -56,7 +73,7 @@ class Community extends Component {
                 <Header>
                 </Header>
 
-                <a href={savePageUrl}><button>Go to save page</button></a>
+                <a href={savePageUrl}><button style={communityButton}>Go to save page</button></a>
 
                 <div>
                     {this.state.postList.map(post => (

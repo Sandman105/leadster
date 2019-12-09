@@ -10,6 +10,23 @@ const url = window.location.search;
 const postId = url.split("=")[2];
 const userId = sessionStorage.getItem('userId');
 
+const communityButton = {
+
+backgroundColor: '#666666',
+border: 'none',
+borderRadius: '10px',
+color: 'white',
+padding: '5px 15px',
+textAlign: 'center',
+textDecoration: 'none',
+display: 'inline-block',
+fontSize: '16px',
+fontWeight: '600',
+fontFamily: "'Righteous', cursive",
+margin: '4px 2px',
+cursor: 'pointer',
+}
+
 class CommunityJobDetail extends Component {
 
     state = {
@@ -83,6 +100,7 @@ class CommunityJobDetail extends Component {
                     <div>{this.state.postDetail.description}</div>
                 </column>
                 <button
+                    style={communityButton}
                     disabled={!this.state.savedPostList.includes(postId) ? true : undefined}
                     className={"btn btn-success btn-sm"}
                     onClick={() => this.handleSavePost(userId, postId)}
@@ -90,6 +108,7 @@ class CommunityJobDetail extends Component {
                     SAVE
                 </button>
                 <button
+                    style={communityButton}
                     disabled={this.state.savedPostList.includes(postId) ? true : undefined}
                     className={"btn btn-alert btn-sm"}
                     onClick={() => this.handleUnSavePost(userId, postId)}

@@ -9,6 +9,17 @@ import {
   NavLink
 } from 'reactstrap';
 
+const navbrand = {
+    color: '#38C9E6',
+    fontWeight: '600',
+    fontFamily: "'Permanent Marker', cursive",
+
+}
+const navtext = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+}
+
 const Header = props => {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -18,18 +29,18 @@ const Header = props => {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">Leadster</NavbarBrand>
+        <NavbarBrand style={navbrand} href="/">Leadster</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <input type="text" placeholder="Search.."></input>
+              <input style={navtext} type="text" placeholder="Search.."></input>
             </NavItem>
             <NavItem>
-              <NavLink href="/home">Home</NavLink>
+              <NavLink style={navtext} href="/home">Home</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/community">Community</NavLink>
+              <NavLink style={navtext} href="/community">Community</NavLink>
             </NavItem>
             
           </Nav>

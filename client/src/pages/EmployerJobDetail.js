@@ -9,6 +9,11 @@ import GlobalContext from '../components/Global/context';
 const url = window.location.search;
 const postId = url.split("=")[2];
 
+const seekerStateLabel = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+}
+
 class EmployerJobDetail extends Component {
     state = {
         postDetail: {},
@@ -64,7 +69,9 @@ class EmployerJobDetail extends Component {
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>
                 </column>
-                <row>
+                <row
+                style={seekerStateLabel}
+                >
                     {!this.state.seekerList.length ? (
                         <h2 className="text-center">
                             No seeker save this job yet.
