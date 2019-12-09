@@ -5,14 +5,16 @@ import { Redirect } from 'react-router-dom';
 import { isNull } from 'util';
 
 class Signup extends Component {
-
     state = {
         firstName: "",
         lastName: "",
         email: "",
         password: "",
-        isemployer: null,
-        error: null,
+        isEmployer: null,
+        errorFirstName: null,
+        errorLastName: null,
+        errorEmail: null,
+        errorPassword: null,
         signedUp: false
     }
 
@@ -25,36 +27,34 @@ class Signup extends Component {
 
     handleSignupForm = event => {
 
-        const { firstName, lastName, email, password, isemployer } = this.state;
+        const { firstName, lastName, email, password, isEmployer } = this.state;
 
         event.preventDefault();
 
-        if (firstName === "") {
-            return this.setState({ error: "Please put in a user first name." })
-        }
-        if (lastName === "") {
-            return this.setState({ error: "Please put in a user last name." })
-        }
-        if (email === "") {
-            return this.setState({ error: "Please put in a user email." })
-        }
-        if (password === "") {
-            return this.setState({ error: "Please put in a user password." })
-        }
-        if (isNull(isemployer)) {
-            return this.setState({ error: "Please select your role." })
-        }
+        if (firstName === "") 
+            this.setState({ errorFirstName: "Please put in a user first name." });
+        
+        if (lastName === "") 
+            this.setState({ errorLastName: "Please put in a user last name." });
+        
+        if (email === "") 
+            this.setState({ errorEmail: "Please put in a user email." });
+        
+        if (password === "") 
+            this.setState({ errorPassword: "Please put in a user password." });
 
-        createUser(this.state)
-            .then(
-                (response) => {
-                    if (response) {
-                        return this.setState({signedUp: true})
-                    } else {
-                        return false
+        if (firstName !== "" && lastName !== "" && email !== "" && password !== "") {
+            createUser(this.state)
+                .then(
+                    (response) => {
+                        if (response) {
+                            return this.setState({signedUp: true});
+                        } else {
+                            return false;
+                        }
                     }
-                }
-            );
+                );
+        }
     };
 
     render() {
@@ -77,10 +77,10 @@ class Signup extends Component {
                                 value={this.state.firstName}
                                 name="firstName"
                             />
-                            {this.state.error &&
+                            {this.state.errorFirstName &&
                                 !this.state.firstName.length && (
                                     <div className="alert alert-danger my-2">
-                                        {this.state.error}
+                                        {this.state.errorFirstName}
                                     </div>
                                 )}
                         </FormGroup>
@@ -96,10 +96,10 @@ class Signup extends Component {
                                 value={this.state.lastName}
                                 name="lastName"
                             />
-                            {this.state.error &&
+                            {this.state.errorLastName &&
                                 !this.state.lastName.length && (
                                     <div className="alert alert-danger my-2">
-                                        {this.state.error}
+                                        {this.state.errorLastName}
                                     </div>
                                 )}
                         </FormGroup>
@@ -116,10 +116,10 @@ class Signup extends Component {
                             value={this.state.email}
                             name="email"
                         />
-                        {this.state.error &&
+                        {this.state.errorEmail &&
                             !this.state.email.length && (
                                 <div className="alert alert-danger my-2">
-                                    {this.state.error}
+                                    {this.state.errorEmail}
                                 </div>
                             )}
                     </Col>
@@ -135,10 +135,10 @@ class Signup extends Component {
                             value={this.state.password}
                             name="password"
                         />
-                        {this.state.error &&
+                        {this.state.errorPassword &&
                             !this.state.password.length && (
                                 <div className="alert alert-danger my-2">
-                                    {this.state.error}
+                                    {this.state.errorPassword}
                                 </div>
                             )}
                     </Col>
@@ -148,21 +148,15 @@ class Signup extends Component {
                     <Col sm={7}>
                         <select
                             // type="select"
-                            name="isemployer"
+                            name="isEmployer"
                             className="form-control"
                             onChange={this.handleInputChange}
-                            value={this.state.isemployer}
+                            value={this.state.isEmployer}
                             // id="select"
                         >
-                            <option value="0" name="isemployer" isemployer="0">Job Seeker</option>
-                            <option value="1" name="isemployer" isemployer="1">Employer</option>
+                            <option value="0" name="isEmployer" isEmployer="0">Job Seeker</option>
+                            <option value="1" name="isEmployer" isEmployer="1">Employer</option>
                         </select>
-                        {this.state.error &&
-                            isNaN(this.state.isemployer) && (
-                                <div className="alert alert-danger my-2">
-                                    {this.state.error}
-                                </div>
-                            )}
                     </Col>
                 </FormGroup>
                 <Button>Submit</Button>
@@ -170,6 +164,5 @@ class Signup extends Component {
         );
     };
 };
-
 
 export default Signup;

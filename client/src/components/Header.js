@@ -8,12 +8,17 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 
 const Header = props => {
 
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
+
+  const handleSignOut = () => {
+    sessionStorage.clear();
+  }
 
   return (
     <div>
@@ -31,9 +36,10 @@ const Header = props => {
             <NavItem>
               <NavLink href="/community">Community</NavLink>
             </NavItem>
-            
+            <NavItem onClick={handleSignOut}>
+              <NavLink href='/home' className={"btn btn-danger btn-sm"}>Sign Out</NavLink>
+            </NavItem>
           </Nav>
-          
         </Collapse>
       </Navbar>
     </div>

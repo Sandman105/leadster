@@ -17,47 +17,56 @@ const getAllPostings = (req, res) => {
         });
 };
 
-const getPostingsSavedByUser = (req, res) => {
-    knex.select("*").from("subscription").where('userID', req.params.id) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
-        //this id should be saved in the localstorage or session storage after login of user:
-        // sessionStorage.setItem({
-        //     userid: "82"
-        // }); 
-        // sessionStorage.getItem("userid");
-        .then(data => {
-            // knex.destroy();
-            return res.json(data); //can make another api call in here to get the name of the posting instead of just the id 
-        })
-        .catch(err => {
-            console.log(err);
-            return res.json(err);
-        });
+async function getPostingsSavedByUser(req, res) {
+    try {
+        // console.log("controller req: ", req.params.id);
+        // knex("subscription").select("*").where('userID', req.params.id)
+        let query = await (knex('subscription').join('posting','subscription.postID', '=', 'posting.id').select(knex.ref('posting.id').as('postID'),'posting.title').where('userID', req.params.id));
+        // console.log(query);
+        return res.json(query);
+    }
+    catch (err) {
+        console.log("err: ", err);
+    }
 };
 
-const getUsersFromSavedPosting = (req, res) => { //this will be for employers to view who saved their jobs
-    knex.select("*").from("subscription").where('postingID', req.params.id) //ensure that the id is passed into the url such as /api/userSavedPosting/{userid} or something similar
-        .then(data => {
-            // knex.destroy();
-            return res.json(data); //can make another api call in here to get the user info 
-        })
-        .catch(err => {
-            console.log(err);
-            return res.json(err);
-        });
+//I'm proud of this one :') Peiyu is proud of Varun too!
+async function getUsersFromSavedPosting(req, res) { //this will be for employers to view who saved their jobs
+    try {
+        await (knex("subscription").select("*").where('postID', req.params.id).then(async data => {
+            let usersWhoSavedJob = data.map(user => user.userID);
+            // console.log("look here for result:\n", data);
+            // console.log("look here for result:\n", usersWhoSavedJob);
+            let subQuery = await (knex('users').select("*").whereIn("id",usersWhoSavedJob));
+            // console.log("subquery:\n" , subQuery);
+            let dataToSend = subQuery.map(subQuery => ({
+                nameFirst: subQuery.nameFirst,
+                nameLast: subQuery.nameLast,
+                email: subQuery.email,
+                phoneNum: subQuery.phoneNum 
+            }))
+            // console.log("data to send: ", dataToSend);
+            return res.json(dataToSend);
+        }).catch(err => {
+            console.log('err: ', err);
+            res.json(err);
+        }));
+    }
+    catch (err) {
+        console.log(err);
+        return res.json(err);
+    };
 };
 
-const getPostingByEmployer = (req, res) => {
-    console.log(`look here peiyu = ${req.params.id}`);
-    knex("posting").select("*").where('employerID', req.params.id)
-        .then(data => {
-            // knex.destroy();
-            console.log(`look here 2 peiyu = ${data}`)
-            return res.json(data);
-        })
-        .catch(err => {
-            console.log(err);
-            return res.json(err);
-        });
+async function getPostingByEmployer(req, res) {
+    console.log("req: ", req);
+    try {
+        let query = await (knex("posting").select("*").where('employerID', req.params.id));
+        return res.json(query);
+    }
+    catch (err) {
+        return res.json(err);
+    };
 };
 
 const getPostingById = (req, res) => {
@@ -72,25 +81,49 @@ const getPostingById = (req, res) => {
         });
 };
 
-const createSubscription = (req, res) => {
-    // console.log(req.body);
-    // console.log(req.params),
-    // console.log(req);
+async function queryDB(req, res) {
+    try{
+        //ensure that url is /leadster/query/:query
+        let query = await (knex('posting').select('*').where('title', 'like', `%${req.params.query}%`).orWhere('description','like',`%${req.params.query}%`));
+        return res.json(query);
+    } catch (err) {
+        console.log('err: ', err);
+        return res.json(err);
+    }
+}
 
-    knex("subscription").insert(
-        [
-            {
-                userID: req.body.userId,
-                postingID: req.params.id
-            }
-        ]
-    ).returning("*")
-        .then(data => {
-            // knex.destroy();
-            return res.json(data);
-        }).catch(err => {
-            return res.json(err);
-        });
+async function createSubscription(req, res) {
+    // console.log(req.body);
+    // console.log(req.params);
+    // console.log(req);
+    try {
+        let query = await (knex("subscription").insert(
+            [
+                {
+                    userID: req.body.userID,
+                    postID: req.body.postID
+                }
+            ]
+        ));
+        // console.log("query: ", query);
+        return res.json(query);
+    } catch (err) {
+        console.log("err: ", err);
+    };
+};
+
+async function deleteSubscription(req, res) {
+    console.log("User: ", req.params);
+    console.log("Post: ", req.params.id);
+    // console.log(req);
+    try {
+        let query = await (knex("subscription").delete().where('postID', req.params.id).andWhere('userID', req.params.user));
+        // console.log("query: ", knex("subscription").delete().where('postID', req.params.id).andWhere('userID', req.params.user));
+        console.log("result: ", query);
+        return res.json(query);
+    } catch (err) {
+        console.log("err: ", err);
+    };
 };
 
 const createUser = (req, res) => {
@@ -106,7 +139,7 @@ const createUser = (req, res) => {
                 companyName: req.body.companyName
             }
         ]
-    ).returning("*")
+    )
         .then(data => {
             // knex.destroy();
             console.log(data);
@@ -117,23 +150,24 @@ const createUser = (req, res) => {
         });
 };
 
-const createPosting = (req, res) => {
-    knex("posting").insert(
-        [
-            {
-                title: req.body.title,
-                description: req.body.description,
-                employerID: req.body.employerID
-            }
-        ]
-    ).returning("*")
-        .then(data => {
-            // knex.destroy();
-            return res.json(data);
-        })
-        .catch(err => {
-            return res.json(err);
-        });
+async function createPosting(req, res) {
+    // console.log("req params: ", req.params.id);
+    // console.log("req: ", req);
+    try {
+        let query = await (knex("posting").insert(
+            [
+                {
+                    title: req.body.title,
+                    description: req.body.description,
+                    employerID: req.params.id
+                }
+            ]
+        ));
+        return res.json(query);
+    }
+    catch (err) {
+        res.json(err);
+    }
 };
 
 const deletePosting = (req, res) => {
@@ -148,16 +182,20 @@ const deletePosting = (req, res) => {
 };
 
 //TODO: update this so that you delete from subscription when give a userid and postid
-const deleteSubscription = (req, res) => {
-    knex("subscription").where("id", req.body.id).del() //this may not work bc it will say reference key error
-        .then(data => {
-            // knex.destroy();
-            return res.json(data);
-        })
-        .catch(err => {
-            return res.json(err);
-        });
-};
+// async function deleteSubscription(req, res) {
+//     console.log("user: ", req.params);
+//     console.log("post: ", req.params.id);
+//     try {
+//         let query = await (knex("subscription").where({
+//             userID: req.body.userID,
+//             postID: req.params.id
+//         }).del()); //this may not work bc it will say reference key error
+//         return res.json(query);
+//     }
+//     catch (err) {
+//         console.log("err: ", err);
+//     }
+// };
 
 // function for logging in a user
 // this will run when user POSTs to '/api/user/login'
@@ -255,5 +293,6 @@ module.exports = {
     createUser,
     createPosting,
     deleteSubscription,
-    deletePosting
+    deletePosting,
+    queryDB
 };
