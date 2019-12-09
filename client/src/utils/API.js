@@ -74,6 +74,10 @@ export const deleteSubscription = (postId, subscriptionData) => {
     return axios.delete(`/leadster/jobs/unsaved/${data.postID}/${data.userID}` , data);
 }
 
+export const queryDB = (query) => {
+    return axios.post(`/leadster/jobs/query/${query}`);
+}
+
 export default {
     getAllPostings,
     getPostingsSavedByUser,
@@ -85,5 +89,6 @@ export default {
     getPostingByEmployer,
     getPostingById,
     deletePosting,
-    login
+    login,
+    queryDB
 }

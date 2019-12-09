@@ -75,6 +75,17 @@ const getPostingById = (req, res) => {
         });
 };
 
+async function queryDB(req, res) {
+    try{
+        //ensure that url is /leadster/query/:query
+        let query = await (knex('posting').select('*').where('title', 'like', `%${req.params.query}%`).orWhere('description','like',`%${req.params.query}%`));
+        return res.json(query);
+    } catch (err) {
+        console.log('err: ', err);
+        return res.json(err);
+    }
+}
+
 async function createSubscription(req, res) {
     // console.log(req.body);
     // console.log(req.params);
@@ -276,5 +287,6 @@ module.exports = {
     createUser,
     createPosting,
     deleteSubscription,
-    deletePosting
+    deletePosting,
+    queryDB
 };

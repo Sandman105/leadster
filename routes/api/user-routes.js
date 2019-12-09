@@ -42,7 +42,8 @@ const {
     getPostingById,//
     deletePosting, //
     getUserProfile, //
-    login //
+    login, //
+    queryDB 
 } = require("../../controllers/user-controller");
 
 router.route('/').get(withAuth, getUserProfile)
@@ -89,5 +90,9 @@ router.route("/jobs/saved/:id").post(createSubscription);
 // 9. Unsave one job
 //  "/jobs/unsave/:id"
 router.route("/jobs/unsaved/:id/:user").delete(deleteSubscription);
+
+// 10. search for job
+// "/jobs/query/:query"
+router.route("/jobs/query/:query").post(queryDB);
 
 module.exports = router;
