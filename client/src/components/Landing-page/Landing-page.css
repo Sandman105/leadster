@@ -24,28 +24,39 @@
   -o-transform: translateX(100%);
   transform: translateX(100%);
 }
-  /*End of "Sidebar bar" annimations-----------------------*/
+/*End of "Sidebar bar" annimations-----------------------*/
 
-  .stripe-div {
+.stripe-div {
   width:0%;
-  height: 8vh;
+  height: 14.5vh;
   margin: auto;
   position: absolute;
+  text-align: center;
   top: 50%;
+  box-shadow: 
+       inset 0 -3em 3em rgba(0,0,0,0.1), 
+             0 0  0 2px rgb(255,255,255),
+             0.3em 0.3em 1em rgba(0,0,0,0.3);
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  overflow: hidden;
   background: white;
+  z-index: 10;
   -webkit-transition: width 2.5s ease-in-out;
   -moz-transition: width 2.5s ease-in-out;
   -o-transition: width 2.5s ease-in-out;
   transition: width 2.5s ease-in-out;
-  
-  }
+}
+.text-center {
+  top: 60%;
+  z-index: 90;
+  position: absolute;
+  margin: auto;
+}
+
 .expand-horizontally {
   width: 100%;
-  height: 8vh;
+  height: 14.5vh;
   margin: auto;
   position: absolute;
   top: 50%;
@@ -55,4 +66,112 @@
   transform: translateY(-50%);
   overflow:hidden;
   background: white;
+  -webkit-transition: width 2.5s ease-in-out;
+  -moz-transition: width 2.5s ease-in-out;
+  -o-transition: width 2.5s ease-in-out;
+  transition: width 2.5s ease-in-out;
+}
+
+#background-container {
+  z-index: -1;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#copy {
+  position: absolute;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 14px;
+  font-size: 10px;
+  font-weight: 400;
+  z-index: 10;
+}
+
+#copy a {
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+#copy a b {
+  font-weight: 700;
+}
+
+#copy a:hover {
+  color: #fff;
+}
+
+.mask {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
+  box-shadow: 0 0 500px #000 inset, 0 0 300px #000 inset, 0 0 200px #000 inset;
+}
+
+
+
+.circle {
+  background: #0d0d0d;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: relative;
+  left: 50%;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px #0a0a0a, 0 0 0 1px #0a0a0a;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover!important;
+}
+
+input {
+  width: 260px;
+  margin-left: 10px;
+  margin-top: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 13px;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.2), 0 1px 1px rgba(255, 255, 255, 0.2);
+  -webkit-transition: box-shadow 0.5s ease;
+  -moz-transition: box-shadow 0.5s ease;
+  -o-transition: box-shadow 0.5s ease;
+  -ms-transition: box-shadow 0.5s ease;
+  transition: box-shadow 0.5s ease;
+}
+
+input:focus {
+  box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.4), 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.vertical {
+  float: left;
+  width: 10%;
+  overflow: hidden;
+
+}
+
+.vertical .horizontal {
+  width: 100%;
+  height: 10vh;
+  position: relative;
+  box-shadow: -1px 1px 1px 1px #000000 inset, 0 0 50px rgba(0, 0, 0, 0.5) inset;
+
+  overflow: hidden;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover!important;
 }
