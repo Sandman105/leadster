@@ -52,18 +52,21 @@ class Login extends Component {
                         sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
                         sessionStorage.setItem("isLoggedIn", true);
                         // console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
-                        const userData = {
-                            userId: data.data.userInfo.userId,
-                            isEmployer: data.data.userInfo.isEmployer
-                        }
-                        this.context.setUser(userData);
+                        // const userData = {
+                        //     userId: data.data.userInfo.userId,
+                        //     isEmployer: data.data.userInfo.isEmployer
+                        // }
+                        // this.context.setUser(userData);
                         // this.context.user.isEmployer = data.data.userInfo.isEmployer;
                         // this.context.isEmployer = data.data.userInfo.isEmployer;
                         // this.context.isLoggedIn = true;
                         // if (sessionStorage.getItem('isEmployer') === "1") {
                         //     this.setState({ isEmployer: true, loggedIn: true });
                         // } else {
-                        // this.setState({ loggedIn: true });
+                        this.setState({ 
+                            loggedIn: true,
+                            isEmployer: sessionStorage.getItem('isEmployer')
+                         });
                         // }
                     }
                 }
@@ -75,18 +78,17 @@ class Login extends Component {
     };
 
     render() {
-        let isLoggedIn = sessionStorage.getItem('isLoggedIn');
-        let isEmployer = sessionStorage.getItem('isEmployer');
-        // console.log("state: ", this.state);
+        console.log("state: ", this.state);
         // console.log("context: ", this.context);
         // console.log("context emp: ", this.context.user.isEmployer);
-        console.log("logged in: ", isLoggedIn);
-        console.log("employer: ", isEmployer);
-        if (parseInt(isEmployer) === 1 && isLoggedIn === "true") {
+        console.log("logged in: ", typeof (this.state.loggedIn));
+        console.log("employer: ", typeof (this.state.isEmployer));
+        if (parseInt(this.state.isEmployer) === 1 && this.state.loggedIn) {
             return <Redirect to='employer-posts' />
-        } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
+        } else if (parseInt(this.state.isEmployer) !== 1 && this.state.loggedIn) {
             return <Redirect to='community' />
         }
+
         return (
             <>
                 <input
