@@ -28,7 +28,7 @@ class EmployerJobDetail extends Component {
             .then(res => {
                 console.log(res);
                 return this.setState({
-                    postDetail: res.data
+                    postDetail: res.data[0] // with peiyu
                 });
             })
             .catch(err => console.log("err: ", err));

@@ -12,7 +12,9 @@ class Login extends Component {
     state = {
         email: "",
         password: "",
-        error: null,
+        errorEmail: null,
+        errorPassword: null,
+        errorLogin: null,
         isEmployer: null,
         loggedIn: null
     }
@@ -34,40 +36,42 @@ class Login extends Component {
         event.preventDefault();
 
         if (email === "") {
-            return this.setState({ error: "Please put in a user email." })
+            this.setState({ errorEmail: "Please put in a user email." })
         }
         if (password === "") {
-            return this.setState({ error: "Please put in a user password." })
+            this.setState({ errorPassword: "Please put in a user password." })
         }
 
-        login(this.state)
-            .then(data => {
-                if (data.status === 200) {
-                    console.log("Data: ", data);
-                    sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
-                    sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
-                    sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
-                    sessionStorage.setItem("isLoggedIn", true);
-                    // console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
-                    // const userData = {
-                    //     userId: data.data.userInfo.userId,
-                    //     isEmployer: data.data.userInfo.isEmployer
-                    // }
-                    // this.context.setUser(userData);
-                    // this.context.user.isEmployer = data.data.userInfo.isEmployer;
-                    // this.context.isEmployer = data.data.userInfo.isEmployer;
-                    // this.context.isLoggedIn = true;
-                    // if (sessionStorage.getItem('isEmployer') === "1") {
-                    //     this.setState({ isEmployer: true, loggedIn: true });
-                    // } else {
-                        this.setState({ loggedIn: true });
-                    // }
+        if (email !== "" && password !== "") {
+            login(this.state)
+                .then(data => {
+                    if (data.status === 200) {
+                        console.log("Data: ", data);
+                        sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
+                        sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
+                        sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
+                        sessionStorage.setItem("isLoggedIn", true);
+                        // console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
+                        const userData = {
+                            userId: data.data.userInfo.userId,
+                            isEmployer: data.data.userInfo.isEmployer
+                        }
+                        this.context.setUser(userData);
+                        // this.context.user.isEmployer = data.data.userInfo.isEmployer;
+                        // this.context.isEmployer = data.data.userInfo.isEmployer;
+                        // this.context.isLoggedIn = true;
+                        // if (sessionStorage.getItem('isEmployer') === "1") {
+                        //     this.setState({ isEmployer: true, loggedIn: true });
+                        // } else {
+                        // this.setState({ loggedIn: true });
+                        // }
+                    }
                 }
-            }
-            ).catch(err => {
-                console.log("err: ", err);
-                this.setState({ error: "Failed to login!" });
-            });
+                ).catch(err => {
+                    console.log("err: ", err);
+                    this.setState({ errorLogin: "Failed to login!" });
+                });
+        }
     };
 
     render() {
@@ -81,7 +85,7 @@ class Login extends Component {
         if (parseInt(isEmployer) === 1 && isLoggedIn === "true") {
             return <Redirect to='employer-posts' />
         } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
-            return <Redirect to='Community' />
+            return <Redirect to='community' />
         }
         return (
             <>
@@ -93,10 +97,10 @@ class Login extends Component {
                     value={this.state.email}
                     name="email"
                 />
-                {this.state.error &&
+                {this.state.errorEmail &&
                     !this.state.email.length && (
                         <div className="alert alert-danger my-2">
-                            {this.state.error}
+                            {this.state.errorEmail}
                         </div>
                     )}
                 <input
@@ -107,10 +111,16 @@ class Login extends Component {
                     value={this.state.password}
                     name="password"
                 />
-                {this.state.error &&
+                {this.state.errorPassword &&
                     !this.state.password.length && (
                         <div className="alert alert-danger my-2">
-                            {this.state.error}
+                            {this.state.errorPassword}
+                        </div>
+                    )}
+                {this.state.errorLogin &&
+                    (
+                        <div className="alert alert-danger my-2">
+                            {this.state.errorLogin}
                         </div>
                     )}
                 <button

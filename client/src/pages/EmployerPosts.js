@@ -15,7 +15,8 @@ class EmployerPosts extends Component {
         postList: [],
         title: "",
         description: "",
-        error: ""
+        errorTitle: null,
+        errorDescription: null
     }
 
     handleInputChange = event => {
@@ -30,18 +31,21 @@ class EmployerPosts extends Component {
         event.preventDefault();
 
         if (title === "") 
-            return this.setState({ error: "Please put in a job title." });
+            this.setState({ errorTitle: "Please put in a job title." });
         
         if (description === "") 
-            return this.setState({ error: "Please put in a job description." });
+            this.setState({ errorDescription: "Please put in a job description." });
         
-        let dataToSend = {
-            title: this.state.title,
-            description: this.state.description
-        };
-        createPosting(userId, dataToSend)
-            .then(this.handleGetAllPosts)
-            .catch(err => console.log("err: ", err));
+        
+        if (title !== "" && description !== "") {
+            let dataToSend = {
+                title: this.state.title,
+                description: this.state.description
+            };
+            createPosting(userId, dataToSend)
+                .then(this.handleGetAllPosts)
+                .catch(err => console.log("err: ", err));
+        }
     };
 
     componentDidMount() {
@@ -92,10 +96,10 @@ class EmployerPosts extends Component {
                         value={this.state.title}
                         name="title"
                     />
-                    {this.state.error &&
+                    {this.state.errorTitle &&
                         !this.state.title.length && (
                             <div className="alert alert-danger my-2">
-                                {this.state.error}
+                                {this.state.errorTitle}
                             </div>
                         )}
                     <input
@@ -106,10 +110,10 @@ class EmployerPosts extends Component {
                         value={this.state.description}
                         name="description"
                     />
-                    {this.state.error &&
+                    {this.state.errorDescription &&
                         !this.state.description.length && (
                             <div className="alert alert-danger my-2">
-                                {this.state.error}
+                                {this.state.errorDescription}
                             </div>
                         )}
                     <button

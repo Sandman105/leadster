@@ -29,7 +29,7 @@ async function getPostingsSavedByUser(req, res) {
     }
 };
 
-//I'm proud of this one :')
+//I'm proud of this one :') Peiyu is proud of Varun too!
 async function getUsersFromSavedPosting(req, res) { //this will be for employers to view who saved their jobs
     try {
         await (knex("subscription").select("*").where('postID', req.params.id).then(async data => {
@@ -44,6 +44,9 @@ async function getUsersFromSavedPosting(req, res) { //this will be for employers
             }
             console.log(dataToSend);
             return res.json(dataToSend);
+        }).catch(err => {
+            console.log('err: ', err);
+            res.json(err);
         }));
     }
     catch (err) {

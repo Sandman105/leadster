@@ -6,57 +6,61 @@ import GlobalContext from '../components/Global/context';
 // import Card from '../components/Card';
 import { createSubscription, getPostingById, getPostingsSavedByUser, deleteSubscription } from '../utils/API.js';
 
-const url           = window.location.search;
-const postId        = url.split("=")[2];
-const userId        = sessionStorage.getItem('userId');
-const isLoggedIn    = sessionStorage.getItem('isLoggedIn');
-const isEmployer    = sessionStorage.getItem('isEmployer');
+const url = window.location.search;
+// let postId = url.split("=")[2];
+const userId = sessionStorage.getItem('userId');
+const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+const isEmployer = sessionStorage.getItem('isEmployer');
 
 class CommunityJobDetail extends Component {
     static contextType = GlobalContext;
     state = {
         postDetail: {},
-        savedPostList: [],
-        btnDisable: null
+        // savedPostList: [],
+        btnDisable: null,
+        // postId: url.split("=")[2]
     }
 
     componentDidMount() {
         this.handleGetPostDetail();
         this.handleCheckSave();
-        console.log("context on load: ", this.context);
+        // console.log("context on load: ", this.context);
     };
 
     handleCheckSave = () => {
         getPostingsSavedByUser(userId)
             .then(res => {
-                // console.log(res);
-                const savedPostListFromData = res.data.map(post => post.postID);
-                if (this.state.savedPostList.includes(parseInt(postId))) {
+                console.log('result: ', res);
+                const savedPostListFromData = (res.data).map(element => element.postID);
+                console.log('result data: ', savedPostListFromData);
+                console.log(savedPostListFromData.includes(parseInt((this.props.location.search).split("=")[2])));
+                if (savedPostListFromData.includes(parseInt((this.props.location.search).split("=")[2]))) {
                     this.setState({
                         btnDisable: true,
-                        savedPostList: savedPostListFromData
                     });
                 }
                 else {
                     this.setState({
                         btnDisable: false,
-                        savedPostList: savedPostListFromData
                     });
                 }
             })
             .catch(err => console.log("err: ", err));
+            console.log("Post ID: " + parseInt((this.props.location.search).split("=")[2]));
+            console.log("Saved List: " + this.state.savedPostList);
     };
 
     handleGetPostDetail = () => {
-        getPostingById(postId)
+        getPostingById((this.props.location.search).split("=")[2])
             .then(res => {
                 console.log(res);
                 return this.setState({
                     postDetail: res.data[0]
                 });
             })
-            .catch(err => console.log("err: ", err));
+            .catch(err => console.log("err: ", err))
     };
+
 
     handleSavePost = (postId, userId) => {
         // console.log("card.js -- 8 -->", postId);
@@ -82,15 +86,17 @@ class CommunityJobDetail extends Component {
 
     render() {
         // console.log("context: ", this.context);
-        // console.log("props: ", this.props.context);
-        if ((!isLoggedIn)) {
+        console.log("props: ", this.props);
+        console.log("url: ", url);
+        console.log("postid: ", (this.props.location.search).split("=")[2]);
+        if (isLoggedIn !== "true") {
             return <Redirect to='/login' />
         } else if (parseInt(isEmployer) === 1 && isLoggedIn) {
             return <Redirect to='/employer-posts' />
         }
         return (
             <>
-                <Header/>
+                <Header />
                 <column>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>
@@ -98,14 +104,14 @@ class CommunityJobDetail extends Component {
                 <button
                     disabled={this.state.btnDisable ? true : undefined}
                     className={"btn btn-success btn-sm"}
-                    onClick={() => this.handleSavePost(postId, userId)}
+                    onClick={() => this.handleSavePost((this.props.location.search).split("=")[2], userId)}
                 >
                     SAVE
                 </button>
                 <button
                     disabled={this.state.btnDisable ? undefined : true}
                     className={"btn btn-danger btn-sm"}
-                    onClick={() => this.handleUnSavePost(postId, userId)}
+                    onClick={() => this.handleUnSavePost((this.props.location.search).split("=")[2], userId)}
                 >
                     UNSAVE
                 </button>
