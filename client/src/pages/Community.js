@@ -6,9 +6,6 @@ import { getAllPostings } from "../utils/API.js";
 import GlobalContext from '../components/Global/context'
 import { Redirect } from 'react-router-dom';
 
-const userId = sessionStorage.getItem('userId');
-const savePageUrl = `/community-saved-detail?userid=${userId}`;
-
 class Community extends Component {
     _isMounted = false;
     static contextType = GlobalContext;
@@ -24,7 +21,7 @@ class Community extends Component {
                 return {
                     id: post.id,
                     title: post.title,
-                    url: `/community-job-detail?userid=${userId}&postid=${post.id}`
+                    url: `/community-job-detail?userid=${sessionStorage.getItem('userId')}&postid=${post.id}`
                 }
             });
             return this.setState({
@@ -42,6 +39,7 @@ class Community extends Component {
     render() {
         const isLoggedIn = sessionStorage.getItem('isLoggedIn');
         const isEmployer = sessionStorage.getItem('isEmployer');
+        const savePageUrl = `/community-saved-detail?userid=${sessionStorage.getItem('userId')}`;
         console.log(this.context);
         if (isLoggedIn !== "true") {
             return <Redirect to='/login' />

@@ -83,7 +83,6 @@ class EmployerPosts extends Component {
         if (!isLoggedIn) {
             return <Redirect to='/login' />
         } else if (parseInt(isEmployer) === 1 && isLoggedIn) {
-            //return <Redirect to='/employer-posts' />
             return (
                 <>
                     <Header />
@@ -142,6 +141,9 @@ class EmployerPosts extends Component {
                     </row>
                 </>
             )
+        }
+        else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
+            return <Redirect to='/employer-posts' />
         }
     }
 }

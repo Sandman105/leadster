@@ -5,8 +5,6 @@ import GlobalContext from '../components/Global/context';
 import Card from '../components/Card';
 import { getPostingsSavedByUser } from "../utils/API.js";
 
-const userId = sessionStorage.getItem('userId');
-
 class CommunitySavedDetail extends Component {
     static contextType = GlobalContext
     state = {
@@ -24,16 +22,16 @@ class CommunitySavedDetail extends Component {
     }
 
     handleGetSavedPostList = () => {
-        getPostingsSavedByUser(userId)
+        getPostingsSavedByUser(sessionStorage.getItem('userId'))
             .then(res => {
-                console.log("userid: ", userId);
+                console.log("userid: ", sessionStorage.getItem('userId'));
                 console.log("saved jobs: ", res);
                 // (res.data).map(element => element.postID)
                 const savedPostListFromData = res.data.map(post => {
                     return {
                         id: post.postID,
                         title: post.title,
-                        url: `/community-job-detail?userid=${userId}?postid=${post.postID}`
+                        url: `/community-job-detail?userid=${sessionStorage.getItem('userId')}?postid=${post.postID}`
                     }
                 });
                 console.log(savedPostListFromData);

@@ -21,7 +21,7 @@ async function getPostingsSavedByUser(req, res) {
     try {
         // console.log("controller req: ", req.params.id);
         // knex("subscription").select("*").where('userID', req.params.id)
-        let query = await (knex('subscription').join('posting','subscription.postID', '=', 'posting.id').select(knex.ref('posting.id').as('postID'),'posting.title'));
+        let query = await (knex('subscription').join('posting','subscription.postID', '=', 'posting.id').select(knex.ref('posting.id').as('postID'),'posting.title').where('userID', req.params.id));
         // console.log(query);
         return res.json(query);
     }
@@ -34,16 +34,18 @@ async function getPostingsSavedByUser(req, res) {
 async function getUsersFromSavedPosting(req, res) { //this will be for employers to view who saved their jobs
     try {
         await (knex("subscription").select("*").where('postID', req.params.id).then(async data => {
-            // console.log("look here for result:\n", data[0].userID);
-            let subQuery = await (knex('users').select("*").where("id",data[0].userID));
+            let usersWhoSavedJob = data.map(user => user.userID);
+            // console.log("look here for result:\n", data);
+            // console.log("look here for result:\n", usersWhoSavedJob);
+            let subQuery = await (knex('users').select("*").whereIn("id",usersWhoSavedJob));
             // console.log("subquery:\n" , subQuery);
-            let dataToSend = {
-                nameFirst: subQuery[0].nameFirst,
-                nameLast: subQuery[0].nameLast,
-                email: subQuery[0].email,
-                phoneNum: subQuery[0].phoneNum 
-            }
-            console.log(dataToSend);
+            let dataToSend = subQuery.map(subQuery => ({
+                nameFirst: subQuery.nameFirst,
+                nameLast: subQuery.nameLast,
+                email: subQuery.email,
+                phoneNum: subQuery.phoneNum 
+            }))
+            // console.log("data to send: ", dataToSend);
             return res.json(dataToSend);
         }).catch(err => {
             console.log('err: ', err);
