@@ -5,31 +5,38 @@ import GlobalContext from '../components/Global/context';
 import Card from '../components/Card';
 import { getPostingsSavedByUser } from "../utils/API.js";
 
-const userId        = sessionStorage.getItem('userId');
-const isLoggedIn    = sessionStorage.getItem('isLoggedIn');
-const isEmployer    = sessionStorage.getItem('isEmployer');
+const userId = sessionStorage.getItem('userId');
 
 class CommunitySavedDetail extends Component {
     static contextType = GlobalContext
     state = {
-        savedPostList: []
+        savedPostList: [],
+        // isLoggedIn: false,
+        // isEmployer: null
     }
 
     componentDidMount() {
+        this.setState({
+            isEmployer: sessionStorage.getItem('isEmployer'),
+            isLoggedIn: sessionStorage.getItem('isLoggedIn')
+        })
         this.handleGetSavedPostList();
     }
 
     handleGetSavedPostList = () => {
         getPostingsSavedByUser(userId)
             .then(res => {
-                console.log(res);
+                console.log("userid: ", userId);
+                console.log("saved jobs: ", res);
+                // (res.data).map(element => element.postID)
                 const savedPostListFromData = res.data.map(post => {
                     return {
-                        id: post.id,
+                        id: post.postID,
                         title: post.title,
-                        url: `/community-job-detail?userod=${userId}?postid=${post.id}`
+                        url: `/community-job-detail?userid=${userId}?postid=${post.postID}`
                     }
                 });
+                console.log(savedPostListFromData);
                 return this.setState({
                     savedPostList: savedPostListFromData
                 });
@@ -38,12 +45,14 @@ class CommunitySavedDetail extends Component {
             });
     };
 
-      render() {
-        // console.log(this.context)
+    render() {
+        // console.log(this.context);
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const isEmployer = sessionStorage.getItem('isEmployer');
         if ((!isLoggedIn)) {
             return <Redirect to='/login' />
         } else if (parseInt(isEmployer) === 1 && isLoggedIn) {
-            return <Redirect to='/employer-posts' />
+            return <Redirect to='employer-posts' />
         }
         return (
             <>

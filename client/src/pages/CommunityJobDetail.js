@@ -6,29 +6,29 @@ import GlobalContext from '../components/Global/context';
 // import Card from '../components/Card';
 import { createSubscription, getPostingById, getPostingsSavedByUser, deleteSubscription } from '../utils/API.js';
 
-const url = window.location.search;
-// let postId = url.split("=")[2];
-const userId = sessionStorage.getItem('userId');
-const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-const isEmployer = sessionStorage.getItem('isEmployer');
-
 class CommunityJobDetail extends Component {
     static contextType = GlobalContext;
     state = {
         postDetail: {},
         // savedPostList: [],
         btnDisable: null,
-        // postId: url.split("=")[2]
+        // postId: url.split("=")[2],
+        // isLoggedIn: false,
+        // isEmployer: null
     }
 
     componentDidMount() {
+        // this.setState({
+        //     isLoggedIn: sessionStorage.getItem('isLoggedIn'),
+        //     isEmployer: sessionStorage.getItem('isEmployer')
+        // });
         this.handleGetPostDetail();
         this.handleCheckSave();
         // console.log("context on load: ", this.context);
     };
 
     handleCheckSave = () => {
-        getPostingsSavedByUser(userId)
+        getPostingsSavedByUser(sessionStorage.getItem('userId'))
             .then(res => {
                 console.log('result: ', res);
                 const savedPostListFromData = (res.data).map(element => element.postID);
@@ -86,10 +86,14 @@ class CommunityJobDetail extends Component {
 
     render() {
         // console.log("context: ", this.context);
-        console.log("props: ", this.props);
-        console.log("url: ", url);
-        console.log("postid: ", (this.props.location.search).split("=")[2]);
-        if (isLoggedIn !== "true") {
+        // console.log("props: ", this.props);
+        // console.log("url: ", url);
+        // console.log("postid: ", (this.props.location.search).split("=")[2]);
+        // console.log("state loggedin: ", this.state.isLoggedIn);
+        // console.log("state employer: ", this.state.isEmployer);
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const isEmployer = sessionStorage.getItem('isEmployer');
+        if (!isLoggedIn) {
             return <Redirect to='/login' />
         } else if (parseInt(isEmployer) === 1 && isLoggedIn) {
             return <Redirect to='/employer-posts' />
@@ -104,14 +108,14 @@ class CommunityJobDetail extends Component {
                 <button
                     disabled={this.state.btnDisable ? true : undefined}
                     className={"btn btn-success btn-sm"}
-                    onClick={() => this.handleSavePost((this.props.location.search).split("=")[2], userId)}
+                    onClick={() => this.handleSavePost((this.props.location.search).split("=")[2], sessionStorage.getItem('userId'))}
                 >
                     SAVE
                 </button>
                 <button
                     disabled={this.state.btnDisable ? undefined : true}
                     className={"btn btn-danger btn-sm"}
-                    onClick={() => this.handleUnSavePost((this.props.location.search).split("=")[2], userId)}
+                    onClick={() => this.handleUnSavePost((this.props.location.search).split("=")[2], sessionStorage.getItem('userId'))}
                 >
                     UNSAVE
                 </button>

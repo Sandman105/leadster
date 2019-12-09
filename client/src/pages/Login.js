@@ -81,8 +81,8 @@ class Login extends Component {
         console.log("state: ", this.state);
         // console.log("context: ", this.context);
         // console.log("context emp: ", this.context.user.isEmployer);
-        console.log("logged in: ", typeof (this.state.loggedIn));
-        console.log("employer: ", typeof (this.state.isEmployer));
+        // console.log("logged in: ", typeof (this.state.loggedIn));
+        // console.log("employer: ", typeof (this.state.isEmployer));
         if (parseInt(this.state.isEmployer) === 1 && this.state.loggedIn) {
             return <Redirect to='employer-posts' />
         } else if (parseInt(this.state.isEmployer) !== 1 && this.state.loggedIn) {

@@ -20,7 +20,9 @@ const getAllPostings = (req, res) => {
 async function getPostingsSavedByUser(req, res) {
     try {
         // console.log("controller req: ", req.params.id);
-        let query = await (knex("subscription").select("*").where('userID', req.params.id));
+        // knex("subscription").select("*").where('userID', req.params.id)
+    
+        let query = await (knex('subscription').join('posting','subscription.postID', '=', 'posting.id').select(knex.ref('posting.id').as('postID'),'posting.title'));
         // console.log(query);
         return res.json(query);
     }
