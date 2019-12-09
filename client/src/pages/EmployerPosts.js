@@ -5,9 +5,8 @@ import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context'
 // import { Link } from "react-router-dom";
 
-const userId        = sessionStorage.getItem('userId');
-const isLoggedIn    = sessionStorage.getItem('isLoggedIn');
-const isEmployer    = sessionStorage.getItem('isEmployer');
+//sessionStorage.getItem('userId')
+// const userId        = sessionStorage.getItem('userId');
 
 class EmployerPosts extends Component {
     static contextType = GlobalContext;
@@ -30,19 +29,19 @@ class EmployerPosts extends Component {
         const { title, description } = this.state;
         event.preventDefault();
 
-        if (title === "") 
+        if (title === "")
             this.setState({ errorTitle: "Please put in a job title." });
-        
-        if (description === "") 
+
+        if (description === "")
             this.setState({ errorDescription: "Please put in a job description." });
-        
-        
+
+
         if (title !== "" && description !== "") {
             let dataToSend = {
                 title: this.state.title,
                 description: this.state.description
             };
-            createPosting(userId, dataToSend)
+            createPosting(sessionStorage.getItem('userId'), dataToSend)
                 .then(this.handleGetAllPosts)
                 .catch(err => console.log("err: ", err));
         }
@@ -53,14 +52,14 @@ class EmployerPosts extends Component {
     }
 
     handleGetAllPosts = () => {
-        getPostingByEmployer(userId)
+        getPostingByEmployer(sessionStorage.getItem('userId'))
             .then(res => {
                 console.log(res);
-                const postListFromData = res.data.map(post => {
+                const postListFromData = (res.data).map(post => {
                     return {
                         id: post.id,
                         title: post.title,
-                        url: `/employer-job-detail?userid=${userId}?postid=${post.id}`
+                        url: `/employer-job-detail?userid=${sessionStorage.getItem('userId')}?postid=${post.id}`
                     }
                 });
                 return this.setState({
@@ -79,69 +78,71 @@ class EmployerPosts extends Component {
     render() {
         // console.log(this.context)
         // console.log("data sent: ", this.state);
-        if ((!isLoggedIn)) {
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const isEmployer = sessionStorage.getItem('isEmployer');
+        if (!isLoggedIn) {
             return <Redirect to='/login' />
-        } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
-            return <Redirect to='/community' />
-        }
-        return (
-            <>
-                <Header/>
-                <form onSubmit={this.handleLogInForm}>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Job Title"
-                        onChange={this.handleInputChange}
-                        value={this.state.title}
-                        name="title"
-                    />
-                    {this.state.errorTitle &&
-                        !this.state.title.length && (
-                            <div className="alert alert-danger my-2">
-                                {this.state.errorTitle}
-                            </div>
-                        )}
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Job Description"
-                        onChange={this.handleInputChange}
-                        value={this.state.description}
-                        name="description"
-                    />
-                    {this.state.errorDescription &&
-                        !this.state.description.length && (
-                            <div className="alert alert-danger my-2">
-                                {this.state.errorDescription}
-                            </div>
-                        )}
-                    <button
-                        type="submit"
-                        className={"btn btn-success btn-sm"}
-                    >
-                    </button>
-                </form>
-                <row>
-                    {!this.state.postList.length ? (
-                        <h2 className="text-center">
-                            Post your first job.
+        } else if (parseInt(isEmployer) === 1 && isLoggedIn) {
+            //return <Redirect to='/employer-posts' />
+            return (
+                <>
+                    <Header />
+                    <form onSubmit={this.handleLogInForm}>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Job Title"
+                            onChange={this.handleInputChange}
+                            value={this.state.title}
+                            name="title"
+                        />
+                        {this.state.errorTitle &&
+                            !this.state.title.length && (
+                                <div className="alert alert-danger my-2">
+                                    {this.state.errorTitle}
+                                </div>
+                            )}
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Job Description"
+                            onChange={this.handleInputChange}
+                            value={this.state.description}
+                            name="description"
+                        />
+                        {this.state.errorDescription &&
+                            !this.state.description.length && (
+                                <div className="alert alert-danger my-2">
+                                    {this.state.errorDescription}
+                                </div>
+                            )}
+                        <button
+                            type="submit"
+                            className={"btn btn-success btn-sm"}
+                        >
+                        </button>
+                    </form>
+                    <row>
+                        {!this.state.postList.length ? (
+                            <h2 className="text-center">
+                                Post your first job.
                         </h2>
-                    ) : (
-                            this.state.postList.map(post => {
-                                return (
-                                    <column>
-                                        <div><a href={post.url}>{post.title}</a></div>
-                                        <button
-                                            onClick={() => this.handleRemovePost(post.id)}
-                                        >X</button>
-                                    </column>
-                                )
-                            })
-                        )}
-                </row>
-            </>
-        )
+                        ) : (
+                                this.state.postList.map(post => {
+                                    return (
+                                        <column>
+                                            <div><a href={post.url}>{post.title}</a></div>
+                                            <button
+                                                onClick={() => this.handleRemovePost(post.id)}
+                                            >X</button>
+                                        </column>
+                                    )
+                                })
+                            )}
+                    </row>
+                </>
+            )
+        }
     }
 }
 
