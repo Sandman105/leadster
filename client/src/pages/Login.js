@@ -32,15 +32,20 @@ const formLabel = {
 }
 
 class Login extends Component {
-
     static contextType = GlobalContext
-
     state = {
         email: "",
         password: "",
-        error: null,
+        errorEmail: null,
+        errorPassword: null,
+        errorLogin: null,
         isEmployer: null,
         loggedIn: null
+    }
+
+    componentDidMount() {
+        //by default we will clear the sessionStorage so when they are redirected here from signing out, we clear all items
+        // sessionStorage.clear();
     }
 
     handleInputChange = event => {
@@ -55,47 +60,59 @@ class Login extends Component {
         event.preventDefault();
 
         if (email === "") {
-            return this.setState({ error: "Please put in a user email." })
+            this.setState({ errorEmail: "Please put in a user email." })
         }
         if (password === "") {
-            return this.setState({ error: "Please put in a user password." })
+            this.setState({ errorPassword: "Please put in a user password." })
         }
 
-        login(this.state)
-            .then(data => {
-                if (data.status === 200) {
-                    console.log("Data: ", data);
-                    sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
-                    sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
-                    sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
-                    console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
-
-                    const userData = {
-                        userId: data.data.userInfo.userId
-                    }
-                    this.context.setUser(userData)
-                    if (sessionStorage.getItem('isEmployer') === "1") {
-                        this.setState({ isEmployer: true, loggedIn: true });
-
-                    } else {
-                        this.setState({ loggedIn: true });
+        if (email !== "" && password !== "") {
+            login(this.state)
+                .then(data => {
+                    if (data.status === 200) {
+                        console.log("Data: ", data);
+                        sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
+                        sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
+                        sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
+                        sessionStorage.setItem("isLoggedIn", true);
+                        // console.log("emp check: ", typeof (sessionStorage.getItem('isEmployer')));
+                        // const userData = {
+                        //     userId: data.data.userInfo.userId,
+                        //     isEmployer: data.data.userInfo.isEmployer
+                        // }
+                        // this.context.setUser(userData);
+                        // this.context.user.isEmployer = data.data.userInfo.isEmployer;
+                        // this.context.isEmployer = data.data.userInfo.isEmployer;
+                        // this.context.isLoggedIn = true;
+                        // if (sessionStorage.getItem('isEmployer') === "1") {
+                        //     this.setState({ isEmployer: true, loggedIn: true });
+                        // } else {
+                        this.setState({ 
+                            loggedIn: true,
+                            isEmployer: sessionStorage.getItem('isEmployer')
+                         });
+                        // }
                     }
                 }
-            }
-            ).catch(err => {
-                console.log(err);
-                this.setState({ error: "Failed to login!" });
-            });
+                ).catch(err => {
+                    console.log("err: ", err);
+                    this.setState({ errorLogin: "Failed to login!" });
+                });
+        }
     };
 
     render() {
-        console.log(this.state)
-        console.log(this.context)
-        if (this.state.isEmployer === true && this.state.loggedIn === true) {
-            return <Redirect to='EmployerPosts' />
-        } else if (this.state.isEmployer !== true && this.state.loggedIn === true) {
-            return <Redirect to='Community' />
+        console.log("state: ", this.state);
+        // console.log("context: ", this.context);
+        // console.log("context emp: ", this.context.user.isEmployer);
+        // console.log("logged in: ", typeof (this.state.loggedIn));
+        // console.log("employer: ", typeof (this.state.isEmployer));
+        if (parseInt(this.state.isEmployer) === 1 && this.state.loggedIn) {
+            return <Redirect to='employer-posts' />
+        } else if (parseInt(this.state.isEmployer) !== 1 && this.state.loggedIn) {
+            return <Redirect to='community' />
         }
+
         return (
 
             <Col md={8}>
@@ -108,10 +125,10 @@ class Login extends Component {
                     value={this.state.email}
                     name="email"
                 />
-                {this.state.error &&
+                {this.state.errorEmail &&
                     !this.state.email.length && (
                         <div className="alert alert-danger my-2">
-                            {this.state.error}
+                            {this.state.errorEmail}
                         </div>
                     )}
                 <input
@@ -123,10 +140,16 @@ class Login extends Component {
                     value={this.state.password}
                     name="password"
                 />
-                {this.state.error &&
+                {this.state.errorPassword &&
                     !this.state.password.length && (
                         <div className="alert alert-danger my-2">
-                            {this.state.error}
+                            {this.state.errorPassword}
+                        </div>
+                    )}
+                {this.state.errorLogin &&
+                    (
+                        <div className="alert alert-danger my-2">
+                            {this.state.errorLogin}
                         </div>
                     )}
                 <button

@@ -26,9 +26,7 @@ class Home extends Component {
         return (
 
             <>
-                <Jumbotron>
-
-                </Jumbotron>
+                <Jumbotron />
 
                 <div className={"text-center"}>
                     <a href="/login"><button style={homeButton}>Sign In</button></a>
@@ -38,8 +36,5 @@ class Home extends Component {
         )
     }
 }
-
-
-
 
 export default Home;

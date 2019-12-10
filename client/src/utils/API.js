@@ -19,10 +19,13 @@ export const createUser = (signupData) => {
 // Boss
 // 3. Employer posts showing all the jobs a boss posts or create a new post
 export const getPostingByEmployer = bossId => {
+    // console.log("user: ", bossId);
     return axios.get(`/leadster/employer/${bossId}`);
 }
 
 export const createPosting = (bossId, postData) => {
+    console.log("boss: ", bossId);
+    console.log("data: ", postData);
     return axios.post(`/leadster/employer/${bossId}`, postData);
 }
 
@@ -36,6 +39,7 @@ export const deletePosting = postId => {
 }
 
 export const getUsersFromSavedPosting = postId => {
+    console.log("post: ", postId);
     return axios.get(`/leadster/employer/postsavers/${postId}`);
 }
 
@@ -47,21 +51,31 @@ export const getAllPostings = () => {
 
 // 7. Show all saved jobs
 export const getPostingsSavedByUser = userId => {
-    return axios.get(`/leadster/saved/${userId}`);
+    // console.log("call api: ", userId);
+    return axios.get(`/leadster/jobs/saved/${userId}`);
 }
 
 // 8. Seekers click save button
 export const createSubscription = (postId, subscriptionData) => {
     let data = {
-        userId: subscriptionData,
-        postId: postId
+        userID: subscriptionData,
+        postID: postId
     }
-    return axios.post(`/leadster/jobs/saved/${data.postId}` , data);
+    return axios.post(`/leadster/jobs/saved/${data.postID}` , data);
 }
 
 // 9. Unsave one job
-export const deleteSubscription = postId => {
-    return axios.delete(`/leadster/jobs/unsaved/${postId}`);
+export const deleteSubscription = (postId, subscriptionData) => {
+    let data = {
+        userID: subscriptionData,
+        postID: postId
+    }
+    console.log("API -- Data: ", data);
+    return axios.delete(`/leadster/jobs/unsaved/${data.postID}/${data.userID}` , data);
+}
+
+export const queryDB = (query) => {
+    return axios.post(`/leadster/jobs/query/${query}`);
 }
 
 export default {
@@ -75,5 +89,6 @@ export default {
     getPostingByEmployer,
     getPostingById,
     deletePosting,
-    login
+    login,
+    queryDB
 }

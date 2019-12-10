@@ -3,11 +3,9 @@ import Header from '../components/Header';
 import { getPostingById, getUsersFromSavedPosting } from '../utils/API';
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context';
-
 // import { Link } from "react-router-dom";
 
-const url = window.location.search;
-const postId = url.split("=")[2];
+
 
 const seekerStateLabel = {
     color: 'black',
@@ -15,12 +13,11 @@ const seekerStateLabel = {
 }
 
 class EmployerJobDetail extends Component {
+    static contextType = GlobalContext;
     state = {
         postDetail: {},
         seekerList: []
     }
-
-    static contextType = GlobalContext
 
     componentDidMount() {
         this.handleGetPostDetail();
@@ -28,62 +25,76 @@ class EmployerJobDetail extends Component {
     }
 
     handleGetPostDetail = () => {
-        getPostingById(postId)
+        getPostingById((this.props.location.search).split("=")[2])
             .then(res => {
                 console.log(res);
                 return this.setState({
-                    postDetail: res.data
+                    postDetail: res.data[0] // with peiyu
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     }
 
     handleWhoSavedTheJob = () => {
-        getUsersFromSavedPosting(postId)
+        getUsersFromSavedPosting((this.props.location.search).split("=")[2])
             .then(res => {
-                console.log(res);
-                const seekerListFromData = res.data.map(seeker => {
-                    return {
-                        userID: seeker.userID
-                    }
-                });
+                console.log("result from API: ", res);
+                const seekerListFromData = res.data.map(seeker => ({
+                    email: seeker.email,
+                    nameFirst: seeker.nameFirst,
+                    nameLast: seeker.nameLast
+                }))
+
                 return this.setState({
                     seekerList: seekerListFromData
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log("err: ", err));
     }
 
     render() {
-        console.log(this.context)
-        if (this.context.isLoggedIn) {
+
+        console.log("Props: " + (this.props.location.search).split("=")[2]);
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const isEmployer = sessionStorage.getItem('isEmployer');
+        if (!isLoggedIn) {
             return <Redirect to='/login' />
-            
+        } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
+            return <Redirect to='/community' />
         }
+        // console.log("seekerList: ", this.state.seekerList);
         return (
             <>
-                <Header>
-
-                </Header>
-                <column>
+                <Header />
+                <div>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>
-                </column>
+                {/* </column> */}
                 <row
                 style={seekerStateLabel}
-                >
+                >Test</row>
+                </div>
+                <div>
                     {!this.state.seekerList.length ? (
                         <h2 className="text-center">
                             No seeker save this job yet.
                         </h2>
                     ) : (
-                            this.state.seekerList.map(seeker => {
-                                return (
-                                    <div>{seeker.userID}</div>
-                                )
-                            })
-                        )}
-                </row>
+                            <ol>
+                                {this.state.seekerList.map(saver => {
+                                    console.log("saver data: ", saver);
+                                    return (
+                                        <li>
+                                            <div className="text-center">{saver.nameFirst} {saver.nameLast}</div>
+                                            <div className="text-center">{saver.email}</div>
+                                        </li>
+
+                                    )
+                                })}
+                            </ol>
+                        )
+                    }
+                </div>
             </>
         )
     }

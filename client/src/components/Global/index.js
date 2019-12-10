@@ -4,7 +4,8 @@ import GlobalContext from "./context";
 class Global extends Component {
     state = {
         user: {},
-        isLoggedIn: false
+        isLoggedIn: false,
+        isEmployer: null
     }
 
     setUser = obj => { this.setState({ user: obj, isLoggedIn: true}) }
@@ -12,10 +13,13 @@ class Global extends Component {
     render() {
         return( 
             <GlobalContext.Provider 
-            value={{
+            value={
+                {
                 user: this.state.user,
-                setUser: this.setUser
-            }}>
+                setUser: this.setUser,
+                isLoggedIn: this.state.isLoggedIn
+            }
+            }>
                 {this.props.children}
             </GlobalContext.Provider>
 

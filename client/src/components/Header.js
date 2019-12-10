@@ -8,6 +8,7 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 
 const navbrand = {
     color: '#38C9E6',
@@ -22,9 +23,13 @@ const navtext = {
 
 const Header = props => {
 
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
+
+  const handleSignOut = () => {
+    sessionStorage.clear();
+  }
 
   return (
     <div>
@@ -42,9 +47,10 @@ const Header = props => {
             <NavItem>
               <NavLink style={navtext} href="/community">Community</NavLink>
             </NavItem>
-            
+            <NavItem onClick={handleSignOut}>
+              <NavLink href='/home' className={"btn btn-danger btn-sm"}>Sign Out</NavLink>
+            </NavItem>
           </Nav>
-          
         </Collapse>
       </Navbar>
     </div>
