@@ -127,12 +127,13 @@ async function deleteSubscription(req, res) {
 };
 
 const createUser = (req, res) => {
+    console.log("req: ", req.body);
     knex("users").insert(
         [
             {
                 nameFirst: req.body.firstName,
                 nameLast: req.body.lastName,
-                isEmployer: req.body.isemployer,
+                isEmployer: req.body.isEmployer,
                 phoneNum: req.body.phoneNum,
                 email: req.body.email,
                 password: hashPassword(req.body.password),

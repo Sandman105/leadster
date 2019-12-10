@@ -54,6 +54,7 @@ class CommunitySavedDetail extends Component {
         }
         return (
             <>
+            <Header />
                 <div>
                     {this.state.savedPostList.map(post => (
                         <Card title={post.title} key={post.id} href={post.url} />

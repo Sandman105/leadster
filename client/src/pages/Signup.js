@@ -6,19 +6,19 @@ import { isNull } from 'util';
 
 const signUpButton = {
 
-backgroundColor: '#666666',
-border: 'none',
-borderRadius: '10px',
-color: 'white',
-padding: '5px 20px',
-textAlign: 'center',
-textDecoration: 'none',
-display: 'inline-block',
-fontSize: '16px',
-fontWeight: '600',
-fontFamily: "'Righteous', cursive",
-margin: '4px 2px',
-cursor: 'pointer',
+    backgroundColor: '#666666',
+    border: 'none',
+    borderRadius: '10px',
+    color: 'white',
+    padding: '5px 20px',
+    textAlign: 'center',
+    textDecoration: 'none',
+    display: 'inline-block',
+    fontSize: '16px',
+    fontWeight: '600',
+    fontFamily: "'Righteous', cursive",
+    margin: '4px 2px',
+    cursor: 'pointer',
 }
 
 const formLabel = {
@@ -37,6 +37,7 @@ class Signup extends Component {
         errorLastName: null,
         errorEmail: null,
         errorPassword: null,
+        errorIsEmployer: null,
         signedUp: false
     }
 
@@ -53,24 +54,28 @@ class Signup extends Component {
 
         event.preventDefault();
 
-        if (firstName === "") 
+        if (firstName === "")
             this.setState({ errorFirstName: "Please put in a user first name." });
-        
-        if (lastName === "") 
+
+        if (lastName === "")
             this.setState({ errorLastName: "Please put in a user last name." });
-        
-        if (email === "") 
+
+        if (email === "")
             this.setState({ errorEmail: "Please put in a user email." });
-        
-        if (password === "") 
+
+        if (password === "")
             this.setState({ errorPassword: "Please put in a user password." });
 
-        if (firstName !== "" && lastName !== "" && email !== "" && password !== "") {
+        if (isEmployer === null)
+            this.setState({ errorIsEmployer: "Please select a role." });
+
+
+        if (firstName !== "" && lastName !== "" && email !== "" && password !== "" && isEmployer !== null) {
             createUser(this.state)
                 .then(
                     (response) => {
                         if (response) {
-                            return this.setState({signedUp: true});
+                            return this.setState({ signedUp: true });
                         } else {
                             return false;
                         }
@@ -82,16 +87,16 @@ class Signup extends Component {
     render() {
         console.log(this.state)
         if (this.state.signedUp) {
-            return <Redirect to='/login'/>
+            return <Redirect to='/login' />
         }
-        
+
         return (
-            
+
             <Form onSubmit={this.handleSignupForm} style={formLabel}>
                 <Row form>
                     <Col md={4}>
                         <FormGroup>
-                            <Label for="first-name">First Name</Label>
+                            <Label for="first-name">First Name:</Label>
                             <Input
                                 type="text"
                                 className="form-control"
@@ -110,7 +115,7 @@ class Signup extends Component {
                     </Col>
                     <Col md={4}>
                         <FormGroup>
-                            <Label for="last-name">Last Name</Label>
+                            <Label for="last-name">Last Name:</Label>
                             <Input
                                 type="text"
                                 className="form-control"
@@ -129,7 +134,7 @@ class Signup extends Component {
                     </Col>
                 </Row>
                 <FormGroup row>
-                    <Label for="email" sm={1}>Email</Label>
+                    <Label for="email" sm={1}>Email:</Label>
                     <Col sm={7}>
                         <Input
                             type="text"
@@ -148,7 +153,7 @@ class Signup extends Component {
                     </Col>
                 </FormGroup>
                 <FormGroup row>
-                    <Label for="password" sm={1}>Password</Label>
+                    <Label for="password" sm={1}>Password:</Label>
                     <Col sm={7}>
                         <Input
                             type="password"
@@ -167,7 +172,7 @@ class Signup extends Component {
                     </Col>
                 </FormGroup>
                 <FormGroup row>
-                    <Label for="select" sm={1}>Select</Label>
+                    <Label for="select" sm={1}>Role:</Label>
                     <Col sm={7}>
                         <select
                             // type="select"
@@ -175,21 +180,28 @@ class Signup extends Component {
                             className="form-control"
                             onChange={this.handleInputChange}
                             value={this.state.isEmployer}
-                            // id="select"
+                        // id="select"
                         >
+                            <option value={null} name="isEmployer" isEmployer={null}>Please Select One Role</option>
                             <option value="0" name="isEmployer" isEmployer="0">Job Seeker</option>
                             <option value="1" name="isEmployer" isEmployer="1">Employer</option>
                         </select>
+                        {this.state.errorIsEmployer &&
+                            !this.state.password.length && (
+                                <div className="alert alert-danger my-2">
+                                    {this.state.errorIsEmployer}
+                                </div>
+                            )}
                     </Col>
                 </FormGroup>
                 <Button
                     style={signUpButton}
                 >Submit</Button>
             </Form>
-            
-            
-            
-            
+
+
+
+
         );
     };
 };
