@@ -43,7 +43,8 @@ const {
     deletePosting, //
     getUserProfile, //
     login, //
-    queryDB 
+    queryDB,
+    updatePosting
 } = require("../../controllers/user-controller");
 
 router.route('/').get(withAuth, getUserProfile)
@@ -70,6 +71,8 @@ router.route("/employer/:id").get(getPostingByEmployer).post(createPosting);
 router.route("/employer/posts/:id").get(getPostingById).delete(deletePosting);
 
 router.route("/employer/postsavers/:id").get(getUsersFromSavedPosting);
+
+router.route("/employer/update/:id").post(updatePosting);
 
 
 // -------------------------------------------

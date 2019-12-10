@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { createUser } from '../utils/API';
 import { Redirect } from 'react-router-dom';
-import { isNull } from 'util';
 
 const signUpButton = {
 

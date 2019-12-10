@@ -6,7 +6,7 @@ import axios from 'axios';
 
 // 1. Signin
 export const login = (loginData) => {
-    console.log(loginData);
+    // console.log(loginData);
     return axios.post("/leadster/login", loginData);
 }
 
@@ -39,7 +39,7 @@ export const deletePosting = postId => {
 }
 
 export const getUsersFromSavedPosting = postId => {
-    console.log("post: ", postId);
+    // console.log("post: ", postId);
     return axios.get(`/leadster/employer/postsavers/${postId}`);
 }
 
@@ -70,12 +70,22 @@ export const deleteSubscription = (postId, subscriptionData) => {
         userID: subscriptionData,
         postID: postId
     }
-    console.log("API -- Data: ", data);
+    // console.log("API -- Data: ", data);
     return axios.delete(`/leadster/jobs/unsaved/${data.postID}/${data.userID}` , data);
 }
 
 export const queryDB = (query) => {
     return axios.post(`/leadster/jobs/query/${query}`);
+}
+
+export const updatePosting = (id, data) => {
+    console.log("API ID: ", id);
+    console.log("data: ", data.title);
+    const dataSend = {
+        title: data.title,
+        description: data.description
+    };
+    return axios.post(`/leadster/employer/update/${id}`, dataSend);
 }
 
 export default {
@@ -90,5 +100,6 @@ export default {
     getPostingById,
     deletePosting,
     login,
-    queryDB
+    queryDB,
+    updatePosting
 }
