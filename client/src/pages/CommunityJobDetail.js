@@ -25,6 +25,12 @@ const communityButton = {
     cursor: 'pointer',
 }
 
+const newPostDetail = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+    textAlign: 'center'
+}
+
 class CommunityJobDetail extends Component {
     static contextType = GlobalContext;
     state = {
@@ -120,7 +126,8 @@ class CommunityJobDetail extends Component {
         return (
             <>
                 <Header />
-                <column>
+                
+                <column style={newPostDetail}>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>
                 </column>

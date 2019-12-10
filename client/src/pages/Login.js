@@ -133,7 +133,7 @@ class Login extends Component {
                     )}
                 <input
                     style={formLabel}
-                    type="text"
+                    type="password"
                     className="form-control"
                     placeholder="User Password"
                     onChange={this.handleInputChange}

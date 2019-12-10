@@ -21,6 +21,11 @@ const navtext = {
     fontFamily: "'Righteous', cursive",
 }
 
+const signOut = {
+    fontFamily: "'Righteous', cursive",
+    borderRadius: '10px'
+}
+
 const Header = props => {
 
   const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +53,7 @@ const Header = props => {
               <NavLink style={navtext} href="/community">Community</NavLink>
             </NavItem>
             <NavItem onClick={handleSignOut}>
-              <NavLink href='/home' className={"btn btn-danger btn-sm"}>Sign Out</NavLink>
+              <NavLink href='/home' style={signOut} className={"btn btn-danger btn-sm"}>Sign Out</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

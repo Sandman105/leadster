@@ -2,9 +2,13 @@ import React from 'react';
 import { Card, CardTitle, CardText } from 'reactstrap';
 import { Link } from 'react-router-dom'
 
-const cardText = {
+ const cardText = {
     color: 'black',
     fontFamily: "'Righteous', cursive",
+} 
+
+const postLink = {
+    color: 'black'
 }
 
 const CardForm = ({ title, href }) => {
@@ -13,7 +17,7 @@ const CardForm = ({ title, href }) => {
         <div>
             
             <Card body className="text-center" style={cardText}>
-                <CardTitle><Link to={href}>{title}</Link></CardTitle>
+                <CardTitle><Link style={postLink} to={href}>{title}</Link></CardTitle>
             </Card>
         </div>
     );

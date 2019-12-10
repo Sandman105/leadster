@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { getPostingById, getUsersFromSavedPosting } from '../utils/API';
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context';
+import Card from '../components/Card'
 // import { Link } from "react-router-dom";
 
 
@@ -10,6 +11,7 @@ import GlobalContext from '../components/Global/context';
 const seekerStateLabel = {
     color: 'black',
     fontFamily: "'Righteous', cursive",
+    textAlign: 'center'
 }
 
 class EmployerJobDetail extends Component {
@@ -66,13 +68,13 @@ class EmployerJobDetail extends Component {
         return (
             <>
                 <Header />
-                <div>
+                <div style={seekerStateLabel}>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>
                 {/* </column> */}
                 <row
                 style={seekerStateLabel}
-                >Test</row>
+                ></row>
                 </div>
                 <div>
                     {!this.state.seekerList.length ? (
@@ -80,6 +82,7 @@ class EmployerJobDetail extends Component {
                             No seeker save this job yet.
                         </h2>
                     ) : (
+                            
                             <ol>
                                 {this.state.seekerList.map(saver => {
                                     console.log("saver data: ", saver);
@@ -92,6 +95,7 @@ class EmployerJobDetail extends Component {
                                     )
                                 })}
                             </ol>
+                            
                         )
                     }
                 </div>

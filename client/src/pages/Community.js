@@ -25,6 +25,12 @@ margin: '4px 2px',
 cursor: 'pointer',
 }
 
+const newPosts = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+    textAlign: 'center'
+}
+
 class Community extends Component {
     _isMounted = false;
     static contextType = GlobalContext;
@@ -75,7 +81,7 @@ class Community extends Component {
                 <a href={savePageUrl}><button style={communityButton}>Go to save page</button></a>
                 <div>
                     {this.state.postList.map(post => (
-                        <Card title={post.title} key={post.id} href={post.url} />
+                        <Card style={newPosts} title={post.title} key={post.id} href={post.url} />
                     ))}
                 </div>
             </>

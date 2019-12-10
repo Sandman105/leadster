@@ -5,6 +5,12 @@ import GlobalContext from '../components/Global/context';
 import Card from '../components/Card';
 import { getPostingsSavedByUser } from "../utils/API.js";
 
+const newSavedPosts = {
+    color: 'black',
+    fontFamily: "'Righteous', cursive",
+    textAlign: 'center'
+}
+
 class CommunitySavedDetail extends Component {
     static contextType = GlobalContext
     state = {
@@ -55,9 +61,9 @@ class CommunitySavedDetail extends Component {
         return (
             <>
             <Header />
-                <div>
+                <div >
                     {this.state.savedPostList.map(post => (
-                        <Card title={post.title} key={post.id} href={post.url} />
+                        <Card style={newSavedPosts} title={post.title} key={post.id} href={post.url} />
                     ))}
                 </div>
             </>

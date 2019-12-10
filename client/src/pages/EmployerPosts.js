@@ -33,6 +33,7 @@ const formLabel = {
 const newJobPosts = {
     color: 'black',
     fontFamily: "'Righteous', cursive",
+    textAlign: 'center'
 }
 
 class EmployerPosts extends Component {
@@ -113,7 +114,7 @@ class EmployerPosts extends Component {
             return (
                 <>
                     <Header />
-                    <form onSubmit={this.handleLogInForm}>
+                    <form style={formLabel} onSubmit={this.handleLogInForm}>
                         <input
                             type="text"
                             className="form-control"
@@ -143,11 +144,13 @@ class EmployerPosts extends Component {
                                 </div>
                             )}
                         <button
+                            style={employerButton}
                             type="submit"
                             className={"btn btn-success btn-sm"}
-                        >
+                        >Create Post
                         </button>
                     </form>
+                    
                     <row>
                         {!this.state.postList.length ? (
                             <h2 className="text-center">
@@ -157,10 +160,11 @@ class EmployerPosts extends Component {
                                 this.state.postList.map(post => {
                                     return (
                                         <column>
-                                            <div><a href={post.url}>{post.title}</a></div>
+                                            <div style={newJobPosts}><a style={newJobPosts} href={post.url}>{post.title}</a></div>
                                             <button
+                                                style={employerButton}
                                                 onClick={() => this.handleRemovePost(post.id)}
-                                            >X</button>
+                                            >Delete</button>
                                         </column>
                                     )
                                 })
