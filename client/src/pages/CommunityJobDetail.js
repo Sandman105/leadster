@@ -6,10 +6,7 @@ import GlobalContext from '../components/Global/context';
 // import Card from '../components/Card';
 import { createSubscription, getPostingById, getPostingsSavedByUser, deleteSubscription } from '../utils/API.js';
 
-
-
 const communityButton = {
-
     backgroundColor: '#666666',
     border: 'none',
     borderRadius: '10px',
@@ -126,7 +123,6 @@ class CommunityJobDetail extends Component {
         return (
             <>
                 <Header />
-                
                 <column style={newPostDetail}>
                     <div>{this.state.postDetail.title}</div>
                     <div>{this.state.postDetail.description}</div>
@@ -147,7 +143,6 @@ class CommunityJobDetail extends Component {
                 >
                     UNSAVE
                 </button>
-
             </>
         );
     };

@@ -21,7 +21,7 @@ async function getPostingsSavedByUser(req, res) {
     try {
         // console.log("controller req: ", req.params.id);
         // knex("subscription").select("*").where('userID', req.params.id)
-        let query = await (knex('subscription').join('posting','subscription.postID', '=', 'posting.id').select(knex.ref('posting.id').as('postID'),'posting.title').where('userID', req.params.id));
+        let query = await (knex('subscription').join('posting', 'subscription.postID', '=', 'posting.id').select(knex.ref('posting.id').as('postID'), 'posting.title').where('userID', req.params.id));
         // console.log(query);
         return res.json(query);
     }
@@ -37,13 +37,13 @@ async function getUsersFromSavedPosting(req, res) { //this will be for employers
             let usersWhoSavedJob = data.map(user => user.userID);
             // console.log("look here for result:\n", data);
             // console.log("look here for result:\n", usersWhoSavedJob);
-            let subQuery = await (knex('users').select("*").whereIn("id",usersWhoSavedJob));
+            let subQuery = await (knex('users').select("*").whereIn("id", usersWhoSavedJob));
             // console.log("subquery:\n" , subQuery);
             let dataToSend = subQuery.map(subQuery => ({
                 nameFirst: subQuery.nameFirst,
                 nameLast: subQuery.nameLast,
                 email: subQuery.email,
-                phoneNum: subQuery.phoneNum 
+                phoneNum: subQuery.phoneNum
             }))
             // console.log("data to send: ", dataToSend);
             return res.json(dataToSend);
@@ -59,7 +59,7 @@ async function getUsersFromSavedPosting(req, res) { //this will be for employers
 };
 
 async function getPostingByEmployer(req, res) {
-    console.log("req: ", req);
+    // console.log("req: ", req);
     try {
         let query = await (knex("posting").select("*").where('employerID', req.params.id));
         return res.json(query);
@@ -82,9 +82,9 @@ const getPostingById = (req, res) => {
 };
 
 async function queryDB(req, res) {
-    try{
+    try {
         //ensure that url is /leadster/query/:query
-        let query = await (knex('posting').select('*').where('title', 'like', `%${req.params.query}%`).orWhere('description','like',`%${req.params.query}%`));
+        let query = await (knex('posting').select('*').where('title', 'like', `%${req.params.query}%`).orWhere('description', 'like', `%${req.params.query}%`));
         return res.json(query);
     } catch (err) {
         console.log('err: ', err);
@@ -113,13 +113,13 @@ async function createSubscription(req, res) {
 };
 
 async function deleteSubscription(req, res) {
-    console.log("User: ", req.params);
-    console.log("Post: ", req.params.id);
+    // console.log("User: ", req.params);
+    // console.log("Post: ", req.params.id);
     // console.log(req);
     try {
         let query = await (knex("subscription").delete().where('postID', req.params.id).andWhere('userID', req.params.user));
         // console.log("query: ", knex("subscription").delete().where('postID', req.params.id).andWhere('userID', req.params.user));
-        console.log("result: ", query);
+        // console.log("result: ", query);
         return res.json(query);
     } catch (err) {
         console.log("err: ", err);
@@ -127,7 +127,7 @@ async function deleteSubscription(req, res) {
 };
 
 const createUser = (req, res) => {
-    console.log("req: ", req.body);
+    // console.log("req: ", req.body);
     knex("users").insert(
         [
             {
@@ -143,7 +143,7 @@ const createUser = (req, res) => {
     )
         .then(data => {
             // knex.destroy();
-            console.log(data);
+            // console.log(data);
             return res.json(data);
         })
         .catch(err => {
@@ -171,15 +171,22 @@ async function createPosting(req, res) {
     }
 };
 
-const deletePosting = (req, res) => {
-    knex("posting").where('id', req.params.id).del() //need cascading delete here
-        .then(data => {
-            // knex.destroy();
-            return res.json(data);
-        })
-        .catch(err => {
-            return res.json(err);
-        });
+async function deletePosting(req, res) {
+    console.log("delete req: ", req.params.id);
+    try {
+        
+        let query = await (knex("subscription").where('postID', req.params.id).del().then(async data => {
+            // console.log("data: ", data);
+            let subQuery = await (knex("posting").where('id', req.params.id).del());
+            // console.log("subQuery: ", subQuery)
+            return res.json(query);
+        }));
+        // console.log("query: ", query);
+    }
+    catch (err) {
+        console.log("err: ", err);
+        return res.json(err);
+    }
 };
 
 //TODO: update this so that you delete from subscription when give a userid and postid
@@ -205,7 +212,7 @@ const login = async (req, res) => {
     const [findUserErr, userInfo] = await handle(knex("users").select("*").where('email', email));
 
     if (findUserErr) {
-        console.log(findUserErr);
+        // console.log(findUserErr);
         res.status(500).json({
             error: 'Internal error, try again'
         });

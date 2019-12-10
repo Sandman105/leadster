@@ -160,11 +160,10 @@ class EmployerPosts extends Component {
                                 this.state.postList.map(post => {
                                     return (
                                         <column>
-                                            <div style={newJobPosts}><a style={newJobPosts} href={post.url}>{post.title}</a></div>
-                                            <button
+                                            <div style={newJobPosts}><a style={newJobPosts} href={post.url}>{post.title}</a><span> &nbsp;&nbsp; </span><button
                                                 style={employerButton}
                                                 onClick={() => this.handleRemovePost(post.id)}
-                                            >Delete</button>
+                                            >Delete</button></div>
                                         </column>
                                     )
                                 })

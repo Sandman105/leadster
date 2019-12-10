@@ -6,8 +6,6 @@ import GlobalContext from '../components/Global/context';
 import Card from '../components/Card'
 // import { Link } from "react-router-dom";
 
-
-
 const seekerStateLabel = {
     color: 'black',
     fontFamily: "'Righteous', cursive",

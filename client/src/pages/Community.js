@@ -6,10 +6,7 @@ import { getAllPostings } from "../utils/API.js";
 import GlobalContext from '../components/Global/context'
 import { Redirect } from 'react-router-dom';
 
-
-
 const communityButton = {
-
 backgroundColor: '#666666',
 border: 'none',
 borderRadius: '10px',
@@ -73,10 +70,6 @@ class Community extends Component {
         }
         return (
             <>
-                
-
-                
-
                 <Header />
                 <a href={savePageUrl}><button style={communityButton}>Go to save page</button></a>
                 <div>

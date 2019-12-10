@@ -23,7 +23,7 @@ class CommunitySavedDetail extends Component {
         this.setState({
             isEmployer: sessionStorage.getItem('isEmployer'),
             isLoggedIn: sessionStorage.getItem('isLoggedIn')
-        })
+        });
         this.handleGetSavedPostList();
     }
 
