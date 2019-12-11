@@ -7,5 +7,9 @@ module.exports = {
             "password": "",
             "database": "leadster"
         }
-    }
+    },
+    production: {
+        client: 'mysql2',
+        connection: process.env.JAWSDB_URL
+    },
 }
