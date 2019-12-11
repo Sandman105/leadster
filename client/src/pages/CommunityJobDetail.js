@@ -52,10 +52,10 @@ class CommunityJobDetail extends Component {
     handleCheckSave = () => {
         getPostingsSavedByUser(sessionStorage.getItem('userId'))
             .then(res => {
-                console.log('result: ', res);
+                // console.log('result: ', res);
                 const savedPostListFromData = (res.data).map(element => element.postID);
-                console.log('result data: ', savedPostListFromData);
-                console.log(savedPostListFromData.includes(parseInt((this.props.location.search).split("=")[2])));
+                // console.log('result data: ', savedPostListFromData);
+                // console.log(savedPostListFromData.includes(parseInt((this.props.location.search).split("=")[2])));
                 if (savedPostListFromData.includes(parseInt((this.props.location.search).split("=")[2]))) {
                     this.setState({
                         btnDisable: true,
@@ -68,14 +68,14 @@ class CommunityJobDetail extends Component {
                 }
             })
             .catch(err => console.log("err: ", err));
-        console.log("Post ID: " + parseInt((this.props.location.search).split("=")[2]));
-        console.log("Saved List: " + this.state.savedPostList);
+        // console.log("Post ID: " + parseInt((this.props.location.search).split("=")[2]));
+        // console.log("Saved List: " + this.state.savedPostList);
     };
 
     handleGetPostDetail = () => {
         getPostingById((this.props.location.search).split("=")[2])
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 return this.setState({
                     postDetail: res.data[0]
                 });
@@ -89,7 +89,7 @@ class CommunityJobDetail extends Component {
         // console.log("card.js -- 9 -->", userId);
         createSubscription(postId, userId)
             .then(() => {
-                console.log("API successful");
+                // console.log("API successful");
                 this.handleCheckSave();
             })
             .catch(err => { console.log("err: ", err) });
@@ -100,7 +100,7 @@ class CommunityJobDetail extends Component {
         // console.log("User: ", userId);
         deleteSubscription(postId, userId)
             .then(() => {
-                console.log("Job unsaved!");
+                // console.log("Job unsaved!");
                 this.handleCheckSave();
             })
             .catch(err => { console.log("err: ", err) });

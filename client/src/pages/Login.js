@@ -102,7 +102,7 @@ class Login extends Component {
     };
 
     render() {
-        console.log("state: ", this.state);
+        // console.log("state: ", this.state);
         // console.log("context: ", this.context);
         // console.log("context emp: ", this.context.user.isEmployer);
         // console.log("logged in: ", typeof (this.state.loggedIn));

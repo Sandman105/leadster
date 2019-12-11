@@ -30,8 +30,8 @@ class CommunitySavedDetail extends Component {
     handleGetSavedPostList = () => {
         getPostingsSavedByUser(sessionStorage.getItem('userId'))
             .then(res => {
-                console.log("userid: ", sessionStorage.getItem('userId'));
-                console.log("saved jobs: ", res);
+                // console.log("userid: ", sessionStorage.getItem('userId'));
+                // console.log("saved jobs: ", res);
                 // (res.data).map(element => element.postID)
                 const savedPostListFromData = res.data.map(post => {
                     return {
@@ -40,7 +40,7 @@ class CommunitySavedDetail extends Component {
                         url: `/community-job-detail?userid=${sessionStorage.getItem('userId')}?postid=${post.postID}`
                     }
                 });
-                console.log(savedPostListFromData);
+                // console.log(savedPostListFromData);
                 return this.setState({
                     savedPostList: savedPostListFromData
                 });

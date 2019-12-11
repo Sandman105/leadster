@@ -38,7 +38,7 @@ class Community extends Component {
     componentDidMount() {
         this._isMounted = true;
         getAllPostings().then(res => {
-            console.log(res);
+            // console.log(res);
             const postListFromData = res.data.map(post => {
                 return {
                     id: post.id,
@@ -62,7 +62,7 @@ class Community extends Component {
         const isLoggedIn = sessionStorage.getItem('isLoggedIn');
         const isEmployer = sessionStorage.getItem('isEmployer');
         const savePageUrl = `/community-saved-detail?userid=${sessionStorage.getItem('userId')}`;
-        console.log(this.context);
+        // console.log(this.context);
         if (isLoggedIn !== "true") {
             return <Redirect to='/login' />
         } else if (parseInt(isEmployer) === 1 && isLoggedIn) {

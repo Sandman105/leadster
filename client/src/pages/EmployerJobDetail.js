@@ -125,7 +125,7 @@ class EmployerJobDetail extends Component {
             return <Redirect to='/community' />
         }
         // console.log("seekerList: ", this.state.seekerList);
-        console.log("current State: ", this.state);
+        // console.log("current State: ", this.state);
         return (
             <>
                 <Header />

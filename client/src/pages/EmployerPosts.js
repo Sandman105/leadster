@@ -82,7 +82,7 @@ class EmployerPosts extends Component {
     handleGetAllPosts = () => {
         getPostingByEmployer(sessionStorage.getItem('userId'))
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 const postListFromData = (res.data).map(post => {
                     return {
                         id: post.id,
