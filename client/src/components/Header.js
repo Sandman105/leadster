@@ -43,9 +43,9 @@ const Header = props => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <NavItem>
+            {/* <NavItem>
               <input style={navtext} type="text" placeholder="Search.."></input>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
               <NavLink style={navtext} href="/home">Home</NavLink>
             </NavItem>
