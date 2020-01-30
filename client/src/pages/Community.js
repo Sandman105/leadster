@@ -46,7 +46,8 @@ class Community extends Component {
                 return {
                     id: post.id,
                     title: post.title,
-                    url: `/community-job-detail?userid=${sessionStorage.getItem('userId')}&postid=${post.id}`
+                    url: `/community-job-detail?userid=${sessionStorage.getItem('userId')}&postid=${post.id}`,
+                    status: post.status
                 }
             });
             return this.setState({
@@ -104,8 +105,8 @@ class Community extends Component {
                 <input type="text" placeholder="Key Word Search (e.g. 'graphic').." name='searchText' onChange={this.handleInputChange}></input>&nbsp;
                 <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.handleSearchButton}>Search</button>
                 <div>
-                    {this.state.searchBool ? this.state.searchRes.map(res => (<Card style={newPosts} title={res.title} key={res.id} href={res.url}/>)) : this.state.postList.map(post => (
-                        <Card style={newPosts} title={post.title} key={post.id} href={post.url} />
+                    {this.state.searchBool ? this.state.searchRes.map(res => (<Card style={newPosts} title={res.title} key={res.id} href={res.url} />)) : this.state.postList.map(post => (
+                        <Card style={newPosts} title={post.title} key={post.id} href={post.url} status={post.status}/>
                     ))}
                 </div>
             </>

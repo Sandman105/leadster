@@ -7,6 +7,7 @@ const postingSchema = knex.schema.hasTable("posting").then(table => {
             table.string("title", 50);
             table.string("description", 1000);
             table.integer("employerID").unsigned().references("users.id").onDelete("CASCADE"); //unsigned means only positive numbers
+            table.boolean("status").defaultTo(0);
         }).then(() => {
             console.log("posting table created");
         }).catch(err => {

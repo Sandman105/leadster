@@ -70,7 +70,7 @@ class Login extends Component {
             login(this.state)
                 .then(data => {
                     if (data.status === 200) {
-                        console.log("Data: ", data);
+                        // console.log("Data: ", data);
                         sessionStorage.setItem("jwt", JSON.stringify(data.data.token));
                         sessionStorage.setItem("userId", JSON.stringify(data.data.userInfo.userId));
                         sessionStorage.setItem("isEmployer", JSON.stringify(data.data.userInfo.isEmployer));
