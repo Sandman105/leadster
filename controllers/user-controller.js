@@ -174,18 +174,19 @@ async function createPosting(req, res) {
 async function updatePosting(req, res) {
     // console.log("id: ", req.params.id);
     // console.log("title: ", req.body.title);
-    // console.log("desc: ", req.body.description);
+    console.log("body: ", req.body);
     try{
         let update = await (knex("posting").where('id', req.params.id).update({
             title: req.body.title,
-            description: req.body.description
+            description: req.body.description,
+            status: req.body.status
         }));
         res.json(update);
     } catch (err) {
         console.log("Err: ", err);
         res.json(err);
     }
-}
+};
 
 async function deletePosting(req, res) {
     console.log("delete req: ", req.params.id);

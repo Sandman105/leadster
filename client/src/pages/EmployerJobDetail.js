@@ -4,6 +4,7 @@ import { getPostingById, getUsersFromSavedPosting, updatePosting } from '../util
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context';
 import Card from '../components/Card'
+import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 // import { Link } from "react-router-dom";
 
 const seekerStateLabel = {
@@ -40,6 +41,7 @@ class EmployerJobDetail extends Component {
         seekerList: [],
         title: "",
         description: "",
+        status: null,
         errorTitle: null,
         errorDescription: null,
         formIsDisplay: false,
@@ -67,7 +69,8 @@ class EmployerJobDetail extends Component {
                     postDetail: res.data[0], // with peiyu
                     title: res.data[0].title,
                     description: res.data[0].description,
-                    postID: res.data[0].id
+                    postID: res.data[0].id,
+                    status: res.data[0].status
                 });
             })
             .catch(err => console.log("err: ", err));
@@ -107,11 +110,12 @@ class EmployerJobDetail extends Component {
         // event.preventDefault();
         const dataToSend = {
             title: this.state.title,
-            description: this.state.description
-        }
-        // console.log("look here: ", dataToSend);
+            description: this.state.description,
+            status: this.state.status
+        };
+        console.log("look here: ", dataToSend);
         updatePosting(this.state.postID, dataToSend)
-            .then(this.setState({postDetail : dataToSend}))
+            .then(this.setState({ postDetail: dataToSend }))
             .catch(err => console.log("err: ", err));
     }
 
@@ -124,7 +128,7 @@ class EmployerJobDetail extends Component {
         } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
             return <Redirect to='/community' />
         }
-        // console.log("seekerList: ", this.state.seekerList);
+        console.log("status state: ", this.state.status);
         // console.log("current State: ", this.state);
         return (
             <>
@@ -137,6 +141,7 @@ class EmployerJobDetail extends Component {
                             onClick={this.handleEditClick}
                         >Edit</button>
                     </div>
+                    <div>Status: {this.state.postDetail.status === 0 ? "Open" : "Closed"}</div>
                     {/* </column> */}
                     <row
                         style={seekerStateLabel}
@@ -167,6 +172,13 @@ class EmployerJobDetail extends Component {
                                 value={this.state.description}
                                 name="description"
                             />
+                            <div>
+                                <select defaultChecked={this.state.postDetail.status} onChange={this.handleInputChange} name="status">
+                                    <option value="0" name="status">Open</option>
+                                    <option value="1" name="status">Closed</option>
+                                    {console.log("status: ", this.state.status)}
+                                </select>
+                            </div>
                             {/* {this.state.errorDescription &&
                             !this.state.description.length && (
                                 <div className="alert alert-danger my-2">

@@ -79,11 +79,12 @@ export const queryDB = (query) => {
 }
 
 export const updatePosting = (id, data) => {
-    console.log("API ID: ", id);
-    console.log("data: ", data.title);
+    // console.log("API ID: ", id);
+    console.log("data: ", data.status);
     const dataSend = {
         title: data.title,
-        description: data.description
+        description: data.description,
+        status: data.status
     };
     return axios.post(`/leadster/employer/update/${id}`, dataSend);
 }
