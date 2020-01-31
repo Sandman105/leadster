@@ -80,7 +80,7 @@ export const queryDB = (query) => {
 
 export const updatePosting = (id, data) => {
     // console.log("API ID: ", id);
-    console.log("data: ", data.status);
+    // console.log("data: ", data.status);
     const dataSend = {
         title: data.title,
         description: data.description,

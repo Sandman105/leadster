@@ -174,7 +174,7 @@ async function createPosting(req, res) {
 async function updatePosting(req, res) {
     // console.log("id: ", req.params.id);
     // console.log("title: ", req.body.title);
-    console.log("body: ", req.body);
+    // console.log("body: ", req.body);
     try{
         let update = await (knex("posting").where('id', req.params.id).update({
             title: req.body.title,

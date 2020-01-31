@@ -113,7 +113,7 @@ class EmployerJobDetail extends Component {
             description: this.state.description,
             status: this.state.status
         };
-        console.log("look here: ", dataToSend);
+        // console.log("look here: ", dataToSend);
         updatePosting(this.state.postID, dataToSend)
             .then(this.setState({ postDetail: dataToSend }))
             .catch(err => console.log("err: ", err));
@@ -128,7 +128,7 @@ class EmployerJobDetail extends Component {
         } else if (parseInt(isEmployer) !== 1 && isLoggedIn) {
             return <Redirect to='/community' />
         }
-        console.log("status state: ", this.state.status);
+        // console.log("status state: ", this.state.status);
         // console.log("current State: ", this.state);
         return (
             <>
@@ -173,10 +173,10 @@ class EmployerJobDetail extends Component {
                                 name="description"
                             />
                             <div>
-                                <select defaultChecked={this.state.postDetail.status} onChange={this.handleInputChange} name="status">
+                                <select defaultValue={this.state.postDetail.status} onChange={this.handleInputChange} name="status">
                                     <option value="0" name="status">Open</option>
                                     <option value="1" name="status">Closed</option>
-                                    {console.log("status: ", this.state.status)}
+                                    {/* {console.log("status: ", this.state.status)} */}
                                 </select>
                             </div>
                             {/* {this.state.errorDescription &&
