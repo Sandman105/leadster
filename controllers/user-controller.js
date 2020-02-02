@@ -175,7 +175,7 @@ async function updatePosting(req, res) {
     // console.log("id: ", req.params.id);
     // console.log("title: ", req.body.title);
     // console.log("body: ", req.body);
-    try{
+    try {
         let update = await (knex("posting").where('id', req.params.id).update({
             title: req.body.title,
             description: req.body.description,
@@ -189,9 +189,8 @@ async function updatePosting(req, res) {
 };
 
 async function deletePosting(req, res) {
-    console.log("delete req: ", req.params.id);
+    // console.log("delete req: ", req.params.id);
     try {
-        
         let query = await (knex("subscription").where('postID', req.params.id).del().then(async data => {
             // console.log("data: ", data);
             let subQuery = await (knex("posting").where('id', req.params.id).del());
@@ -203,6 +202,15 @@ async function deletePosting(req, res) {
     catch (err) {
         console.log("err: ", err);
         return res.json(err);
+    }
+};
+
+async function getAllSeekers(req, res) {
+    try {
+        let query = await (knex('users').whereNot('isEmployer', 1));
+        res.json(query);
+    } catch (err) {
+        res.json(err);
     }
 };
 
@@ -320,5 +328,6 @@ module.exports = {
     deleteSubscription,
     deletePosting,
     queryDB,
-    updatePosting
+    updatePosting,
+    getAllSeekers
 };

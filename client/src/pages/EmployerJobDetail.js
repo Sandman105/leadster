@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-import { getPostingById, getUsersFromSavedPosting, updatePosting } from '../utils/API';
+import { getPostingById, getUsersFromSavedPosting, updatePosting, getAllSeekers } from '../utils/API';
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context';
+import Modal from 'react-modal';
 import Card from '../components/Card'
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 // import { Link } from "react-router-dom";
@@ -39,14 +40,16 @@ class EmployerJobDetail extends Component {
     state = {
         postDetail: {},
         seekerList: [],
+        allSeekers: [],
         title: "",
         description: "",
         status: null,
         errorTitle: null,
         errorDescription: null,
         formIsDisplay: false,
-        postID: null
-    }
+        postID: null,
+        modalIsOpen: false
+    };
 
     handleInputChange = event => {
         const { name, value } = event.target;
@@ -58,6 +61,7 @@ class EmployerJobDetail extends Component {
     componentDidMount() {
         this.handleGetPostDetail();
         this.handleWhoSavedTheJob();
+        this.handleGetAllSeekers();
     }
 
     handleGetPostDetail = () => {
@@ -93,6 +97,18 @@ class EmployerJobDetail extends Component {
             .catch(err => console.log("err: ", err));
     }
 
+    handleGetAllSeekers = () => {
+        getAllSeekers().then(res => {
+            console.log("all seekers: ", res);
+            const allSeeker = res.data.map(seeker => (
+                (seeker.nameFirst) + " " + (seeker.nameLast)
+            ));
+            this.setState({
+                allSeekers: allSeeker
+            });
+        });
+    }
+
     handleEditClick = () => {
         if (!this.state.formIsDisplay) {
             this.setState({
@@ -117,6 +133,18 @@ class EmployerJobDetail extends Component {
         updatePosting(this.state.postID, dataToSend)
             .then(this.setState({ postDetail: dataToSend }))
             .catch(err => console.log("err: ", err));
+    }
+
+    openModal = event => {
+        const { name, value } = event.target;
+        this.setState({
+            [name]: value
+        });
+        this.setState({ modalIsOpen: true });
+    }
+
+    closeModal = () => {
+        this.setState({ modalIsOpen: false });
     }
 
     render() {
@@ -174,8 +202,8 @@ class EmployerJobDetail extends Component {
                             />
                             <div>
                                 <select defaultValue={this.state.postDetail.status} onChange={this.handleInputChange} name="status">
-                                    <option value="0" name="status">Open</option>
-                                    <option value="1" name="status">Closed</option>
+                                    <option value="0" name="status">Open &nbsp</option>
+                                    <option value="1" name="status">Closed &nbsp</option>
                                     {/* {console.log("status: ", this.state.status)} */}
                                 </select>
                             </div>
@@ -192,6 +220,16 @@ class EmployerJobDetail extends Component {
                                 onClick={this.handleUpdatePosting}
                             >Update Post
                         </button>
+                            <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} contentLabel="Review User">
+                                <button onClick={this.closeModal}>close</button>
+                                <div>Review User who completed job</div>
+                                <form>
+                                    {/* select with options of users who have isEmployer != 1 */}
+                                    {/* copy the stars things from Eats++ */}
+                                    {/* input for text body */}
+                                    {/* submit btn to create record for rating */}
+                                </form>
+                            </Modal>
                         </>
                     ) : (null)
                 }

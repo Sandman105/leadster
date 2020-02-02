@@ -44,7 +44,8 @@ const {
     getUserProfile, //
     login, //
     queryDB,
-    updatePosting
+    updatePosting,
+    getAllSeekers
 } = require("../../controllers/user-controller");
 
 router.route('/').get(withAuth, getUserProfile)
@@ -97,5 +98,8 @@ router.route("/jobs/unsaved/:id/:user").delete(deleteSubscription);
 // 10. search for job
 // "/jobs/query/:query"
 router.route("/jobs/query/:query").post(queryDB);
+
+// 11. get all seekers
+router.route(`/users/seekers`).get(getAllSeekers)
 
 module.exports = router;

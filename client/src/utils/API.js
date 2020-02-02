@@ -89,6 +89,10 @@ export const updatePosting = (id, data) => {
     return axios.post(`/leadster/employer/update/${id}`, dataSend);
 }
 
+export const getAllSeekers = () => {
+    return axios.get(`/leadster/users/seekers`);
+}
+
 export default {
     getAllPostings,
     getPostingsSavedByUser,
@@ -102,5 +106,6 @@ export default {
     deletePosting,
     login,
     queryDB,
-    updatePosting
+    updatePosting,
+    getAllSeekers
 }
