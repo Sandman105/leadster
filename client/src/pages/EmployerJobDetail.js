@@ -236,7 +236,7 @@ class EmployerJobDetail extends Component {
                             >Update Post
                         </button>
                             <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} contentLabel="Review User">
-                                <button onClick={this.closeModal}>Close</button>
+
                                 <div>Review User who completed job</div>
                                 <hr />
                                 <form>
@@ -248,6 +248,7 @@ class EmployerJobDetail extends Component {
                                             })}
                                         </select>
                                     </div>
+                                    <br />
                                     {/* copy the stars things from Eats++ */}
                                     <div>Rating: &nbsp;
                                         <select name='ratingStar' defaultValue='Rate Quality of work/service' onClick={this.handleRating}>
@@ -258,11 +259,19 @@ class EmployerJobDetail extends Component {
                                             <option value='5'>5</option>
                                         </select>
                                     </div>
+                                    <br />
                                     {/* input for text body */}
                                     <div>Description of work: &nbsp;
                                         <textarea name='ratingDesc'></textarea>
                                     </div>
+                                    <br />
                                     {/* submit btn to create record for rating */}
+                                    <div>
+                                        <button type="submit" className={"btn btn-success btn-sm"} onClick={this.handleSubmitRating}>
+                                            Submit Rating
+                                        </button> &nbsp;&nbsp;
+                                        <button onClick={this.closeModal} className={"btn btn-danger btn-sm"}>Close</button>
+                                    </div>
                                 </form>
                             </Modal>
                         </>
