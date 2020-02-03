@@ -53,9 +53,32 @@ class EmployerJobDetail extends Component {
 
     handleInputChange = event => {
         const { name, value } = event.target;
-        this.setState({
-            [name]: value
-        });
+        // console.log("status value: ", value);
+        if (name === 'status' && value === "1") {
+            this.setState({
+                [name]: value,
+                modalIsOpen: true
+            });
+            // console.log("modal state: ", this.state.modalIsOpen);
+        } else {
+            this.setState({ [name]: value });
+        }
+        // console.log("end log: ", this.state);
+    };
+
+    handleReviewUser = event => {
+        const { name, value } = event.target;
+        console.log("status value: ", value);
+        if (value === 1) {
+            this.setState({
+                modalIsOpen: true,
+                [name]: value
+            });
+            console.log("modal state: ", this.state.modalIsOpen);
+        }
+        else {
+            this.setState({ [name]: value });
+        }
     };
 
     componentDidMount() {
@@ -99,7 +122,7 @@ class EmployerJobDetail extends Component {
 
     handleGetAllSeekers = () => {
         getAllSeekers().then(res => {
-            console.log("all seekers: ", res);
+            // console.log("all seekers: ", res);
             const allSeeker = res.data.map(seeker => (
                 (seeker.nameFirst) + " " + (seeker.nameLast)
             ));
@@ -133,14 +156,6 @@ class EmployerJobDetail extends Component {
         updatePosting(this.state.postID, dataToSend)
             .then(this.setState({ postDetail: dataToSend }))
             .catch(err => console.log("err: ", err));
-    }
-
-    openModal = event => {
-        const { name, value } = event.target;
-        this.setState({
-            [name]: value
-        });
-        this.setState({ modalIsOpen: true });
     }
 
     closeModal = () => {
@@ -202,8 +217,8 @@ class EmployerJobDetail extends Component {
                             />
                             <div>
                                 <select defaultValue={this.state.postDetail.status} onChange={this.handleInputChange} name="status">
-                                    <option value="0" name="status">Open &nbsp</option>
-                                    <option value="1" name="status">Closed &nbsp</option>
+                                    <option value="0" name="status">Open &nbsp;</option>
+                                    <option value="1" name="status">Closed &nbsp;</option>
                                     {/* {console.log("status: ", this.state.status)} */}
                                 </select>
                             </div>
@@ -221,12 +236,32 @@ class EmployerJobDetail extends Component {
                             >Update Post
                         </button>
                             <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} contentLabel="Review User">
-                                <button onClick={this.closeModal}>close</button>
+                                <button onClick={this.closeModal}>Close</button>
                                 <div>Review User who completed job</div>
+                                <hr />
                                 <form>
                                     {/* select with options of users who have isEmployer != 1 */}
+                                    <div>User: &nbsp;
+                                        <select name='allSeekers' value={this.state.allSeekers}>
+                                            {this.state.allSeekers.map(name => {
+                                                return <option key={name} value={name}>{name}&nbsp;&nbsp;</option>;
+                                            })}
+                                        </select>
+                                    </div>
                                     {/* copy the stars things from Eats++ */}
+                                    <div>Rating: &nbsp;
+                                        <select name='ratingStar' defaultValue='Rate Quality of work/service' onClick={this.handleRating}>
+                                            <option value='1'>1</option>
+                                            <option value='2'>2</option>
+                                            <option value='3'>3</option>
+                                            <option value='4'>4</option>
+                                            <option value='5'>5</option>
+                                        </select>
+                                    </div>
                                     {/* input for text body */}
+                                    <div>Description of work: &nbsp;
+                                        <textarea name='ratingDesc'></textarea>
+                                    </div>
                                     {/* submit btn to create record for rating */}
                                 </form>
                             </Modal>
