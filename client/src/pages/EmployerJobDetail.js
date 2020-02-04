@@ -237,7 +237,7 @@ class EmployerJobDetail extends Component {
                         </button>
                             <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} contentLabel="Review User">
 
-                                <div>Review User who completed job</div>
+                                <div><h2>Review User who completed job</h2></div>
                                 <hr />
                                 <form>
                                     {/* select with options of users who have isEmployer != 1 */}
