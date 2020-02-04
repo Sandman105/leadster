@@ -233,6 +233,15 @@ async function SubmitRating(req, res) {
     }
 };
 
+async function getAvgRating(req, res) {
+    try {
+        let query = await (knex('rating').avg('rating').where('userRevieweeID', req.params.id));
+        res.json(query);
+    } catch (err) {
+        res.json(err);
+    }
+};
+
 //TODO: update this so that you delete from subscription when give a userid and postid
 // async function deleteSubscription(req, res) {
 //     console.log("user: ", req.params);
@@ -349,5 +358,6 @@ module.exports = {
     queryDB,
     updatePosting,
     getAllSeekers,
-    SubmitRating
+    SubmitRating,
+    getAvgRating
 };
