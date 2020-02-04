@@ -46,7 +46,8 @@ const {
     queryDB,
     updatePosting,
     getAllSeekers,
-    SubmitRating
+    SubmitRating,
+    getAvgRating
 } = require("../../controllers/user-controller");
 
 router.route('/').get(withAuth, getUserProfile)
@@ -104,6 +105,9 @@ router.route("/jobs/query/:query").post(queryDB);
 router.route(`/users/seekers`).get(getAllSeekers);
 
 // 12. Submit review
-router.route(`/users/review`).post(SubmitRating)
+router.route(`/users/review`).post(SubmitRating);
+
+// 13. get avg rating
+router.route(`/users/rating/avg/:id`).post(getAvgRating);
 
 module.exports = router;
