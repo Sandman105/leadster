@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-import { getPostingById, getUsersFromSavedPosting, updatePosting, getAllSeekers } from '../utils/API';
+import { getPostingById, getUsersFromSavedPosting, updatePosting, getAllSeekers, SubmitRating } from '../utils/API';
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context';
 import Modal from 'react-modal';
@@ -48,12 +48,15 @@ class EmployerJobDetail extends Component {
         errorDescription: null,
         formIsDisplay: false,
         postID: null,
-        modalIsOpen: false
+        modalIsOpen: false,
+        rating: null,
+        body: null,
+        revieweeID: null
     };
 
     handleInputChange = event => {
         const { name, value } = event.target;
-        // console.log("status value: ", value);
+        // console.log("name: ", name, "value: ", value);
         if (name === 'status' && value === "1") {
             this.setState({
                 [name]: value,
@@ -66,20 +69,26 @@ class EmployerJobDetail extends Component {
         // console.log("end log: ", this.state);
     };
 
-    handleReviewUser = event => {
-        const { name, value } = event.target;
-        console.log("status value: ", value);
-        if (value === 1) {
-            this.setState({
-                modalIsOpen: true,
-                [name]: value
-            });
-            console.log("modal state: ", this.state.modalIsOpen);
-        }
-        else {
-            this.setState({ [name]: value });
-        }
-    };
+    handleSubmitRating = event => {
+        event.preventDefault();
+        const data = {
+            userReviewerID: parseInt(sessionStorage.getItem('userId')),
+            userRevieweeID: this.state.revieweeID,
+            rating: this.state.rating,
+            postingID: this.state.postID,
+            body: this.state.body
+        };
+        const dataToSend = {
+            title: this.state.title,
+            description: this.state.description,
+            status: this.state.status
+        };
+        updatePosting(this.state.postID, dataToSend);
+        SubmitRating(data).then(res => {
+            // this.setState({ modalIsOpen: false });
+            window.location.reload();
+        }).catch(err => console.log("err: ", err));
+    }
 
     componentDidMount() {
         this.handleGetPostDetail();
@@ -124,7 +133,7 @@ class EmployerJobDetail extends Component {
         getAllSeekers().then(res => {
             // console.log("all seekers: ", res);
             const allSeeker = res.data.map(seeker => (
-                (seeker.nameFirst) + " " + (seeker.nameLast)
+                (seeker.nameFirst) + " " + (seeker.nameLast) + "-" + seeker.id
             ));
             this.setState({
                 allSeekers: allSeeker
@@ -242,16 +251,16 @@ class EmployerJobDetail extends Component {
                                 <form>
                                     {/* select with options of users who have isEmployer != 1 */}
                                     <div>User: &nbsp;
-                                        <select name='allSeekers' value={this.state.allSeekers}>
+                                        <select name='revieweeID' onChange={this.handleInputChange}>
                                             {this.state.allSeekers.map(name => {
-                                                return <option key={name} value={name}>{name}&nbsp;&nbsp;</option>;
+                                                return <option key={name} value={name.split("-")[1]}>{name.split("-")[0]}&nbsp;&nbsp;</option>;
                                             })}
                                         </select>
                                     </div>
                                     <br />
                                     {/* copy the stars things from Eats++ */}
                                     <div>Rating: &nbsp;
-                                        <select name='ratingStar' defaultValue='Rate Quality of work/service' onClick={this.handleRating}>
+                                        <select name='rating' defaultValue='Rate Quality of work/service' onChange={this.handleInputChange}>
                                             <option value='1'>1</option>
                                             <option value='2'>2</option>
                                             <option value='3'>3</option>
@@ -262,7 +271,7 @@ class EmployerJobDetail extends Component {
                                     <br />
                                     {/* input for text body */}
                                     <div>Description of work: &nbsp;
-                                        <textarea name='ratingDesc'></textarea>
+                                        <textarea name='body' onChange={this.handleInputChange}></textarea>
                                     </div>
                                     <br />
                                     {/* submit btn to create record for rating */}

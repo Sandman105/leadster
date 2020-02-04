@@ -214,6 +214,25 @@ async function getAllSeekers(req, res) {
     }
 };
 
+async function SubmitRating(req, res) {
+    // console.log("req: ", req.body);
+    try {
+        let query = await (knex('rating').insert([
+            {
+                rating: req.body.rating,
+                postID: req.body.postingID,
+                body: req.body.body,
+                userReviewerID: req.body.userReviewerID,
+                userRevieweeID: req.body.userRevieweeID
+            }
+        ]));
+        console.log(query);
+        return res.json(query);
+    } catch (e) {
+        return res.json(e);
+    }
+};
+
 //TODO: update this so that you delete from subscription when give a userid and postid
 // async function deleteSubscription(req, res) {
 //     console.log("user: ", req.params);
@@ -329,5 +348,6 @@ module.exports = {
     deletePosting,
     queryDB,
     updatePosting,
-    getAllSeekers
+    getAllSeekers,
+    SubmitRating
 };

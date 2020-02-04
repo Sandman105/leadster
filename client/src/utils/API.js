@@ -93,6 +93,11 @@ export const getAllSeekers = () => {
     return axios.get(`/leadster/users/seekers`);
 }
 
+export const SubmitRating = (data) => {
+    // console.log("data ", data);
+    return axios.post(`/leadster/users/review`, data);
+}
+
 export default {
     getAllPostings,
     getPostingsSavedByUser,
@@ -107,5 +112,6 @@ export default {
     login,
     queryDB,
     updatePosting,
-    getAllSeekers
+    getAllSeekers,
+    SubmitRating
 }
