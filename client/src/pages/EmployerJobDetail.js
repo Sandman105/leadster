@@ -306,7 +306,7 @@ class EmployerJobDetail extends Component {
                                                 <div className="text-center">{saver.email}</div>
                                                 <div className="text-center">Avg Rating: {saver.avgRating || "No reviews yet"} </div>
                                             </li>
-
+                                            <hr />
                                         )
                                     })}
                                     {/* {console.log("Look here: ", this.state.seekerList)} */}
