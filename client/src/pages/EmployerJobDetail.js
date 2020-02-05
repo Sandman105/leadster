@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-import { getPostingById, getUsersFromSavedPosting, updatePosting, getAllSeekers, SubmitRating } from '../utils/API';
+import { getPostingById, getUsersFromSavedPosting, updatePosting, getAllSeekers, SubmitRating, getAvgRating } from '../utils/API';
 import { Redirect } from 'react-router-dom';
 import GlobalContext from '../components/Global/context';
 import Modal from 'react-modal';
@@ -51,7 +51,7 @@ class EmployerJobDetail extends Component {
         modalIsOpen: false,
         rating: null,
         body: null,
-        revieweeID: null
+        revieweeID: null,
     };
 
     handleInputChange = event => {
@@ -119,8 +119,9 @@ class EmployerJobDetail extends Component {
                 const seekerListFromData = res.data.map(seeker => ({
                     email: seeker.email,
                     nameFirst: seeker.nameFirst,
-                    nameLast: seeker.nameLast
-                }))
+                    nameLast: seeker.nameLast,
+                    avgRating: seeker.avgRating 
+                }));
 
                 return this.setState({
                     seekerList: seekerListFromData
@@ -303,10 +304,12 @@ class EmployerJobDetail extends Component {
                                             <li>
                                                 <div className="text-center">{saver.nameFirst} {saver.nameLast}</div>
                                                 <div className="text-center">{saver.email}</div>
+                                                <div className="text-center">Avg Rating: {saver.avgRating || "No reviews yet"} </div>
                                             </li>
 
                                         )
                                     })}
+                                    {/* {console.log("Look here: ", this.state.seekerList)} */}
                                 </ol>
                             </div>
 

@@ -37,13 +37,15 @@ async function getUsersFromSavedPosting(req, res) { //this will be for employers
             let usersWhoSavedJob = data.map(user => user.userID);
             // console.log("look here for result:\n", data);
             // console.log("look here for result:\n", usersWhoSavedJob);
-            let subQuery = await (knex('users').select("*").whereIn("id", usersWhoSavedJob));
-            // console.log("subquery:\n" , subQuery);
+            let subQuery = await (knex('users').whereIn("users.id", usersWhoSavedJob).leftJoin('rating','users.id','=', 'rating.userRevieweeID').select('*').avg({avgRating: 'rating'}).groupBy('rating','users.id','rating.id'));
+            // console.log("subquery:\n" , subQuery[0]);
             let dataToSend = subQuery.map(subQuery => ({
                 nameFirst: subQuery.nameFirst,
                 nameLast: subQuery.nameLast,
                 email: subQuery.email,
-                phoneNum: subQuery.phoneNum
+                phoneNum: subQuery.phoneNum,
+                id: subQuery.id,
+                avgRating: subQuery.avgRating
             }))
             // console.log("data to send: ", dataToSend);
             return res.json(dataToSend);
@@ -234,9 +236,11 @@ async function SubmitRating(req, res) {
 };
 
 async function getAvgRating(req, res) {
+    // console.log("req: ", req.params);
     try {
-        let query = await (knex('rating').avg('rating').where('userRevieweeID', req.params.id));
-        res.json(query);
+        let query = await (knex('rating').avg({avgRating: 'rating'}).where('userRevieweeID', req.params.id));
+        // console.log("query: ", query[0].avgRating);
+        res.json(query[0].avgRating);
     } catch (err) {
         res.json(err);
     }

@@ -98,6 +98,10 @@ export const SubmitRating = (data) => {
     return axios.post(`/leadster/users/review`, data);
 }
 
+export const getAvgRating = id => {
+    return axios.post(`/leadster/users/rating/avg/${id}`);
+}
+
 export default {
     getAllPostings,
     getPostingsSavedByUser,
@@ -113,5 +117,6 @@ export default {
     queryDB,
     updatePosting,
     getAllSeekers,
-    SubmitRating
+    SubmitRating,
+    getAvgRating
 }
